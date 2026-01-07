@@ -1657,3 +1657,570 @@ footer {
         width: 100%;
     }
 }
+
+/* Add to existing style.css */
+
+/* Social Platforms Selection */
+.social-platforms {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.platform-option {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border: 2px solid var(--gray-light);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: var(--white);
+}
+
+.platform-option:hover {
+    border-color: var(--primary-blue);
+    background-color: var(--light);
+    transform: translateY(-2px);
+}
+
+.platform-option input {
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
+}
+
+.platform-option i {
+    margin-right: 10px;
+    font-size: 1.2em;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Testimonial Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background-color: var(--white);
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--gray-light);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--gray);
+    transition: color 0.3s;
+}
+
+.modal-close:hover {
+    color: var(--accent);
+}
+
+.rating-stars {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.rating-stars i {
+    color: #ddd;
+    cursor: pointer;
+    font-size: 1.8em;
+    transition: color 0.3s, transform 0.2s;
+}
+
+.rating-stars i:hover,
+.rating-stars i.active {
+    color: #ffd700;
+    transform: scale(1.1);
+}
+
+.rating-stars i.selected {
+    color: #ffd700;
+}
+
+.testimonial-country {
+    font-size: 0.9em;
+    color: var(--gray);
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.testimonial-rating {
+    margin-top: 10px;
+    display: flex;
+    gap: 3px;
+}
+
+.testimonial-rating i {
+    color: #ffd700;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .social-platforms {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        padding: 20px;
+    }
+    
+    .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        padding: 15px;
+    }
+}
+
+/* Updated filter buttons for 6 categories */
+.services-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.filter-btn {
+    padding: 12px 25px;
+    background: var(--white);
+    border: 2px solid var(--gray-light);
+    border-radius: 8px;
+    font-weight: 600;
+    color: var(--gray);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    background: var(--gradient-primary);
+    color: var(--white);
+    border-color: var(--primary-blue);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Additional service categories colors */
+.filter-btn[data-filter="mobile"]:hover,
+.filter-btn[data-filter="mobile"].active {
+    background: linear-gradient(135deg, #34C759 0%, #1E7E34 100%);
+}
+
+.filter-btn[data-filter="system"]:hover,
+.filter-btn[data-filter="system"].active {
+    background: linear-gradient(135deg, #5856D6 0%, #2D2A78 100%);
+}
+
+.filter-btn[data-filter="design"]:hover,
+.filter-btn[data-filter="design"].active {
+    background: linear-gradient(135deg, #FF2D55 0%, #C12248 100%);
+}
+
+.filter-btn[data-filter="marketing"]:hover,
+.filter-btn[data-filter="marketing"].active {
+    background: linear-gradient(135deg, #FF9500 0%, #CC7700 100%);
+}
+
+/* Pricing Summary */
+.pricing-summary {
+    margin: 25px 0;
+    padding: 25px;
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    border-left: 4px solid var(--accent);
+}
+
+.pricing-summary h4 {
+    margin-bottom: 15px;
+    color: var(--primary-blue);
+}
+
+.pricing-summary ul {
+    list-style: none;
+    padding: 0;
+}
+
+.pricing-summary li {
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--gray-light);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pricing-summary li i {
+    color: var(--success);
+    width: 20px;
+}
+
+.pricing-summary li:last-child {
+    border-bottom: none;
+}
+
+.pricing-summary strong {
+    color: var(--primary-blue);
+    margin-left: auto;
+}
+
+/* Social Platform Modal Styles */
+.social-platform-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.platform-option-modal {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 2px solid var(--gray-light);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: var(--white);
+}
+
+.platform-option-modal:hover {
+    border-color: var(--primary-blue);
+    background-color: var(--light);
+    transform: translateY(-2px);
+}
+
+.platform-option-modal input {
+    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.platform-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.platform-content i {
+    font-size: 1.4em;
+    min-width: 30px;
+    text-align: center;
+}
+
+/* Platform Colors */
+.platform-content i.fa-whatsapp { color: #25D366; }
+.platform-content i.fa-telegram { color: #0088cc; }
+.platform-content i.fa-instagram { 
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.platform-content i.fa-facebook { color: #1877F2; }
+.platform-content i.fa-twitter { color: #1DA1F2; }
+.platform-content i.fa-linkedin { color: #0A66C2; }
+.platform-content i.fa-tiktok { color: #000000; }
+.platform-content i.fa-comment { color: #3A76F0; }
+.platform-content i.fa-skype { color: #00AFF0; }
+.platform-content i.fa-envelope { color: var(--primary-blue); }
+.platform-content i.fa-phone { color: var(--accent); }
+.platform-content i.fa-video { color: #2D8CFF; }
+
+.modal-body p {
+    margin-bottom: 20px;
+    color: var(--gray-dark);
+    font-size: 1rem;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--gray-light);
+}
+
+.modal-actions .btn {
+    padding: 12px 25px;
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .social-platform-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+    
+    .modal-actions .btn {
+        width: 100%;
+    }
+    
+    .pricing-summary {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .social-platform-options {
+        gap: 8px;
+    }
+    
+    .platform-option-modal {
+        padding: 12px;
+    }
+    
+    .platform-content i {
+        font-size: 1.2em;
+        min-width: 25px;
+    }
+}
+
+/* Ensure the modal is hidden by default and centered */
+.modal {
+    display: none; /* JavaScript changes this to 'flex' */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Darkens the background */
+    z-index: 2000; /* Higher than your header */
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+/* When the modal is active */
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--bg-color, #fff); /* Uses your theme variables */
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+/* --- Modal Overlay --- */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px); /* Modern blur effect */
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+/* --- Modal Content Box --- */
+.modal-content {
+    background: var(--card-bg, #ffffff);
+    color: var(--text-color, #333);
+    width: 100%;
+    max-width: 550px;
+    border-radius: 20px;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    animation: modalSlideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalSlideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* --- Modal Header --- */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+    padding-bottom: 15px;
+}
+
+.modal-header h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color, #007bff);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--text-color, #333);
+    line-height: 1;
+}
+
+/* --- Form Styling --- */
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.form-group input, 
+.form-group textarea, 
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(128, 128, 128, 0.3);
+    background: var(--input-bg, #f9f9f9);
+    color: var(--text-color, #333);
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus, 
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color, #007bff);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* --- Star Rating --- */
+.rating-stars {
+    display: flex;
+    gap: 10px;
+    font-size: 1.5rem;
+    color: #ccc;
+    margin: 10px 0;
+}
+
+.rating-stars i {
+    cursor: pointer;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.rating-stars i:hover {
+    transform: scale(1.2);
+}
+
+.rating-stars i.active {
+    color: #ffb400;
+}
+
+/* --- Submit Button --- */
+#testimonialSubmissionForm .btn-primary {
+    width: 100%;
+    padding: 15px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* Dark Mode Overrides (if you have a .dark-theme class) */
+body.dark-theme .modal-content {
+    background: #1a1a1a;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .form-group input, 
+body.dark-theme .form-group textarea {
+    background: #2d2d2d;
+    border-color: #444;
+    color: white;
+}
+
+/* --- Slider Functionality --- */
+.testimonial-slide {
+    display: none; /* Hide all slides */
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.testimonial-slide.active {
+    display: block; /* Show only the active one */
+}
+
+.testimonial-dots .dot {
+    height: 12px;
+    width: 12px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.testimonial-dots .dot.active {
+    background-color: var(--primary-color, #007bff);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}

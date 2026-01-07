@@ -1,0 +1,142 @@
+{
+  "testimonials": [
+    {
+      "name": "Takunda Moyo",
+      "position": "CEO, Safari Adventures Zimbabwe",
+      "country": "Zimbabwe",
+      "rating": 5,
+      "testimonial": "Nash Digitech transformed our online presence completely. Our new website increased conversions by 150% in just 3 months. Their team is professional, responsive, and truly understands digital business.",
+      "status": "approved"
+    },
+    {
+      "name": "Sarah Chidemo",
+      "position": "Operations Director, AgriTech Solutions",
+      "country": "South Africa",
+      "rating": 4,
+      "testimonial": "The AI analytics dashboard they built for us has revolutionized how we make business decisions. Real-time insights have improved our operational efficiency by 40%. Exceptional work!",
+      "status": "approved"
+    },
+    {
+      "name": "Robert Ndlovu",
+      "position": "Founder, HealthTech Zimbabwe",
+      "country": "Zimbabwe",
+      "rating": 5,
+      "testimonial": "From concept to launch, the team at Nash Digitech was incredible. Our mobile app has over 10,000 downloads in the first month alone. Their 24/7 support is a game-changer for businesses.",
+      "status": "approved"
+    },
+    {
+      "name": "Chiedza Mupfumi",
+      "position": "Marketing Manager, Retail Chain",
+      "country": "Botswana",
+      "rating": 5,
+      "testimonial": "The e-commerce platform they developed for us has increased our online sales by 300%. The payment integration and user experience are flawless. Highly recommended!",
+      "status": "approved"
+    },
+    {
+      "name": "David Omondi",
+      "position": "IT Director, Logistics Company",
+      "country": "Kenya",
+      "rating": 4,
+      "testimonial": "Their system development team built a custom logistics management system that has streamlined our operations and reduced errors by 80%. Excellent technical expertise.",
+      "status": "approved"
+    }
+  ],
+  "services": [
+    {
+      "id": 1,
+      "name": "Professional Website Design",
+      "category": "web",
+      "price": "$500+",
+      "features": [
+        "Up to 15 website pages",
+        "WordPress Website Design",
+        "Content Management System (CMS)",
+        "Responsive Website Design",
+        "Photo Galleries & Multimedia",
+        "Website Contact Forms"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "iOS & Android App Development",
+      "category": "mobile",
+      "price": "$250+",
+      "features": [
+        "iOS App Development (Swift)",
+        "Android App Development (Kotlin/Java)",
+        "Cross-platform (React Native/Flutter)",
+        "App Store & Play Store Deployment",
+        "Push Notifications",
+        "Backend API Integration"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "System Development (Non-Web)",
+      "category": "system",
+      "price": "$1,000+",
+      "features": [
+        "Desktop Applications",
+        "Enterprise Resource Planning (ERP)",
+        "Customer Relationship Management (CRM)",
+        "Inventory Management Systems",
+        "Database Design & Development",
+        "API Development & Integration"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "System Development (Web-Based)",
+      "category": ["system", "web"],
+      "price": "$700+",
+      "features": [
+        "Interactive Web Applications",
+        "E-commerce Platforms",
+        "Learning Management Systems",
+        "Payment Gateway Integration",
+        "Real-time Features",
+        "Admin Dashboard & Analytics"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Digital Marketing & Support",
+      "category": "marketing",
+      "price": "$100/mo",
+      "features": [
+        "Social Media Set-up & Integration",
+        "Google Search Console Set-up",
+        "Google Analytics Integration",
+        "24/7 Support: Phone, Email, Chat",
+        "Monthly Maintenance Plans",
+        "Performance Optimization"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Creative Design Services",
+      "category": "design",
+      "price": "$75+",
+      "features": [
+        "Logo & Brand Identity Design",
+        "UI/UX Design for Websites & Apps",
+        "Marketing Materials Design",
+        "Social Media Graphics",
+        "Print Design Services",
+        "Brand Style Guides"
+      ]
+    }
+  ],
+  "socialPlatforms": [
+    { "value": "whatsapp", "icon": "fab fa-whatsapp", "name": "WhatsApp" },
+    { "value": "telegram", "icon": "fab fa-telegram", "name": "Telegram" },
+    { "value": "instagram", "icon": "fab fa-instagram", "name": "Instagram" },
+    { "value": "facebook", "icon": "fab fa-facebook", "name": "Facebook" },
+    { "value": "twitter", "icon": "fab fa-twitter", "name": "Twitter/X" },
+    { "value": "linkedin", "icon": "fab fa-linkedin", "name": "LinkedIn" },
+    { "value": "tiktok", "icon": "fab fa-tiktok", "name": "TikTok" },
+    { "value": "signal", "icon": "fas fa-comment", "name": "Signal" },
+    { "value": "email", "icon": "fas fa-envelope", "name": "Email" },
+    { "value": "skype", "icon": "fab fa-skype", "name": "Skype" }
+  ]
+}

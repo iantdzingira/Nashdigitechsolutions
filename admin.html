@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nash Digitech | Admin Control</title>
+    <style>
+        /* Modern Nash Digitech Admin Styling */
+        :root {
+            --primary: #3498db;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f1c40f;
+            --bg: #f4f7f9;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: var(--bg); color: #333; }
+        
+        header { 
+            background: var(--dark); 
+            color: white; 
+            padding: 1rem 2rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .container { padding: 20px; max-width: 1200px; margin: auto; }
+        
+        h2 { border-left: 5px solid var(--primary); padding-left: 15px; margin-top: 40px; color: var(--dark); }
+        
+        .card { background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow-x: auto; margin-bottom: 30px; }
+        
+        table { border-collapse: collapse; width: 100%; min-width: 800px; }
+        th { background-color: #f8f9fa; color: #7f8c8d; padding: 15px; text-align: left; font-size: 13px; text-transform: uppercase; border-bottom: 2px solid #eee; }
+        td { padding: 15px; border-bottom: 1px solid #eee; font-size: 14px; vertical-align: top; }
+        
+        /* Status Badges */
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 11px; display: inline-block; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-approved { background: #d4edda; color: #155724; }
+        .status-rejected { background: #f8d7da; color: #721c24; }
+        
+        /* Action Buttons */
+        .btn { cursor: pointer; transition: 0.2s; font-weight: bold; border: none; padding: 8px 12px; border-radius: 4px; color: white; margin-right: 5px; }
+        .btn-approve { background: var(--success); }
+        .btn-reject { background: var(--danger); }
+        .btn-refresh { background: var(--primary); padding: 10px 20px; }
+        .btn-logout { background: transparent; border: 1px solid white; font-size: 12px; }
+        .btn:hover { opacity: 0.8; transform: translateY(-1px); }
+
+        .rating-stars { color: var(--warning); letter-spacing: 2px; }
+        
+        tr:hover { background-color: #fcfcfc; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1 style="margin:0; font-size: 24px;">Nash Digitech Admin</h1>
+            <small style="opacity: 0.7;">Project & Testimonial Management</small>
+        </div>
+        <div>
+            <button class="btn btn-refresh" onclick="loadData()">🔄 Refresh</button>
+            <button class="btn btn-logout" onclick="logout()">Logout</button>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section id="testimonials">
+            <h2>Testimonials Review</h2>
+            <div class="card">
+                <table id="testimonialTable">
+                    <thead>
+                        <tr>
+                            <th>Client Info</th>
+                            <th>Location</th>
+                            <th>Rating</th>
+                            <th>Testimonial Content</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <section id="contacts">
+            <h2>Project Inquiries</h2>
+            <div class="card">
+                <table id="contactTable">
+                    <thead>
+                        <tr>
+                            <th>Prospect Name</th>
+                            <th>Email/Contact</th>
+                            <th>Service & Budget</th>
+                            <th>Platforms</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        const API_BASE = 'http://localhost:3000/api/admin';
+
+        // 1. Auth Logic: Get key from Session or Prompt
+        function getAdminKey() {
+            let key = sessionStorage.getItem('nash_admin_key');
+            if (!key) {
+                key = prompt("🔑 Restricted Access: Enter Admin Secret Key (e.g., ):");
+                if (key) {
+                    sessionStorage.setItem('nash_admin_key', key);
+                }
+            }
+            return key;
+        }
+
+        function logout() {
+            sessionStorage.removeItem('nash_admin_key');
+            location.reload();
+        }
+
+        // 2. Load Data from Backend
+        async function loadData() {
+            const adminKey = getAdminKey();
+            if (!adminKey) {
+                document.body.innerHTML = '<div style="text-align:center; padding:50px;"><h1>Access Denied</h1><button onclick="location.reload()">Try Again</button></div>';
+                return;
+            }
+
+            try {
+                // Fetch Testimonials
+                const tRes = await fetch(`${API_BASE}/testimonials/all`, {
+                    headers: { 'x-admin-key': adminKey }
+                });
+
+                if (tRes.status === 401) {
+                    alert("❌ Invalid Admin Key!");
+                    logout();
+                    return;
+                }
+
+                const tData = await tRes.json();
+                renderTestimonials(tData.testimonials || []);
+
+                // Fetch Contacts
+                const cRes = await fetch(`${API_BASE}/contacts/all`, {
+                    headers: { 'x-admin-key': adminKey }
+                });
+                const cData = await cRes.json();
+                renderContacts(cData.contacts || []);
+
+            } catch (error) {
+                console.error('Fetch Error:', error);
+                alert('Connection to server failed. Ensure backend is running.');
+            }
+        }
+
+        // 3. Render Testimonials to Table
+        function renderTestimonials(data) {
+            const tbody = document.querySelector('#testimonialTable tbody');
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No testimonials found.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = data.map(t => `
+                <tr>
+                    <td><strong>${t.name}</strong><br><small>${t.position || 'Client'}</small></td>
+                    <td>${t.country}</td>
+                    <td class="rating-stars">${'★'.repeat(t.rating)}${'☆'.repeat(5-t.rating)}</td>
+                    <td style="max-width:350px;"><i>"${t.testimonial}"</i></td>
+                    <td><span class="status-badge status-${t.status}">${t.status.toUpperCase()}</span></td>
+                    <td>
+                        ${t.status === 'pending' ? `
+                            <button class="btn btn-approve" onclick="updateStatus('${t._id}', 'approved')">Approve</button>
+                            <button class="btn btn-reject" onclick="updateStatus('${t._id}', 'rejected')">Reject</button>
+                        ` : `<small style="color:#888;">No actions available</small>`}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // 4. Render Contacts to Table
+        function renderContacts(data) {
+            const tbody = document.querySelector('#contactTable tbody');
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No inquiries found.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = data.map(c => `
+                <tr>
+                    <td><strong>${c.name}</strong></td>
+                    <td>${c.email}<br><small>${c.phone || ''}</small></td>
+                    <td>${c.service}<br><small>Budget: ${c.budget || 'N/A'}</small></td>
+                    <td>${c.platforms ? c.platforms.join(', ') : 'Email'}</td>
+                    <td>${new Date(c.createdAt).toLocaleDateString()}</td>
+                    <td><span class="status-badge">${c.status.toUpperCase()}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // 5. Update Status API Call
+        async function updateStatus(id, newStatus) {
+            const adminKey = getAdminKey();
+            try {
+                const res = await fetch(`${API_BASE}/testimonials/${id}/status`, {
+                    method: 'PATCH',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'x-admin-key': adminKey 
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                if (res.ok) {
+                    loadData(); // Refresh table on success
+                } else {
+                    const err = await res.json();
+                    alert("Error: " + err.message);
+                }
+            } catch (error) {
+                alert("Failed to communicate with the server.");
+            }
+        }
+
+        // Run on load
+        loadData();
+    </script>
+</body>
+</html>
