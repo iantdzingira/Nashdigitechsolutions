@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nash Digitech | Admin Control</title>
     <style>
+        /* Modern Nash Digitech Admin Styling */
         :root {
             --primary: #3498db;
             --dark: #2c3e50;
@@ -36,11 +37,13 @@
         th { background-color: #f8f9fa; color: #7f8c8d; padding: 15px; text-align: left; font-size: 13px; text-transform: uppercase; border-bottom: 2px solid #eee; }
         td { padding: 15px; border-bottom: 1px solid #eee; font-size: 14px; vertical-align: top; }
         
+        /* Status Badges */
         .status-badge { padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 11px; display: inline-block; }
         .status-pending { background: #fff3cd; color: #856404; }
         .status-approved { background: #d4edda; color: #155724; }
         .status-rejected { background: #f8d7da; color: #721c24; }
         
+        /* Action Buttons */
         .btn { cursor: pointer; transition: 0.2s; font-weight: bold; border: none; padding: 8px 12px; border-radius: 4px; color: white; margin-right: 5px; }
         .btn-approve { background: var(--success); }
         .btn-reject { background: var(--danger); }
@@ -51,15 +54,6 @@
         .rating-stars { color: var(--warning); letter-spacing: 2px; }
         
         tr:hover { background-color: #fcfcfc; }
-
-        #api-status {
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            text-align: center;
-            font-weight: bold;
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -70,14 +64,12 @@
             <small style="opacity: 0.7;">Project & Testimonial Management</small>
         </div>
         <div>
-            <button class="btn btn-refresh" id="refreshBtn" onclick="loadData()">🔄 Refresh</button>
+            <button class="btn btn-refresh" onclick="loadData()">🔄 Refresh</button>
             <button class="btn btn-logout" onclick="logout()">Logout</button>
         </div>
     </header>
     
     <div class="container">
-        <div id="api-status"></div>
-
         <section id="testimonials">
             <h2>Testimonials Review</h2>
             <div class="card">
@@ -93,8 +85,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td colspan="6" style="text-align:center; padding:20px;">Please login to view data...</td></tr>
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </section>
@@ -114,29 +105,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td colspan="6" style="text-align:center; padding:20px;">Please login to view data...</td></tr>
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </section>
     </div>
     
     <script>
-        // UPDATED ENDPOINT: Points to your Render Backend
         const API_BASE = 'https://nashdigitechsolutions-backend.onrender.com/api/admin';
 
-        function showStatus(msg, type) {
-            const statusDiv = document.getElementById('api-status');
-            statusDiv.style.display = 'block';
-            statusDiv.innerText = msg;
-            statusDiv.style.backgroundColor = type === 'error' ? '#f8d7da' : '#d4edda';
-            statusDiv.style.color = type === 'error' ? '#721c24' : '#155724';
-        }
-
+        // 1. Auth Logic: Get key from Session or Prompt
         function getAdminKey() {
             let key = sessionStorage.getItem('nash_admin_key');
             if (!key) {
-                key = prompt("🔑 Restricted Access: Enter Admin Secret Key:");
+                key = prompt("🔑 Restricted Access: Enter Admin Secret Key (e.g., abcd123! ):");
                 if (key) {
                     sessionStorage.setItem('nash_admin_key', key);
                 }
@@ -149,12 +131,13 @@
             location.reload();
         }
 
+        // 2. Load Data from Backend
         async function loadData() {
             const adminKey = getAdminKey();
-            if (!adminKey) return;
-
-            document.getElementById('refreshBtn').disabled = true;
-            showStatus("⏳ Connecting to server (Render may take 30s to wake up)...", "info");
+            if (!adminKey) {
+                document.body.innerHTML = '<div style="text-align:center; padding:50px;"><h1>Access Denied</h1><button onclick="location.reload()">Try Again</button></div>';
+                return;
+            }
 
             try {
                 // Fetch Testimonials
@@ -178,19 +161,17 @@
                 const cData = await cRes.json();
                 renderContacts(cData.contacts || []);
 
-                document.getElementById('api-status').style.display = 'none';
             } catch (error) {
                 console.error('Fetch Error:', error);
-                showStatus("❌ Connection failed. Ensure backend is running at Render.", "error");
-            } finally {
-                document.getElementById('refreshBtn').disabled = false;
+                alert('Connection to server failed. Ensure backend is running.');
             }
         }
 
+        // 3. Render Testimonials to Table
         function renderTestimonials(data) {
             const tbody = document.querySelector('#testimonialTable tbody');
             if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px;">No testimonials found.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No testimonials found.</td></tr>';
                 return;
             }
 
@@ -205,16 +186,17 @@
                         ${t.status === 'pending' ? `
                             <button class="btn btn-approve" onclick="updateStatus('${t._id}', 'approved')">Approve</button>
                             <button class="btn btn-reject" onclick="updateStatus('${t._id}', 'rejected')">Reject</button>
-                        ` : `<small style="color:#888;">Processed</small>`}
+                        ` : `<small style="color:#888;">No actions available</small>`}
                     </td>
                 </tr>
             `).join('');
         }
 
+        // 4. Render Contacts to Table
         function renderContacts(data) {
             const tbody = document.querySelector('#contactTable tbody');
             if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px;">No inquiries found.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No inquiries found.</td></tr>';
                 return;
             }
 
@@ -223,13 +205,14 @@
                     <td><strong>${c.name}</strong></td>
                     <td>${c.email}<br><small>${c.phone || ''}</small></td>
                     <td>${c.service}<br><small>Budget: ${c.budget || 'N/A'}</small></td>
-                    <td>${c.platforms ? (Array.isArray(c.platforms) ? c.platforms.join(', ') : c.platforms) : 'Direct'}</td>
+                    <td>${c.platforms ? c.platforms.join(', ') : 'Email'}</td>
                     <td>${new Date(c.createdAt).toLocaleDateString()}</td>
-                    <td><span class="status-badge status-approved">${c.status ? c.status.toUpperCase() : 'NEW'}</span></td>
+                    <td><span class="status-badge">${c.status.toUpperCase()}</span></td>
                 </tr>
             `).join('');
         }
 
+        // 5. Update Status API Call
         async function updateStatus(id, newStatus) {
             const adminKey = getAdminKey();
             try {
@@ -243,18 +226,18 @@
                 });
 
                 if (res.ok) {
-                    loadData(); 
+                    loadData(); // Refresh table on success
                 } else {
                     const err = await res.json();
                     alert("Error: " + err.message);
                 }
             } catch (error) {
-                alert("Failed to update status.");
+                alert("Failed to communicate with the server.");
             }
         }
 
-        // Initial load
-        window.onload = loadData;
+        // Run on load
+        loadData();
     </script>
 </body>
 </html>
