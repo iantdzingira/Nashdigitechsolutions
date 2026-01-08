@@ -1,5 +1,5 @@
 // Main JavaScript for Nash Digitech Solutions Website
-const API_BASE_URL = 'http://localhost:3000/api'; // Backend URL
+const API_BASE_URL = 'https://nashdigitechsolutions-backend.onrender.com/api';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all components
