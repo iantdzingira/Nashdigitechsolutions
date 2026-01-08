@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('currentYear').textContent = currentYear;
         
         // Calculate years experience (starting from 2023)
-        const startYear = 2023;
+        const startYear = 2025;
         const yearsExperience = currentYear - startYear;
         document.getElementById('yearsExperience').textContent = yearsExperience;
     }

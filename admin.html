@@ -118,7 +118,7 @@
         function getAdminKey() {
             let key = sessionStorage.getItem('nash_admin_key');
             if (!key) {
-                key = prompt("🔑 Restricted Access: Enter Admin Secret Key (e.g., ):");
+                key = prompt("🔑 Restricted Access: Enter Admin Secret Key (e.g., abcd123! ):");
                 if (key) {
                     sessionStorage.setItem('nash_admin_key', key);
                 }
