@@ -123,6 +123,8 @@ async function initializeDatabase() {
 
 // API Routes
 
+
+
 // Health check
 app.get('/', (req, res) => {
   res.json({ 

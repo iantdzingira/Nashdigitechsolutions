@@ -15,7 +15,12 @@
             --bg: #f4f7f9;
         }
 
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: var(--bg); color: #333; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            background: var(--bg); 
+            color: #333; 
+        }
         
         header { 
             background: var(--dark); 
@@ -27,49 +32,285 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
-        .container { padding: 20px; max-width: 1200px; margin: auto; }
+        .container { 
+            padding: 20px; 
+            max-width: 1200px; 
+            margin: auto; 
+        }
         
-        h2 { border-left: 5px solid var(--primary); padding-left: 15px; margin-top: 40px; color: var(--dark); }
+        h2 { 
+            border-left: 5px solid var(--primary); 
+            padding-left: 15px; 
+            margin-top: 40px; 
+            color: var(--dark); 
+        }
         
-        .card { background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow-x: auto; margin-bottom: 30px; }
+        .card { 
+            background: white; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+            overflow-x: auto; 
+            margin-bottom: 30px; 
+        }
         
-        table { border-collapse: collapse; width: 100%; min-width: 800px; }
-        th { background-color: #f8f9fa; color: #7f8c8d; padding: 15px; text-align: left; font-size: 13px; text-transform: uppercase; border-bottom: 2px solid #eee; }
-        td { padding: 15px; border-bottom: 1px solid #eee; font-size: 14px; vertical-align: top; }
+        table { 
+            border-collapse: collapse; 
+            width: 100%; 
+            min-width: 800px; 
+        }
+        th { 
+            background-color: #f8f9fa; 
+            color: #7f8c8d; 
+            padding: 15px; 
+            text-align: left; 
+            font-size: 13px; 
+            text-transform: uppercase; 
+            border-bottom: 2px solid #eee; 
+        }
+        td { 
+            padding: 15px; 
+            border-bottom: 1px solid #eee; 
+            font-size: 14px; 
+            vertical-align: top; 
+        }
         
         /* Status Badges */
-        .status-badge { padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 11px; display: inline-block; }
+        .status-badge { 
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            font-weight: bold; 
+            font-size: 11px; 
+            display: inline-block; 
+        }
         .status-pending { background: #fff3cd; color: #856404; }
         .status-approved { background: #d4edda; color: #155724; }
         .status-rejected { background: #f8d7da; color: #721c24; }
         
         /* Action Buttons */
-        .btn { cursor: pointer; transition: 0.2s; font-weight: bold; border: none; padding: 8px 12px; border-radius: 4px; color: white; margin-right: 5px; }
+        .btn { 
+            cursor: pointer; 
+            transition: 0.2s; 
+            font-weight: bold; 
+            border: none; 
+            padding: 8px 12px; 
+            border-radius: 4px; 
+            color: white; 
+            margin-right: 5px; 
+        }
         .btn-approve { background: var(--success); }
         .btn-reject { background: var(--danger); }
         .btn-refresh { background: var(--primary); padding: 10px 20px; }
         .btn-logout { background: transparent; border: 1px solid white; font-size: 12px; }
+        .btn-login { 
+            background: var(--dark); 
+            color: white; 
+            padding: 12px 30px; 
+            font-size: 16px; 
+            border-radius: 6px; 
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
         .btn:hover { opacity: 0.8; transform: translateY(-1px); }
+        .btn-login:hover { background: var(--primary); }
 
         .rating-stars { color: var(--warning); letter-spacing: 2px; }
         
         tr:hover { background-color: #fcfcfc; }
+
+        #api-status {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(0,0,0,.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Login Form Styles */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--dark) 0%, #1a252f 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 450px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .login-logo {
+            margin-bottom: 30px;
+        }
+
+        .login-logo h1 {
+            color: var(--dark);
+            margin: 0;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .login-logo h1 span {
+            color: var(--primary);
+        }
+
+        .login-logo p {
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .login-form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .error-message {
+            background: #fee;
+            color: var(--danger);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+            border-left: 4px solid var(--danger);
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .login-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+
+        .security-note {
+            font-size: 11px;
+            color: #95a5a6;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .hide {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
 
-    <header>
+    <!-- Login Overlay (shown first) -->
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-container">
+            <div class="login-logo">
+                <h1>Nash<span>Digitech</span></h1>
+                <p>Admin Control Panel</p>
+            </div>
+            
+            <div id="loginError" class="error-message"></div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="adminEmail">Admin Email</label>
+                    <input type="email" id="adminEmail" required 
+                           placeholder="admin@nashdigitech.com" autocomplete="username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" required 
+                           placeholder="Enter your password" autocomplete="current-password">
+                </div>
+                
+                <button type="submit" class="btn-login" id="loginButton">
+                    <span id="loginText">Login to Dashboard</span>
+                    <span id="loginSpinner" class="loading-spinner hide"></span>
+                </button>
+                
+                <div class="security-note">
+                    <strong>⚠️ Security Notice:</strong> This panel is for authorized personnel only. 
+                    All access attempts are logged.
+                </div>
+            </form>
+            
+            <div class="login-footer">
+                &copy; 2026 Nash Digitech Solutions. Unauthorized access prohibited.
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Admin Dashboard (hidden until login) -->
+    <header id="mainHeader" class="hide">
         <div>
             <h1 style="margin:0; font-size: 24px;">Nash Digitech Admin</h1>
             <small style="opacity: 0.7;">Project & Testimonial Management</small>
         </div>
         <div>
-            <button class="btn btn-refresh" onclick="loadData()">🔄 Refresh</button>
+            <button class="btn btn-refresh" id="refreshBtn" onclick="loadData()">🔄 Refresh</button>
             <button class="btn btn-logout" onclick="logout()">Logout</button>
         </div>
     </header>
     
-    <div class="container">
+    <div class="container" id="mainContainer" class="hide">
+        <div id="api-status"></div>
+
         <section id="testimonials">
             <h2>Testimonials Review</h2>
             <div class="card">
@@ -85,7 +326,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        </tbody>
+                        <tr><td colspan="6" style="text-align:center; padding:20px;">Loading data...</td></tr>
+                    </tbody>
                 </table>
             </div>
         </section>
@@ -105,49 +347,181 @@
                         </tr>
                     </thead>
                     <tbody>
-                        </tbody>
+                        <tr><td colspan="6" style="text-align:center; padding:20px;">Loading data...</td></tr>
+                    </tbody>
                 </table>
             </div>
         </section>
     </div>
     
     <script>
-        const API_BASE = 'https://nashdigitechsolutions-backend.onrender.com/api/admin';
+        // ==================== CONFIGURATION ====================
+        // Update these with your actual credentials from .env
+        const ADMIN_CREDENTIALS = {
+            EMAIL: "admin@nashdigitech.com",
+            PASSWORD: "rikes123",
+            SECRET_KEY: "rikes123"
+        };
 
-        // 1. Auth Logic: Get key from Session or Prompt
-        function getAdminKey() {
-            let key = sessionStorage.getItem('nash_admin_key');
-            if (!key) {
-                key = prompt("🔑 Restricted Access: Enter Admin Secret Key (e.g., abcd123! ):");
-                if (key) {
-                    sessionStorage.setItem('nash_admin_key', key);
-                }
+        const API_BASE = 'https://nashdigitechsolutions-backend.onrender.com/api/admin';
+        const HEALTH_CHECK = 'https://nashdigitechsolutions-backend.onrender.com/api';
+
+        // ==================== LOGIN SYSTEM ====================
+        function showLogin() {
+            document.getElementById('loginOverlay').classList.remove('hide');
+            document.getElementById('mainHeader').classList.add('hide');
+            document.getElementById('mainContainer').classList.add('hide');
+        }
+
+        function hideLogin() {
+            document.getElementById('loginOverlay').classList.add('hide');
+            document.getElementById('mainHeader').classList.remove('hide');
+            document.getElementById('mainContainer').classList.remove('hide');
+        }
+
+        function showLoginError(message) {
+            const errorDiv = document.getElementById('loginError');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            const loginBtn = document.getElementById('loginButton');
+            const loginText = document.getElementById('loginText');
+            const loginSpinner = document.getElementById('loginSpinner');
+            
+            // Show loading state
+            loginBtn.disabled = true;
+            loginText.textContent = 'Authenticating...';
+            loginSpinner.classList.remove('hide');
+            
+            // Add artificial delay to prevent brute force
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Validate credentials
+            if (email === ADMIN_CREDENTIALS.EMAIL && password === ADMIN_CREDENTIALS.PASSWORD) {
+                // Store session
+                sessionStorage.setItem('nash_admin_key', ADMIN_CREDENTIALS.SECRET_KEY);
+                sessionStorage.setItem('admin_logged_in', 'true');
+                sessionStorage.setItem('login_time', Date.now());
+                
+                // Hide login and show dashboard
+                hideLogin();
+                loadData();
+                
+                // Clear form
+                document.getElementById('adminPassword').value = '';
+            } else {
+                // Show error
+                showLoginError('❌ Invalid email or password. Access denied.');
+                
+                // Clear form and focus
+                document.getElementById('adminPassword').value = '';
+                document.getElementById('adminPassword').focus();
             }
-            return key;
+            
+            // Reset button
+            loginBtn.disabled = false;
+            loginText.textContent = 'Login to Dashboard';
+            loginSpinner.classList.add('hide');
         }
 
         function logout() {
             sessionStorage.removeItem('nash_admin_key');
-            location.reload();
+            sessionStorage.removeItem('admin_logged_in');
+            sessionStorage.removeItem('login_time');
+            showLogin();
+            
+            // Clear tables
+            document.querySelector('#testimonialTable tbody').innerHTML = 
+                '<tr><td colspan="6" style="text-align:center; padding:20px;">Please login to view data...</td></tr>';
+            document.querySelector('#contactTable tbody').innerHTML = 
+                '<tr><td colspan="6" style="text-align:center; padding:20px;">Please login to view data...</td></tr>';
         }
 
-        // 2. Load Data from Backend
-        async function loadData() {
+        function isAuthenticated() {
+            const loggedIn = sessionStorage.getItem('admin_logged_in');
+            const key = sessionStorage.getItem('nash_admin_key');
+            return loggedIn === 'true' && key === ADMIN_CREDENTIALS.SECRET_KEY;
+        }
+
+        // ==================== DASHBOARD FUNCTIONALITY ====================
+        // (Your original code with authentication checks)
+        
+        function showStatus(msg, type, isLoading = false) {
+            const statusDiv = document.getElementById('api-status');
+            statusDiv.style.display = 'block';
+            
+            if (isLoading) {
+                statusDiv.innerHTML = `<span class="loading-spinner"></span> ${msg}`;
+            } else {
+                statusDiv.innerText = msg;
+            }
+
+            statusDiv.style.backgroundColor = type === 'error' ? '#f8d7da' : (type === 'info' ? '#e3f2fd' : '#d4edda');
+            statusDiv.style.color = type === 'error' ? '#721c24' : (type === 'info' ? '#0d47a1' : '#155724');
+        }
+
+        // 1. Auth Logic: Secure key handling
+        function getAdminKey() {
+            if (!isAuthenticated()) {
+                showLogin();
+                return null;
+            }
+            return sessionStorage.getItem('nash_admin_key');
+        }
+
+        // 2. Load Data from Backend with strict Auth Check
+        async function loadData(retryCount = 0) {
             const adminKey = getAdminKey();
             if (!adminKey) {
-                document.body.innerHTML = '<div style="text-align:center; padding:50px;"><h1>Access Denied</h1><button onclick="location.reload()">Try Again</button></div>';
                 return;
             }
 
+            const refreshBtn = document.getElementById('refreshBtn');
+            if(refreshBtn) refreshBtn.disabled = true;
+
             try {
-                // Fetch Testimonials
+                if (retryCount === 0) {
+                    showStatus("Authenticating and connecting...", "info", true);
+                }
+
+                // Check server health/wake-up
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000);
+                const healthRes = await fetch(HEALTH_CHECK, { signal: controller.signal }).catch(() => null);
+                clearTimeout(timeoutId);
+
+                if (!healthRes) {
+                    if (retryCount < 5) {
+                        showStatus(`Server is waking up (Attempt ${retryCount + 1}/5)...`, "info", true);
+                        setTimeout(() => loadData(retryCount + 1), 5000);
+                        return;
+                    }
+                    showStatus("❌ Server unreachable. Please try again in 1 minute.", "error");
+                    if(refreshBtn) refreshBtn.disabled = false;
+                    return;
+                }
+
+                // Fetch Testimonials - This serves as our primary auth gate
                 const tRes = await fetch(`${API_BASE}/testimonials/all`, {
                     headers: { 'x-admin-key': adminKey }
                 });
 
+                // STRICT AUTH CHECK: If server says 401, the key is definitely wrong
                 if (tRes.status === 401) {
-                    alert("❌ Invalid Admin Key!");
-                    logout();
+                    sessionStorage.removeItem('nash_admin_key');
+                    sessionStorage.removeItem('admin_logged_in');
+                    showLoginError("❌ Invalid Admin Key! You do not have permission to access this data.");
+                    showLogin();
                     return;
                 }
 
@@ -158,12 +532,25 @@
                 const cRes = await fetch(`${API_BASE}/contacts/all`, {
                     headers: { 'x-admin-key': adminKey }
                 });
+                
+                if (cRes.status === 401) {
+                    sessionStorage.removeItem('nash_admin_key');
+                    sessionStorage.removeItem('admin_logged_in');
+                    showLogin();
+                    return;
+                }
+
                 const cData = await cRes.json();
                 renderContacts(cData.contacts || []);
 
+                showStatus("✅ Dashboard loaded successfully", "success");
+                setTimeout(() => { document.getElementById('api-status').style.display = 'none'; }, 2000);
+
             } catch (error) {
                 console.error('Fetch Error:', error);
-                alert('Connection to server failed. Ensure backend is running.');
+                showStatus("❌ Connection failed. Ensure backend is running.", "error");
+            } finally {
+                if(refreshBtn) refreshBtn.disabled = false;
             }
         }
 
@@ -171,7 +558,7 @@
         function renderTestimonials(data) {
             const tbody = document.querySelector('#testimonialTable tbody');
             if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No testimonials found.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px;">No testimonials found.</td></tr>';
                 return;
             }
 
@@ -196,7 +583,7 @@
         function renderContacts(data) {
             const tbody = document.querySelector('#contactTable tbody');
             if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No inquiries found.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px;">No inquiries found.</td></tr>';
                 return;
             }
 
@@ -205,15 +592,21 @@
                     <td><strong>${c.name}</strong></td>
                     <td>${c.email}<br><small>${c.phone || ''}</small></td>
                     <td>${c.service}<br><small>Budget: ${c.budget || 'N/A'}</small></td>
-                    <td>${c.platforms ? c.platforms.join(', ') : 'Email'}</td>
+                    <td>${c.platforms ? (Array.isArray(c.platforms) ? c.platforms.join(', ') : c.platforms) : 'Email'}</td>
                     <td>${new Date(c.createdAt).toLocaleDateString()}</td>
-                    <td><span class="status-badge">${c.status.toUpperCase()}</span></td>
+                    <td><span class="status-badge status-approved">${c.status ? c.status.toUpperCase() : 'RECEIVED'}</span></td>
                 </tr>
             `).join('');
         }
 
         // 5. Update Status API Call
         async function updateStatus(id, newStatus) {
+            if (!isAuthenticated()) {
+                showLoginError("Session expired. Please login again.");
+                showLogin();
+                return;
+            }
+            
             const adminKey = getAdminKey();
             try {
                 const res = await fetch(`${API_BASE}/testimonials/${id}/status`, {
@@ -226,7 +619,10 @@
                 });
 
                 if (res.ok) {
-                    loadData(); // Refresh table on success
+                    loadData(); 
+                } else if (res.status === 401) {
+                    alert("Session expired or invalid key.");
+                    logout();
                 } else {
                     const err = await res.json();
                     alert("Error: " + err.message);
@@ -236,8 +632,46 @@
             }
         }
 
-        // Run on load
-        loadData();
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up login form
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            
+            // Auto-focus email field
+            document.getElementById('adminEmail').focus();
+            
+            // Add enter key support for login
+            document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleLogin(e);
+                }
+            });
+            
+            // Check if already logged in
+            if (isAuthenticated()) {
+                hideLogin();
+                loadData();
+            } else {
+                showLogin();
+            }
+        });
+
+        // Auto-logout after 8 hours of inactivity
+        function checkSessionTimeout() {
+            const loginTime = sessionStorage.getItem('login_time');
+            if (loginTime) {
+                const currentTime = Date.now();
+                const eightHours = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+                
+                if (currentTime - parseInt(loginTime) > eightHours) {
+                    logout();
+                    alert('Your session has expired. Please login again.');
+                }
+            }
+        }
+
+        // Check session timeout every minute
+        setInterval(checkSessionTimeout, 60000);
     </script>
 </body>
 </html>
