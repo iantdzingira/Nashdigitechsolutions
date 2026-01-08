@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: ['https://nashdigitechsolutions.co.zw', 'http://localhost:5500'],
+  origin: ['https://nashdigitechsolutions.co.zw', 'https://iantdzingira.github.io/Nashdigitechsolutions/admin.html', 'http://localhost:5500'],
   credentials: true
 }));
 app.use(express.json());
