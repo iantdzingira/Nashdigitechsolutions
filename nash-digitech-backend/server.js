@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: ['http://localhost:5500', 'http://127.0.0.1:5500', 'http://localhost:3000', '*'],
+  origin: ['https://nashdigitechsolutions.co.zw', 'http://localhost:5500'],
   credentials: true
 }));
 app.use(express.json());
@@ -387,17 +387,10 @@ async function startServer() {
   // Initialize database after connection attempt
   await initializeDatabase();
   
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
-    console.log(`📊 API Endpoints:`);
-    console.log(`   GET  /api/testimonials`);
-    console.log(`   POST /api/testimonials`);
-    console.log(`   POST /api/contacts`);
-    console.log(`   POST /api/newsletter/subscribe`);
-    console.log(`   GET  /api/testimonials/stats`);
-    console.log('');
-    console.log(`🔗 MongoDB Status: ${isConnected ? 'Connected ✅' : 'Disconnected ⚠️'}`);
-  });
+  const PORT = process.env.PORT || 3000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
+});
 }
 
 // Start the server
