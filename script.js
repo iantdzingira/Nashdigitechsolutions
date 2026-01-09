@@ -324,12 +324,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (el) el.remove();
     }
 
+    
+
     // Show notification after 10 seconds if not already opened
     setTimeout(() => {
         if (chatNotification && !liveChat.classList.contains('active')) {
             chatNotification.style.display = 'flex';
         }
     }, 10000);
+
+    
 }
 
 // Initialize when DOM is ready
@@ -432,15 +436,6 @@ document.addEventListener('DOMContentLoaded', initLiveChat);
         });
     }, 100);
 });
-
-// Service worker for PWA functionality (optional)
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js').catch(error => {
-            console.log('Service Worker registration failed:', error);
-        });
-    });
-}
 
 // ============================================
 // TESTIMONIALS SYSTEM

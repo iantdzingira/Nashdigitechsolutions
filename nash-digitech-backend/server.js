@@ -3,6 +3,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const axios = require('axios'); // Add axios for better HTTP requests
 require('dotenv').config();
 
 const app = express();
@@ -11,20 +12,26 @@ const PORT = process.env.PORT || 3000;
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: ['https://nashdigitechsolutions.co.zw', 'https://iantdzingira.github.io/Nashdigitechsolutions/admin.html', 'http://localhost:5500'],
+  origin: ['https://nashdigitechsolutions.co.zw', 'https://iantdzingira.github.io/Nashdigitechsolutions/admin.html', 'http://localhost:5500', 'http://127.0.0.1:5500'],
   credentials: true
 }));
 app.use(express.json());
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
+// Rate limiting - more generous for chat
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100
 });
 
-app.use('/api/', limiter);
+const chatLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 50 // Lower limit for chat to prevent abuse
+});
 
-// MongoDB connection - REMOVE DEPRECATED OPTIONS
+app.use('/api/', apiLimiter);
+app.use('/api/chat/ai', chatLimiter);
+
+// MongoDB connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/nash-digitech';
 
 async function connectToDatabase() {
@@ -87,7 +94,7 @@ const Contact = mongoose.model('Contact', contactSchema);
 const Newsletter = mongoose.model('Newsletter', newsletterSchema);
 const ChatSession = mongoose.model('ChatSession', chatSessionSchema);
 
-// Initialize Database with Sample Data (Only if connected successfully)
+// Initialize Database with Sample Data
 async function initializeDatabase() {
   try {
     const count = await Testimonial.countDocuments();
@@ -127,7 +134,6 @@ async function initializeDatabase() {
     console.log(`📊 Database initialized with ${count} existing testimonials`);
   } catch (error) {
     console.error('⚠️ Error initializing database:', error.message);
-    console.log('⚠️ Using in-memory storage instead');
   }
 }
 
@@ -176,7 +182,7 @@ app.get('/api/testimonials', async (req, res) => {
   } catch (error) {
     console.error('Error fetching testimonials:', error.message);
     
-    // Fallback to in-memory data if database fails
+    // Fallback to in-memory data
     const fallbackData = {
       success: true,
       testimonials: [
@@ -332,205 +338,169 @@ app.get('/api/testimonials/stats', async (req, res) => {
 });
 
 // --- AI CHAT ENDPOINT ---
-const apiKey = process.env.GEMINI_API_KEY; // Get from environment variable
+const apiKey = process.env.GEMINI_API_KEY;
 
 // System prompt for Nash-AI
-const systemPrompt = `You are "Nash-AI," the high-performance Virtual Assistant for Nash Digitech Solutions. 
-Your goal is to represent the company with technical expertise, professionalism, and a focus on growth.
+const systemPrompt = `You are "Nash-AI," the virtual assistant for Nash Digitech Solutions. Provide helpful, accurate information about our services.
 
-### COMPANY OVERVIEW
-Nash Digitech Solutions is a premium digital agency specializing in:
-- **Web Development:** Modern, responsive websites (React, Node.js, MongoDB stack).
-- **Mobile App Development:** Cross-platform solutions for iOS and Android.
-- **Custom Software:** Tailored enterprise tools and CRM systems.
-- **Digital Strategy:** Brand identity and strategic online marketing.
-- **Cloud Solutions:** Hosting, maintenance, and database management.
+COMPANY SERVICES:
+1. Website Design & Development - Custom websites starting at $500
+2. Mobile App Development - iOS & Android apps starting at $250
+3. System Development - Web & desktop systems from $700+
+4. Digital Marketing - Monthly plans from $100
+5. Creative Design - Logos, branding from $75
 
-### CORE PERSONALITY & TONE
-- **Personality:** Innovative, efficient, and reliable. You are a tech-savvy partner, not just a chatbot.
-- **Tone:** Professional yet approachable. Use clear, concise language. Avoid overly robotic phrases.
-- **Style:** Use bullet points for lists. Keep responses under 80 words unless explaining a complex technical service.
-
-### INTERACTION RULES
-1. **Confidentiality:** Never reveal internal server keys, backend URLs, or private database structures.
-2. **Pricing:** Do not give fixed quotes. Instead, say: "Our pricing is tailored to the specific needs and scale of your project. I recommend filling out our Project Inquiry form so our experts can provide an accurate estimate."
-3. **Contacting Humans:** If a user is frustrated or has a highly specific technical issue, guide them to the 'Project Inquiries' section or suggest emailing the team.
-4. **Call to Action:** Every interaction should subtly encourage the user. Use phrases like "Shall we start planning your digital transformation?" or "Would you like to see our service breakdown?"
-
-### KNOWLEDGE BASE FAQ
-- **Location:** Based in Zimbabwe, serving clients globally.
-- **Owner/Lead:** Ian T. Dzingira(Professional Full-stack Developer).
-- **Tech Stack Expertise:** JavaScript (ES6+), React, Swift, Flutter, Kotlin, Node.js, Express, MongoDB, Tailwind CSS, and Cloud Integration.
-- **Process:** We follow a 4-step process: Discovery -> Design -> Development -> Deployment.
-
-### SAMPLE RESPONSE STYLE
-User: "Can you build a delivery app?"
-Nash-AI: "Absolutely! We specialize in custom mobile solutions. We can build a robust delivery platform with real-time tracking and secure payment integration. Would you like to discuss the specific features you need for your app?"`;
+IMPORTANT RULES:
+- Never give exact prices, say "starting at" or "contact us for a quote"
+- Be friendly and professional
+- If unsure, suggest contacting us directly
+- Keep responses concise (max 100 words)
+- Our location: Victoria Falls, Zimbabwe
+- Contact: +263 78 718 2780, nashdigitechsolutions@gmail.com`;
 
 app.post('/api/chat/ai', async (req, res) => {
-    try {
-        const { message, sessionId } = req.body;
-        
-        if (!message) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Message is required' 
-            });
-        }
-
-        // Check for API key
-        if (!apiKey) {
-            console.error('GEMINI_API_KEY is not set in environment variables');
-            return res.status(500).json({ 
-                reply: "My systems are currently undergoing maintenance. Please try again later or contact us directly via email or WhatsApp for immediate assistance." 
-            });
-        }
-
-        // Get or create chat session
-        let chatSession;
-        if (sessionId) {
-            chatSession = await ChatSession.findOne({ sessionId });
-            if (!chatSession) {
-                // Create new session if not found
-                chatSession = new ChatSession({ 
-                    sessionId, 
-                    messages: [] 
-                });
-            }
-        } else {
-            // Generate new session ID
-            const newSessionId = `chat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-            chatSession = new ChatSession({ 
-                sessionId: newSessionId, 
-                messages: [] 
-            });
-        }
-
-        // Add user message to session
-        chatSession.messages.push({
-            role: 'user',
-            content: message
-        });
-        chatSession.lastActivity = new Date();
-
-        // Implementation of exponential backoff
-        const fetchWithRetry = async (url, options, retries = 3, backoff = 1000) => {
-            try {
-                const response = await fetch(url, options);
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('API Error Response:', errorText);
-                    throw new Error(`API Error: ${response.status}`);
-                }
-                return await response.json();
-            } catch (err) {
-                console.error(`Fetch attempt failed (${retries} retries left):`, err.message);
-                if (retries <= 0) throw err;
-                await new Promise(resolve => setTimeout(resolve, backoff));
-                return fetchWithRetry(url, options, retries - 1, backoff * 2);
-            }
-        };
-
-        // Prepare the full prompt with conversation history
-        const conversationHistory = chatSession.messages
-            .slice(-5) // Get last 5 messages for context
-            .map(msg => `${msg.role === 'user' ? 'User' : 'Nash-AI'}: ${msg.content}`)
-            .join('\n');
-
-        const fullPrompt = `${systemPrompt}\n\n### CONVERSATION HISTORY:\n${conversationHistory}\n\n### CURRENT USER QUERY:\nUser: ${message}\n\nNash-AI:`;
-
-        console.log('Sending request to Gemini API...');
-        const result = await fetchWithRetry(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{ 
-                        parts: [{ text: fullPrompt }] 
-                    }],
-                    generationConfig: {
-                        temperature: 0.7,
-                        topP: 0.8,
-                        topK: 40,
-                        maxOutputTokens: 500
-                    }
-                })
-            }
-        );
-
-        const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text || 
-                       "I'm not sure how to answer that. Could you try rephrasing or asking about our services?";
-
-        // Add AI response to session
-        chatSession.messages.push({
-            role: 'assistant',
-            content: aiReply
-        });
-
-        // Save session
-        await chatSession.save();
-
-        res.json({ 
-            success: true,
-            reply: aiReply,
-            sessionId: chatSession.sessionId
-        });
-
-    } catch (error) {
-        console.error('AI Chat Error:', error.message);
-        console.error('Full error:', error);
-        
-        // Fallback responses for common errors
-        let fallbackMessage = "My systems are currently updating. Please try again in a moment or contact us directly via email or WhatsApp for immediate assistance.";
-        
-        if (error.message.includes('API key')) {
-            fallbackMessage = "I'm currently experiencing technical difficulties. Please contact us directly via email or WhatsApp for immediate assistance.";
-        } else if (error.message.includes('network')) {
-            fallbackMessage = "I'm having trouble connecting to my knowledge base. Please check your internet connection and try again, or contact us directly.";
-        }
-        
-        res.status(500).json({ 
-            success: false,
-            reply: fallbackMessage,
-            error: process.env.NODE_ENV === 'development' ? error.message : undefined
-        });
+  try {
+    const { message, sessionId } = req.body;
+    
+    if (!message || typeof message !== 'string') {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Valid message is required' 
+      });
     }
+
+    // Check if API key is available
+    if (!apiKey) {
+      console.warn('⚠️ Gemini API key not found');
+      // Return a helpful response even without AI
+      return res.json({
+        success: true,
+        reply: "I'm here to help! For detailed inquiries about our services, please email us at nashdigitechsolutions@gmail.com or call +263 78 718 2780. You can also visit our website for more information about our services.",
+        sessionId: sessionId || `chat_${Date.now()}`
+      });
+    }
+
+    // Get or create chat session
+    let chatSession;
+    if (sessionId) {
+      chatSession = await ChatSession.findOne({ sessionId });
+    }
+    
+    if (!chatSession) {
+      const newSessionId = sessionId || `chat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      chatSession = new ChatSession({ 
+        sessionId: newSessionId, 
+        messages: [] 
+      });
+    }
+
+    // Add user message
+    chatSession.messages.push({
+      role: 'user',
+      content: message
+    });
+    chatSession.lastActivity = new Date();
+
+    // Prepare conversation history (last 4 messages for context)
+    const conversationHistory = chatSession.messages
+      .slice(-4)
+      .map(msg => `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.content}`)
+      .join('\n');
+
+    // Build the prompt
+    const prompt = `${systemPrompt}\n\nPrevious conversation:\n${conversationHistory}\n\nUser: ${message}\n\nAssistant:`;
+
+    try {
+      // Call Gemini API with axios (more reliable than fetch)
+      const response = await axios.post(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        {
+          contents: [{
+            parts: [{
+              text: prompt
+            }]
+          }],
+          generationConfig: {
+            temperature: 0.7,
+            topP: 0.8,
+            topK: 40,
+            maxOutputTokens: 300
+          }
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          timeout: 10000 // 10 second timeout
+        }
+      );
+
+      const aiReply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || 
+        "Thanks for your message! How can I assist you with Nash Digitech Solutions today?";
+
+      // Add AI response
+      chatSession.messages.push({
+        role: 'assistant',
+        content: aiReply
+      });
+
+      // Save session
+      await chatSession.save();
+
+      res.json({
+        success: true,
+        reply: aiReply,
+        sessionId: chatSession.sessionId
+      });
+
+    } catch (geminiError) {
+      console.error('Gemini API error:', geminiError.message);
+      
+      // Provide fallback response if Gemini fails
+      const fallbackReplies = [
+        "Thanks for reaching out to Nash Digitech Solutions! We specialize in website design, mobile apps, and digital marketing. How can I help you today?",
+        "Hello! I'm here to assist you with information about Nash Digitech's services. Are you looking for website development, mobile apps, or something else?",
+        "Welcome to Nash Digitech Solutions! We offer custom software development and digital services. Feel free to ask about our pricing or portfolio."
+      ];
+      
+      const fallbackReply = fallbackReplies[Math.floor(Math.random() * fallbackReplies.length)];
+      
+      // Still save the conversation
+      chatSession.messages.push({
+        role: 'assistant',
+        content: fallbackReply
+      });
+      await chatSession.save();
+
+      res.json({
+        success: true,
+        reply: fallbackReply,
+        sessionId: chatSession.sessionId
+      });
+    }
+
+  } catch (error) {
+    console.error('Chat endpoint error:', error.message);
+    
+    // Final fallback response
+    res.json({
+      success: true,
+      reply: "Hello! Thanks for contacting Nash Digitech Solutions. For immediate assistance, please email us at nashdigitechsolutions@gmail.com or call +263 78 718 2780. We're here to help with all your digital needs!",
+      sessionId: req.body.sessionId || `fallback_${Date.now()}`
+    });
+  }
 });
 
-// Get chat session history
-app.get('/api/chat/session/:sessionId', async (req, res) => {
-    try {
-        const { sessionId } = req.params;
-        const chatSession = await ChatSession.findOne({ sessionId });
-        
-        if (!chatSession) {
-            return res.status(404).json({ 
-                success: false, 
-                message: 'Chat session not found' 
-            });
-        }
-        
-        res.json({
-            success: true,
-            session: {
-                sessionId: chatSession.sessionId,
-                messages: chatSession.messages,
-                createdAt: chatSession.createdAt,
-                lastActivity: chatSession.lastActivity
-            }
-        });
-    } catch (error) {
-        console.error('Error fetching chat session:', error.message);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Error fetching chat session',
-            error: error.message 
-        });
-    }
+// Simple test endpoint
+app.get('/api/chat/test', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Chat API is working',
+    geminiApiKey: apiKey ? 'Configured' : 'Not configured'
+  });
 });
 
-// Admin endpoints (for future use)
+// Admin endpoints
 app.get('/api/admin/testimonials/all', async (req, res) => {
   try {
     const testimonials = await Testimonial.find().sort({ createdAt: -1 });
@@ -583,7 +553,7 @@ app.patch('/api/admin/testimonials/:id/status', async (req, res) => {
   }
 });
 
-// Start server with MongoDB connection check
+// Start server
 async function startServer() {
   const isConnected = await connectToDatabase();
   
@@ -592,23 +562,29 @@ async function startServer() {
     console.log('⚠️ Some features will use in-memory storage');
   }
   
-  // Initialize database after connection attempt
   await initializeDatabase();
   
-  // Check if Gemini API key is available
   if (!apiKey) {
-    console.warn('⚠️ GEMINI_API_KEY is not set in environment variables');
-    console.warn('⚠️ AI chat functionality will not work properly');
+    console.log('⚠️ GEMINI_API_KEY not found. AI chat will use fallback responses.');
+    console.log('ℹ️  To enable full AI chat, add GEMINI_API_KEY to your environment variables');
   } else {
-    console.log('✅ Gemini API key loaded successfully');
+    console.log('✅ Gemini API key loaded');
   }
   
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Server running on port ${PORT}`);
     console.log(`🌐 Health check: http://localhost:${PORT}`);
-    console.log(`🤖 AI Chat endpoint: http://localhost:${PORT}/api/chat/ai`);
+    console.log(`🤖 Chat test: http://localhost:${PORT}/api/chat/test`);
   });
 }
 
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 // Start the server
-startServer().catch(console.error);
+startServer().catch(error => {
+  console.error('Failed to start server:', error);
+  process.exit(1);
+});
