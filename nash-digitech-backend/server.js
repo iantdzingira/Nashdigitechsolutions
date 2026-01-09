@@ -16,13 +16,11 @@ app.use(cors({
 }));
 app.use(express.json());
 
-
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100
 });
-
 
 app.use('/api/', limiter);
 
@@ -72,10 +70,22 @@ const newsletterSchema = new mongoose.Schema({
   active: { type: Boolean, default: true }
 });
 
+const chatSessionSchema = new mongoose.Schema({
+  sessionId: { type: String, required: true, unique: true },
+  messages: [{
+    role: { type: String, enum: ['user', 'assistant'], required: true },
+    content: { type: String, required: true },
+    timestamp: { type: Date, default: Date.now }
+  }],
+  createdAt: { type: Date, default: Date.now },
+  lastActivity: { type: Date, default: Date.now }
+});
+
 // Mongoose Models
 const Testimonial = mongoose.model('Testimonial', testimonialSchema);
 const Contact = mongoose.model('Contact', contactSchema);
 const Newsletter = mongoose.model('Newsletter', newsletterSchema);
+const ChatSession = mongoose.model('ChatSession', chatSessionSchema);
 
 // Initialize Database with Sample Data (Only if connected successfully)
 async function initializeDatabase() {
@@ -121,10 +131,6 @@ async function initializeDatabase() {
   }
 }
 
-// API Routes
-
-
-
 // Health check
 app.get('/', (req, res) => {
   res.json({ 
@@ -136,7 +142,8 @@ app.get('/', (req, res) => {
       testimonials: '/api/testimonials',
       contacts: '/api/contacts',
       newsletter: '/api/newsletter/subscribe',
-      stats: '/api/testimonials/stats'
+      stats: '/api/testimonials/stats',
+      chat: '/api/chat/ai'
     }
   });
 });
@@ -324,6 +331,205 @@ app.get('/api/testimonials/stats', async (req, res) => {
   }
 });
 
+// --- AI CHAT ENDPOINT ---
+const apiKey = process.env.GEMINI_API_KEY; // Get from environment variable
+
+// System prompt for Nash-AI
+const systemPrompt = `You are "Nash-AI," the high-performance Virtual Assistant for Nash Digitech Solutions. 
+Your goal is to represent the company with technical expertise, professionalism, and a focus on growth.
+
+### COMPANY OVERVIEW
+Nash Digitech Solutions is a premium digital agency specializing in:
+- **Web Development:** Modern, responsive websites (React, Node.js, MongoDB stack).
+- **Mobile App Development:** Cross-platform solutions for iOS and Android.
+- **Custom Software:** Tailored enterprise tools and CRM systems.
+- **Digital Strategy:** Brand identity and strategic online marketing.
+- **Cloud Solutions:** Hosting, maintenance, and database management.
+
+### CORE PERSONALITY & TONE
+- **Personality:** Innovative, efficient, and reliable. You are a tech-savvy partner, not just a chatbot.
+- **Tone:** Professional yet approachable. Use clear, concise language. Avoid overly robotic phrases.
+- **Style:** Use bullet points for lists. Keep responses under 80 words unless explaining a complex technical service.
+
+### INTERACTION RULES
+1. **Confidentiality:** Never reveal internal server keys, backend URLs, or private database structures.
+2. **Pricing:** Do not give fixed quotes. Instead, say: "Our pricing is tailored to the specific needs and scale of your project. I recommend filling out our Project Inquiry form so our experts can provide an accurate estimate."
+3. **Contacting Humans:** If a user is frustrated or has a highly specific technical issue, guide them to the 'Project Inquiries' section or suggest emailing the team.
+4. **Call to Action:** Every interaction should subtly encourage the user. Use phrases like "Shall we start planning your digital transformation?" or "Would you like to see our service breakdown?"
+
+### KNOWLEDGE BASE FAQ
+- **Location:** Based in Zimbabwe, serving clients globally.
+- **Owner/Lead:** Ian T. Dzingira(Professional Full-stack Developer).
+- **Tech Stack Expertise:** JavaScript (ES6+), React, Swift, Flutter, Kotlin, Node.js, Express, MongoDB, Tailwind CSS, and Cloud Integration.
+- **Process:** We follow a 4-step process: Discovery -> Design -> Development -> Deployment.
+
+### SAMPLE RESPONSE STYLE
+User: "Can you build a delivery app?"
+Nash-AI: "Absolutely! We specialize in custom mobile solutions. We can build a robust delivery platform with real-time tracking and secure payment integration. Would you like to discuss the specific features you need for your app?"`;
+
+app.post('/api/chat/ai', async (req, res) => {
+    try {
+        const { message, sessionId } = req.body;
+        
+        if (!message) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Message is required' 
+            });
+        }
+
+        // Check for API key
+        if (!apiKey) {
+            console.error('GEMINI_API_KEY is not set in environment variables');
+            return res.status(500).json({ 
+                reply: "My systems are currently undergoing maintenance. Please try again later or contact us directly via email or WhatsApp for immediate assistance." 
+            });
+        }
+
+        // Get or create chat session
+        let chatSession;
+        if (sessionId) {
+            chatSession = await ChatSession.findOne({ sessionId });
+            if (!chatSession) {
+                // Create new session if not found
+                chatSession = new ChatSession({ 
+                    sessionId, 
+                    messages: [] 
+                });
+            }
+        } else {
+            // Generate new session ID
+            const newSessionId = `chat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            chatSession = new ChatSession({ 
+                sessionId: newSessionId, 
+                messages: [] 
+            });
+        }
+
+        // Add user message to session
+        chatSession.messages.push({
+            role: 'user',
+            content: message
+        });
+        chatSession.lastActivity = new Date();
+
+        // Implementation of exponential backoff
+        const fetchWithRetry = async (url, options, retries = 3, backoff = 1000) => {
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('API Error Response:', errorText);
+                    throw new Error(`API Error: ${response.status}`);
+                }
+                return await response.json();
+            } catch (err) {
+                console.error(`Fetch attempt failed (${retries} retries left):`, err.message);
+                if (retries <= 0) throw err;
+                await new Promise(resolve => setTimeout(resolve, backoff));
+                return fetchWithRetry(url, options, retries - 1, backoff * 2);
+            }
+        };
+
+        // Prepare the full prompt with conversation history
+        const conversationHistory = chatSession.messages
+            .slice(-5) // Get last 5 messages for context
+            .map(msg => `${msg.role === 'user' ? 'User' : 'Nash-AI'}: ${msg.content}`)
+            .join('\n');
+
+        const fullPrompt = `${systemPrompt}\n\n### CONVERSATION HISTORY:\n${conversationHistory}\n\n### CURRENT USER QUERY:\nUser: ${message}\n\nNash-AI:`;
+
+        console.log('Sending request to Gemini API...');
+        const result = await fetchWithRetry(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ 
+                        parts: [{ text: fullPrompt }] 
+                    }],
+                    generationConfig: {
+                        temperature: 0.7,
+                        topP: 0.8,
+                        topK: 40,
+                        maxOutputTokens: 500
+                    }
+                })
+            }
+        );
+
+        const aiReply = result.candidates?.[0]?.content?.parts?.[0]?.text || 
+                       "I'm not sure how to answer that. Could you try rephrasing or asking about our services?";
+
+        // Add AI response to session
+        chatSession.messages.push({
+            role: 'assistant',
+            content: aiReply
+        });
+
+        // Save session
+        await chatSession.save();
+
+        res.json({ 
+            success: true,
+            reply: aiReply,
+            sessionId: chatSession.sessionId
+        });
+
+    } catch (error) {
+        console.error('AI Chat Error:', error.message);
+        console.error('Full error:', error);
+        
+        // Fallback responses for common errors
+        let fallbackMessage = "My systems are currently updating. Please try again in a moment or contact us directly via email or WhatsApp for immediate assistance.";
+        
+        if (error.message.includes('API key')) {
+            fallbackMessage = "I'm currently experiencing technical difficulties. Please contact us directly via email or WhatsApp for immediate assistance.";
+        } else if (error.message.includes('network')) {
+            fallbackMessage = "I'm having trouble connecting to my knowledge base. Please check your internet connection and try again, or contact us directly.";
+        }
+        
+        res.status(500).json({ 
+            success: false,
+            reply: fallbackMessage,
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
+    }
+});
+
+// Get chat session history
+app.get('/api/chat/session/:sessionId', async (req, res) => {
+    try {
+        const { sessionId } = req.params;
+        const chatSession = await ChatSession.findOne({ sessionId });
+        
+        if (!chatSession) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Chat session not found' 
+            });
+        }
+        
+        res.json({
+            success: true,
+            session: {
+                sessionId: chatSession.sessionId,
+                messages: chatSession.messages,
+                createdAt: chatSession.createdAt,
+                lastActivity: chatSession.lastActivity
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching chat session:', error.message);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Error fetching chat session',
+            error: error.message 
+        });
+    }
+});
+
 // Admin endpoints (for future use)
 app.get('/api/admin/testimonials/all', async (req, res) => {
   try {
@@ -389,10 +595,19 @@ async function startServer() {
   // Initialize database after connection attempt
   await initializeDatabase();
   
-  const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  // Check if Gemini API key is available
+  if (!apiKey) {
+    console.warn('⚠️ GEMINI_API_KEY is not set in environment variables');
+    console.warn('⚠️ AI chat functionality will not work properly');
+  } else {
+    console.log('✅ Gemini API key loaded successfully');
+  }
+  
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`🌐 Health check: http://localhost:${PORT}`);
+    console.log(`🤖 AI Chat endpoint: http://localhost:${PORT}/api/chat/ai`);
+  });
 }
 
 // Start the server

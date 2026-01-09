@@ -216,152 +216,124 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Enhanced Live Chat functionality
+
+
     function initLiveChat() {
-        const chatToggle = document.getElementById('chatToggle');
-        const chatClose = document.getElementById('chatClose');
-        const liveChat = document.getElementById('liveChat');
-        const chatSend = document.getElementById('chatSend');
-        const chatInput = document.getElementById('chatInput');
-        const chatMessages = document.getElementById('chatMessages');
-        const chatNotification = document.querySelector('.chat-notification');
-        
-        // Chat responses database
-        const chatResponses = {
-            greeting: [
-                "Hello! 👋 I'm Nash, your virtual assistant. How can I help you today?",
-                "Hi there! Welcome to Nash Digitech Solutions. How may I assist you?"
-            ],
-            pricing: [
-                "Our website design starts at $500+, mobile apps at $250+, and system development from $700+. What specific service are you interested in?",
-                "We offer competitive pricing based on your project requirements. Could you share more details about your project for an accurate quote?"
-            ],
-            services: [
-                "We offer: 1) Professional Website Design ($500+), 2) Mobile Apps ($250+), 3) System Development ($700+), 4) Digital Marketing ($100/mo), 5) Creative Design ($75+). Which service interests you?",
-                "Our services include web development, mobile apps, AI solutions, system development, and digital marketing. What do you need help with?"
-            ],
-            portfolio: [
-                "Check out our portfolio section above to see our latest projects. Would you like to see specific types of projects?",
-                "You can view our work in the portfolio gallery. We have projects across various industries including e-commerce, healthcare, and tourism."
-            ],
-            contact: [
-                "You can reach us at +263 78 718 2780 or email nashdigitechsolutions@gmail.com. We're also on WhatsApp for quick responses!",
-                "Contact us via phone: +263 78 718 2780, email: nashdigitechsolutions@gmail.com, or through our social media platforms."
-            ],
-            hours: [
-                "We're available Mon-Fri 8AM-6PM and Sat 9AM-1PM. 24/7 emergency support is available for existing clients.",
-                "Our business hours: Monday-Friday: 8:00 AM - 6:00 PM, Saturday: 9:00 AM - 1:00 PM. 24/7 support for urgent matters."
-            ],
-            website: [
-                "Our website design services include responsive design, CMS integration, SEO optimization, and ongoing support. Starting at $500+.",
-                "We create custom websites that are mobile-friendly, fast, and optimized for conversions. Timeline: 2-4 weeks."
-            ],
-            mobile: [
-                "We develop native iOS (Swift) and Android (Kotlin/Java) apps, as well as cross-platform solutions. Starting at $250+.",
-                "Our mobile app development includes full lifecycle services from design to deployment on app stores."
-            ],
-            system: [
-                "We build custom systems including ERPs, CRMs, and automation solutions. Web-based from $700+, non-web from $1000+.",
-                "Our system development services can streamline your business operations with custom software solutions."
-            ],
-            default: [
-                "I'm here to help! Could you rephrase that or ask about our services, pricing, or portfolio?",
-                "I'm still learning. Could you ask about our services, pricing, or how we can help your business?"
-            ]
-        };
-        
-        // Toggle chat window
-        chatToggle.addEventListener('click', () => {
-            liveChat.classList.toggle('active');
-            chatToggle.style.display = 'none';
-            
-            // Remove notification
-            if (chatNotification) chatNotification.style.display = 'none';
-        });
-        
-        // Close chat
-        chatClose.addEventListener('click', () => {
-            liveChat.classList.remove('active');
-            chatToggle.style.display = 'flex';
-        });
-        
-        // Send message
-        chatSend.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
-        });
-        
-        // Send message function
-        function sendMessage() {
-            const message = chatInput.value.trim();
-            if (!message) return;
-            
-            // Add user message
-            addChatMessage('user', message);
-            
-            // Clear input
-            chatInput.value = '';
-            
-            // Simulate bot response after delay
-            setTimeout(() => {
-                const botResponse = getBotResponse(message);
-                addChatMessage('bot', botResponse);
-            }, 1000);
+    const chatToggle = document.getElementById('chatToggle');
+    const chatClose = document.getElementById('chatClose');
+    const liveChat = document.getElementById('liveChat');
+    const chatSend = document.getElementById('chatSend');
+    const chatInput = document.getElementById('chatInput');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatNotification = document.querySelector('.chat-notification');
+
+    // Helper: Generate or retrieve a persistent session ID
+    function getSessionId() {
+        let sid = localStorage.getItem('nash_chat_session_id');
+        if (!sid) {
+            sid = 'session_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('nash_chat_session_id', sid);
         }
-        
-        // Add message to chat
-        function addChatMessage(sender, text) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `chat-message ${sender}`;
-            
-            const contentDiv = document.createElement('div');
-            contentDiv.className = 'message-content';
-            contentDiv.innerHTML = `<p>${text}</p>`;
-            
-            messageDiv.appendChild(contentDiv);
-            chatMessages.appendChild(messageDiv);
-            
-            // Scroll to bottom
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-        
-        // Get bot response based on user message
-        function getBotResponse(userMessage) {
-            const message = userMessage.toLowerCase();
-            
-            // Check for keywords and return appropriate response
-            if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
-                return chatResponses.greeting[Math.floor(Math.random() * chatResponses.greeting.length)];
-            } else if (message.includes('price') || message.includes('cost') || message.includes('how much')) {
-                return chatResponses.pricing[Math.floor(Math.random() * chatResponses.pricing.length)];
-            } else if (message.includes('service') || message.includes('what do you do') || message.includes('offer')) {
-                return chatResponses.services[Math.floor(Math.random() * chatResponses.services.length)];
-            } else if (message.includes('website') || message.includes('web design')) {
-                return chatResponses.website[Math.floor(Math.random() * chatResponses.website.length)];
-            } else if (message.includes('mobile') || message.includes('app')) {
-                return chatResponses.mobile[Math.floor(Math.random() * chatResponses.mobile.length)];
-            } else if (message.includes('system') || message.includes('software') || message.includes('erp') || message.includes('crm')) {
-                return chatResponses.system[Math.floor(Math.random() * chatResponses.system.length)];
-            } else if (message.includes('portfolio') || message.includes('work') || message.includes('project')) {
-                return chatResponses.portfolio[Math.floor(Math.random() * chatResponses.portfolio.length)];
-            } else if (message.includes('contact') || message.includes('email') || message.includes('phone')) {
-                return chatResponses.contact[Math.floor(Math.random() * chatResponses.contact.length)];
-            } else if (message.includes('time') || message.includes('hours') || message.includes('open')) {
-                return chatResponses.hours[Math.floor(Math.random() * chatResponses.hours.length)];
-            } else if (message.includes('thank') || message.includes('thanks')) {
-                return "You're welcome! 😊 Is there anything else I can help you with today?";
-            } else if (message.includes('bye') || message.includes('goodbye')) {
-                return "Goodbye! Feel free to reach out anytime if you have more questions. Have a great day!";
-            } else {
-                return chatResponses.default[Math.floor(Math.random() * chatResponses.default.length)];
-            }
-        }
-        
-        // Show notification after 10 seconds
-        setTimeout(() => {
-            if (chatNotification) chatNotification.style.display = 'flex';
-        }, 10000);
+        return sid;
     }
+
+    // Toggle chat window
+    chatToggle.addEventListener('click', () => {
+        liveChat.classList.add('active');
+        chatToggle.style.display = 'none';
+        if (chatNotification) chatNotification.style.display = 'none';
+    });
+
+    // Close chat
+    chatClose.addEventListener('click', () => {
+        liveChat.classList.remove('active');
+        chatToggle.style.display = 'flex';
+    });
+
+    // Send message triggers
+    chatSend.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    // Main send function
+    async function sendMessage() {
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        // 1. Add user message to UI
+        addChatMessage('user', message);
+        chatInput.value = '';
+
+        // 2. Show typing indicator
+        const typingId = addChatMessage('bot', '...', true);
+
+        // 3. Fetch AI response from backend
+        try {
+            const response = await fetch('https://nashdigitechsolutions-backend.onrender.com/api/chat/ai', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    sessionId: getSessionId()
+                })
+            });
+
+            const data = await response.json();
+            
+            // Remove typing indicator and add real response
+            removeMessage(typingId);
+            
+            // Note: Adjusting for your specific backend return structure
+            const replyText = data.reply || data.message || "I'm processed your request, but I'm having trouble phrasing it. Could you try again?";
+            addChatMessage('bot', replyText);
+
+        } catch (error) {
+            console.error('Chat error:', error);
+            removeMessage(typingId);
+            addChatMessage('bot', "I'm having trouble connecting to my brain right now. Please try again or reach out to us at +263 78 718 2780!");
+        }
+    }
+
+    // Add message to chat UI
+    function addChatMessage(sender, text, isTyping = false) {
+        const id = 'msg_' + Date.now();
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${sender}`;
+        messageDiv.id = id;
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+        
+        if (isTyping) {
+            contentDiv.innerHTML = `<p class="typing-dots"><span>.</span><span>.</span><span>.</span></p>`;
+        } else {
+            contentDiv.innerHTML = `<p>${text}</p>`;
+        }
+        
+        messageDiv.appendChild(contentDiv);
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        return id;
+    }
+
+    function removeMessage(id) {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+    }
+
+    // Show notification after 10 seconds if not already opened
+    setTimeout(() => {
+        if (chatNotification && !liveChat.classList.contains('active')) {
+            chatNotification.style.display = 'flex';
+        }
+    }, 10000);
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', initLiveChat);
     
     // Stats counter animation
     function initStatsCounter() {

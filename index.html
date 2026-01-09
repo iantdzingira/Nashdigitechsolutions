@@ -1,875 +1,1306 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nash Digitech Solutions | From Code to Cognition</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <!-- Header -->
     <header id="header">
-        <div class="container">
-            <nav class="navbar">
-                <a href="#" class="logo">
-                    <div class="logo-symbol"></div>
-                    <span>Nash</span>Digitech
-                </a>
-                
-                <ul class="nav-menu">
-                    <li><a href="#home" class="active">Home</a></li>
-                    <li><a href="#pillars">Our Pillars</a></li>
-                    <li><a href="#portfolio">Portfolio</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-                
-                <div class="nav-actions">
-                    <button class="theme-toggle" id="themeToggle">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <button class="hamburger" id="hamburger">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
-            </nav>
-        </div>
+      <div class="container">
+        <nav class="navbar">
+          <a href="#" class="logo">
+            <div class="logo-symbol"></div>
+            <span>Nash</span>Digitech
+          </a>
+
+          <ul class="nav-menu">
+            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="#pillars">Our Pillars</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+
+          <div class="nav-actions">
+            <button class="theme-toggle" id="themeToggle">
+              <i class="fas fa-moon"></i>
+            </button>
+            <button class="hamburger" id="hamburger">
+              <i class="fas fa-bars"></i>
+            </button>
+          </div>
+        </nav>
+      </div>
     </header>
 
     <!-- Sidebar Menu -->
     <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="logo">
-                <div class="logo-symbol"></div>
-                <span>Nash</span>Digitech
-            </div>
-            <button class="close-sidebar" id="closeSidebar">
-                <i class="fas fa-times"></i>
-            </button>
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-symbol"></div>
+          <span>Nash</span>Digitech
         </div>
-        
-        <ul class="sidebar-nav">
-            <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="#pillars"><i class="fas fa-layer-group"></i> Our Pillars</a></li>
-            <li><a href="#portfolio"><i class="fas fa-briefcase"></i> Portfolio</a></li>
-            <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li>
-            <li><a href="#testimonials"><i class="fas fa-comment-alt"></i> Testimonials</a></li>
-            <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
-        </ul>
-        
-        <div class="sidebar-footer">
-            <p><i class="fas fa-phone"></i> <a href="tel:+263787182780">+263 78 718 2780</a></p>
-            <p><i class="fas fa-envelope"></i> <a href="mailto:nashdigitechsolutions@gmail.com">nashdigitechsolutions@gmail.com</a></p>
-            <p><i class="fas fa-map-marker-alt"></i> Victoria Falls, Zimbabwe</p>
-        </div>
+        <button class="close-sidebar" id="closeSidebar">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <ul class="sidebar-nav">
+        <li>
+          <a href="#home"><i class="fas fa-home"></i> Home</a>
+        </li>
+        <li>
+          <a href="#pillars"><i class="fas fa-layer-group"></i> Our Pillars</a>
+        </li>
+        <li>
+          <a href="#portfolio"><i class="fas fa-briefcase"></i> Portfolio</a>
+        </li>
+        <li>
+          <a href="#services"><i class="fas fa-cogs"></i> Services</a>
+        </li>
+        <li>
+          <a href="#testimonials"
+            ><i class="fas fa-comment-alt"></i> Testimonials</a
+          >
+        </li>
+        <li>
+          <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <p>
+          <i class="fas fa-phone"></i>
+          <a href="tel:+263787182780">+263 78 718 2780</a>
+        </p>
+        <p>
+          <i class="fas fa-envelope"></i>
+          <a href="mailto:nashdigitechsolutions@gmail.com"
+            >nashdigitechsolutions@gmail.com</a
+          >
+        </p>
+        <p><i class="fas fa-map-marker-alt"></i> Victoria Falls, Zimbabwe</p>
+      </div>
     </div>
 
     <!-- Hero Section -->
-  <section class="hero" id="home">
-    <div class="container">
+    <section class="hero" id="home">
+      <div class="container">
         <div class="hero-content">
-            <h1 class="animate-fade-up">From Code to Cognition: Your Complete Technology Partner</h1>
-            <p class="animate-fade-up delay-100">We build intelligent software, design compelling brands, and train the next generation of tech leaders. Based in Victoria Falls, Zimbabwe, we deliver world-class digital solutions to businesses across Africa and beyond.</p>
-            
-            <div class="hero-btns animate-fade-up delay-200">
-                <a href="#contact" class="btn btn-primary">
-                    <i class="fas fa-rocket"></i> Start Your Project
-                </a>
-                <a href="#services" class="btn btn-secondary">
-                    <i class="fas fa-eye"></i> View Services
-                </a>
+          <h1 class="animate-fade-up">
+            From Code to Cognition: Your Complete Technology Partner
+          </h1>
+          <p class="animate-fade-up delay-100">
+            We build intelligent software, design compelling brands, and train
+            the next generation of tech leaders. Based in Victoria Falls,
+            Zimbabwe, we deliver world-class digital solutions to businesses
+            across Africa and beyond.
+          </p>
+
+          <div class="hero-btns animate-fade-up delay-200">
+            <a href="#contact" class="btn btn-primary">
+              <i class="fas fa-rocket"></i> Start Your Project
+            </a>
+            <a href="#services" class="btn btn-secondary">
+              <i class="fas fa-eye"></i> View Services
+            </a>
+          </div>
+
+          <div class="stats-container animate-fade-up delay-300">
+            <div class="stat-item">
+              <div class="stat-number" id="yearsExperience">1</div>
+              <div class="stat-label">Years Experience</div>
             </div>
-            
-            <div class="stats-container animate-fade-up delay-300">
-                <div class="stat-item">
-                    <div class="stat-number" id="yearsExperience">1</div>
-                    <div class="stat-label">Years Experience</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="happyClients">0</div>
-                    <div class="stat-label">Happy Clients</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">24</div>
-                    <div class="stat-label">/7 Support</div>
-                </div>
+            <div class="stat-item">
+              <div class="stat-number" id="happyClients">0</div>
+              <div class="stat-label">Happy Clients</div>
             </div>
+            <div class="stat-item">
+              <div class="stat-number">24</div>
+              <div class="stat-label">/7 Support</div>
+            </div>
+          </div>
         </div>
-    </div>
-</section>
+      </div>
+    </section>
 
     <!-- Pillars Section -->
-   <section class="pillars-section" id="pillars">
-    <div class="container">
+    <section class="pillars-section" id="pillars">
+      <div class="container">
         <div class="section-header">
-            <h2 class="animate-fade-up">Our Three Pillars of Intelligent Solutions</h2>
-            <p class="animate-fade-up delay-100">Comprehensive technology services that drive innovation and business growth</p>
+          <h2 class="animate-fade-up">
+            Our Three Pillars of Intelligent Solutions
+          </h2>
+          <p class="animate-fade-up delay-100">
+            Comprehensive technology services that drive innovation and business
+            growth
+          </p>
         </div>
-        
+
         <div class="pillars-grid">
-            <div class="pillar-card animate-fade-up">
-                <div class="pillar-icon">
-                    <i class="fas fa-code"></i>
-                </div>
-                <h3>Development</h3>
-                <p>Custom software and web solutions tailored to your business needs</p>
-                <div class="pillar-detail">Custom Web, Mobile Apps, Backend Infrastructure, Full Stack Solutions</div>
+          <div class="pillar-card animate-fade-up">
+            <div class="pillar-icon">
+              <i class="fas fa-code"></i>
             </div>
-            
-            <div class="pillar-card animate-fade-up delay-100">
-                <div class="pillar-icon">
-                    <i class="fas fa-palette"></i>
-                </div>
-                <h3>Creative Design</h3>
-                <p>Branding and UI/UX design that captivates and converts</p>
-                <div class="pillar-detail">Logos, Brand Identity, UI/UX Design, Marketing Materials</div>
+            <h3>Development</h3>
+            <p>
+              Custom software and web solutions tailored to your business needs
+            </p>
+            <div class="pillar-detail">
+              Custom Web, Mobile Apps, Backend Infrastructure, Full Stack
+              Solutions
             </div>
-            
-            <div class="pillar-card animate-fade-up delay-200">
-                <div class="pillar-icon">
-                    <i class="fas fa-robot"></i>
-                </div>
-                <h3>AI & Machine Learning</h3>
-                <p>Intelligent systems that learn, adapt, and automate</p>
-                <div class="pillar-detail">Machine Learning Models, Data Science, Automation Systems</div>
+          </div>
+
+          <div class="pillar-card animate-fade-up delay-100">
+            <div class="pillar-icon">
+              <i class="fas fa-palette"></i>
             </div>
+            <h3>Creative Design</h3>
+            <p>Branding and UI/UX design that captivates and converts</p>
+            <div class="pillar-detail">
+              Logos, Brand Identity, UI/UX Design, Marketing Materials
+            </div>
+          </div>
+
+          <div class="pillar-card animate-fade-up delay-200">
+            <div class="pillar-icon">
+              <i class="fas fa-robot"></i>
+            </div>
+            <h3>AI & Machine Learning</h3>
+            <p>Intelligent systems that learn, adapt, and automate</p>
+            <div class="pillar-detail">
+              Machine Learning Models, Data Science, Automation Systems
+            </div>
+          </div>
         </div>
-    </div>
-</section>
+      </div>
+    </section>
 
     <!-- Portfolio Carousel -->
     <section class="carousel-section" id="portfolio">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="animate-fade-up">Our Portfolio Gallery</h2>
-                <p class="animate-fade-up delay-100">See examples of our projects and solutions across different industries</p>
-            </div>
-            
-            <div class="carousel-container">
-                <div class="owl-carousel owl-theme" id="portfolioCarousel">
-                    <div class="portfolio-carousel-item">
-                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="portfolio-img" alt="Web Development">
-                        <div class="portfolio-overlay">
-                            <h4>E-Commerce Platform</h4>
-                            <p>Custom online store with payment integration</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-carousel-item">
-                        <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="portfolio-img" alt="Mobile App">
-                        <div class="portfolio-overlay">
-                            <h4>Mobile Banking App</h4>
-                            <p>Secure financial application for iOS & Android</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-carousel-item">
-                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="portfolio-img" alt="UI/UX Design">
-                        <div class="portfolio-overlay">
-                            <h4>UI/UX Design System</h4>
-                            <p>Complete design system for enterprise software</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-carousel-item">
-                        <img src="https://images.unsplash.com/photo-1555255707-c07966088b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="portfolio-img" alt="AI Dashboard">
-                        <div class="portfolio-overlay">
-                            <h4>AI Analytics Dashboard</h4>
-                            <p>Machine learning insights and visualization</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-carousel-item">
-                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="portfolio-img" alt="Robotics">
-                        <div class="portfolio-overlay">
-                            <h4>Industrial Automation</h4>
-                            <p>Robotic process automation system</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-carousel-item">
-                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="portfolio-img" alt="Website Design">
-                        <div class="portfolio-overlay">
-                            <h4>Corporate Website</h4>
-                            <p>Responsive corporate website with CMS</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-carousel-item">
-                        <img src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="portfolio-img" alt="Digital Marketing">
-                        <div class="portfolio-overlay">
-                            <h4>Digital Marketing Suite</h4>
-                            <p>Complete digital marketing platform</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-carousel-item">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="portfolio-img" alt="Data Analytics">
-                        <div class="portfolio-overlay">
-                            <h4>Data Analytics Platform</h4>
-                            <p>Big data processing and visualization</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="container">
+        <div class="section-header">
+          <h2 class="animate-fade-up">Our Portfolio Gallery</h2>
+          <p class="animate-fade-up delay-100">
+            See examples of our projects and solutions across different
+            industries
+          </p>
         </div>
+
+        <div class="carousel-container">
+          <div class="owl-carousel owl-theme" id="portfolioCarousel">
+            <div class="portfolio-carousel-item">
+              <img
+                src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                class="portfolio-img"
+                alt="Web Development"
+              />
+              <div class="portfolio-overlay">
+                <h4>E-Commerce Platform</h4>
+                <p>Custom online store with payment integration</p>
+              </div>
+            </div>
+            <div class="portfolio-carousel-item">
+              <img
+                src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                class="portfolio-img"
+                alt="Mobile App"
+              />
+              <div class="portfolio-overlay">
+                <h4>Mobile Banking App</h4>
+                <p>Secure financial application for iOS & Android</p>
+              </div>
+            </div>
+            <div class="portfolio-carousel-item">
+              <img
+                src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                class="portfolio-img"
+                alt="UI/UX Design"
+              />
+              <div class="portfolio-overlay">
+                <h4>UI/UX Design System</h4>
+                <p>Complete design system for enterprise software</p>
+              </div>
+            </div>
+            <div class="portfolio-carousel-item">
+              <img
+                src="https://images.unsplash.com/photo-1555255707-c07966088b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                class="portfolio-img"
+                alt="AI Dashboard"
+              />
+              <div class="portfolio-overlay">
+                <h4>AI Analytics Dashboard</h4>
+                <p>Machine learning insights and visualization</p>
+              </div>
+            </div>
+            <div class="portfolio-carousel-item">
+              <img
+                src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                class="portfolio-img"
+                alt="Robotics"
+              />
+              <div class="portfolio-overlay">
+                <h4>Industrial Automation</h4>
+                <p>Robotic process automation system</p>
+              </div>
+            </div>
+            <div class="portfolio-carousel-item">
+              <img
+                src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                class="portfolio-img"
+                alt="Website Design"
+              />
+              <div class="portfolio-overlay">
+                <h4>Corporate Website</h4>
+                <p>Responsive corporate website with CMS</p>
+              </div>
+            </div>
+            <div class="portfolio-carousel-item">
+              <img
+                src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                class="portfolio-img"
+                alt="Digital Marketing"
+              />
+              <div class="portfolio-overlay">
+                <h4>Digital Marketing Suite</h4>
+                <p>Complete digital marketing platform</p>
+              </div>
+            </div>
+            <div class="portfolio-carousel-item">
+              <img
+                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                class="portfolio-img"
+                alt="Data Analytics"
+              />
+              <div class="portfolio-overlay">
+                <h4>Data Analytics Platform</h4>
+                <p>Big data processing and visualization</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Services Section -->
     <section class="services-section" id="services">
-    <div class="container">
+      <div class="container">
         <div class="section-header">
-            <h2 class="animate-fade-up">Advanced Digital Solutions</h2>
-            <p class="service-highlight animate-fade-up delay-100">Best Advanced Website Design in Zimbabwe</p>
+          <h2 class="animate-fade-up">Advanced Digital Solutions</h2>
+          <p class="service-highlight animate-fade-up delay-100">
+            Best Advanced Website Design in Zimbabwe
+          </p>
         </div>
-        
+
         <div class="services-filter animate-fade-up">
-            <button class="filter-btn active" data-filter="all">All Services</button>
-            <button class="filter-btn" data-filter="web">Web Development</button>
-            <button class="filter-btn" data-filter="mobile">Mobile Apps</button>
-            <button class="filter-btn" data-filter="system">System Development</button>
-            <button class="filter-btn" data-filter="design">Design</button>
-            <button class="filter-btn" data-filter="marketing">Digital Marketing</button>
+          <button class="filter-btn active" data-filter="all">
+            All Services
+          </button>
+          <button class="filter-btn" data-filter="web">Web Development</button>
+          <button class="filter-btn" data-filter="mobile">Mobile Apps</button>
+          <button class="filter-btn" data-filter="system">
+            System Development
+          </button>
+          <button class="filter-btn" data-filter="design">Design</button>
+          <button class="filter-btn" data-filter="marketing">
+            Digital Marketing
+          </button>
         </div>
-        
+
         <div class="services-grid">
-            <!-- Professional Website Design -->
-            <div class="service-card animate-fade-up" data-category="web">
-                <div class="service-icon">
-                    <i class="fas fa-laptop-code"></i>
-                </div>
-                <h3>Professional Website Design</h3>
-                <p>We create stunning, responsive websites that work perfectly on all devices and drive business growth.</p>
-                <ul class="service-features">
-                    <li><i class="fas fa-check-circle"></i> Up to 15 website pages</li>
-                    <li><i class="fas fa-check-circle"></i> WordPress Website Design</li>
-                    <li><i class="fas fa-check-circle"></i> Content Management System (CMS)</li>
-                    <li><i class="fas fa-check-circle"></i> Responsive Website Design</li>
-                    <li><i class="fas fa-check-circle"></i> Photo Galleries & Multimedia</li>
-                    <li><i class="fas fa-check-circle"></i> Website Contact Forms</li>
-                </ul>
-                <div class="service-price">
-                    <span>Starting at</span>
-                    <div class="price">$500+</div>
-                </div>
+          <!-- Professional Website Design -->
+          <div class="service-card animate-fade-up" data-category="web">
+            <div class="service-icon">
+              <i class="fas fa-laptop-code"></i>
             </div>
-            
-            <!-- iOS & Android App Development -->
-            <div class="service-card animate-fade-up delay-100" data-category="mobile">
-                <div class="service-icon">
-                    <i class="fas fa-mobile-alt"></i>
-                </div>
-                <h3>iOS & Android App Development</h3>
-                <p>Native and cross-platform mobile applications for both iOS and Android devices.</p>
-                <ul class="service-features">
-                    <li><i class="fas fa-check-circle"></i> iOS App Development (Swift)</li>
-                    <li><i class="fas fa-check-circle"></i> Android App Development (Kotlin/Java)</li>
-                    <li><i class="fas fa-check-circle"></i> Cross-platform (React Native/Flutter)</li>
-                    <li><i class="fas fa-check-circle"></i> App Store & Play Store Deployment</li>
-                    <li><i class="fas fa-check-circle"></i> Push Notifications</li>
-                    <li><i class="fas fa-check-circle"></i> Backend API Integration</li>
-                </ul>
-                <div class="service-price">
-                    <span>Starting at</span>
-                    <div class="price">$250+</div>
-                </div>
+            <h3>Professional Website Design</h3>
+            <p>
+              We create stunning, responsive websites that work perfectly on all
+              devices and drive business growth.
+            </p>
+            <ul class="service-features">
+              <li>
+                <i class="fas fa-check-circle"></i> Up to 15 website pages
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> WordPress Website Design
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Content Management System
+                (CMS)
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Responsive Website Design
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Photo Galleries & Multimedia
+              </li>
+              <li><i class="fas fa-check-circle"></i> Website Contact Forms</li>
+            </ul>
+            <div class="service-price">
+              <span>Starting at</span>
+              <div class="price">$500+</div>
             </div>
-            
-            <!-- System Development (Non-Web) -->
-            <div class="service-card animate-fade-up delay-200" data-category="system">
-                <div class="service-icon">
-                    <i class="fas fa-server"></i>
-                </div>
-                <h3>System Development (Non-Web)</h3>
-                <p>Custom desktop applications, enterprise systems, and automation solutions.</p>
-                <ul class="service-features">
-                    <li><i class="fas fa-check-circle"></i> Desktop Applications</li>
-                    <li><i class="fas fa-check-circle"></i> Enterprise Resource Planning (ERP)</li>
-                    <li><i class="fas fa-check-circle"></i> Customer Relationship Management (CRM)</li>
-                    <li><i class="fas fa-check-circle"></i> Inventory Management Systems</li>
-                    <li><i class="fas fa-check-circle"></i> Database Design & Development</li>
-                    <li><i class="fas fa-check-circle"></i> API Development & Integration</li>
-                </ul>
-                <div class="service-price">
-                    <span>Starting at</span>
-                    <div class="price">$1,000+</div>
-                </div>
+          </div>
+
+          <!-- iOS & Android App Development -->
+          <div
+            class="service-card animate-fade-up delay-100"
+            data-category="mobile"
+          >
+            <div class="service-icon">
+              <i class="fas fa-mobile-alt"></i>
             </div>
-            
-            <!-- System Development (Web-Based) -->
-            <div class="service-card animate-fade-up delay-300" data-category="system web">
-                <div class="service-icon">
-                    <i class="fas fa-network-wired"></i>
-                </div>
-                <h3>System Development (Web-Based)</h3>
-                <p>Advanced web applications with complex functionality and integrations.</p>
-                <ul class="service-features">
-                    <li><i class="fas fa-check-circle"></i> Interactive Web Applications</li>
-                    <li><i class="fas fa-check-circle"></i> E-commerce Platforms</li>
-                    <li><i class="fas fa-check-circle"></i> Learning Management Systems</li>
-                    <li><i class="fas fa-check-circle"></i> Payment Gateway Integration</li>
-                    <li><i class="fas fa-check-circle"></i> Real-time Features</li>
-                    <li><i class="fas fa-check-circle"></i> Admin Dashboard & Analytics</li>
-                </ul>
-                <div class="service-price">
-                    <span>Starting at</span>
-                    <div class="price">$700+</div>
-                </div>
+            <h3>iOS & Android App Development</h3>
+            <p>
+              Native and cross-platform mobile applications for both iOS and
+              Android devices.
+            </p>
+            <ul class="service-features">
+              <li>
+                <i class="fas fa-check-circle"></i> iOS App Development (Swift)
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Android App Development
+                (Kotlin/Java)
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Cross-platform (React
+                Native/Flutter)
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> App Store & Play Store
+                Deployment
+              </li>
+              <li><i class="fas fa-check-circle"></i> Push Notifications</li>
+              <li>
+                <i class="fas fa-check-circle"></i> Backend API Integration
+              </li>
+            </ul>
+            <div class="service-price">
+              <span>Starting at</span>
+              <div class="price">$250+</div>
             </div>
-            
-            <!-- Digital Marketing & Support -->
-            <div class="service-card animate-fade-up" data-category="marketing">
-                <div class="service-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <h3>Digital Marketing & Support</h3>
-                <p>Complete digital presence setup with ongoing support, optimization, and 24/7 monitoring.</p>
-                <ul class="service-features">
-                    <li><i class="fas fa-check-circle"></i> Social Media Set-up & Integration</li>
-                    <li><i class="fas fa-check-circle"></i> Google Search Console Set-up</li>
-                    <li><i class="fas fa-check-circle"></i> Google Analytics Integration</li>
-                    <li><i class="fas fa-check-circle"></i> 24/7 Support: Phone, Email, Chat</li>
-                    <li><i class="fas fa-check-circle"></i> Monthly Maintenance Plans</li>
-                    <li><i class="fas fa-check-circle"></i> Performance Optimization</li>
-                </ul>
-                <div class="service-price">
-                    <span>Starting at</span>
-                    <div class="price">$100/mo</div>
-                </div>
+          </div>
+
+          <!-- System Development (Non-Web) -->
+          <div
+            class="service-card animate-fade-up delay-200"
+            data-category="system"
+          >
+            <div class="service-icon">
+              <i class="fas fa-server"></i>
             </div>
-            
-            <!-- Creative Design Services -->
-            <div class="service-card animate-fade-up delay-100" data-category="design">
-                <div class="service-icon">
-                    <i class="fas fa-paint-brush"></i>
-                </div>
-                <h3>Creative Design Services</h3>
-                <p>Professional branding, logo design, and marketing materials that elevate your business.</p>
-                <ul class="service-features">
-                    <li><i class="fas fa-check-circle"></i> Logo & Brand Identity Design</li>
-                    <li><i class="fas fa-check-circle"></i> UI/UX Design for Websites & Apps</li>
-                    <li><i class="fas fa-check-circle"></i> Marketing Materials Design</li>
-                    <li><i class="fas fa-check-circle"></i> Social Media Graphics</li>
-                    <li><i class="fas fa-check-circle"></i> Print Design Services</li>
-                    <li><i class="fas fa-check-circle"></i> Brand Style Guides</li>
-                </ul>
-                <div class="service-price">
-                    <span>Starting at</span>
-                    <div class="price">$75+</div>
-                </div>
+            <h3>System Development (Non-Web)</h3>
+            <p>
+              Custom desktop applications, enterprise systems, and automation
+              solutions.
+            </p>
+            <ul class="service-features">
+              <li><i class="fas fa-check-circle"></i> Desktop Applications</li>
+              <li>
+                <i class="fas fa-check-circle"></i> Enterprise Resource Planning
+                (ERP)
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Customer Relationship
+                Management (CRM)
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Inventory Management Systems
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Database Design &
+                Development
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> API Development &
+                Integration
+              </li>
+            </ul>
+            <div class="service-price">
+              <span>Starting at</span>
+              <div class="price">$1,000+</div>
             </div>
+          </div>
+
+          <!-- System Development (Web-Based) -->
+          <div
+            class="service-card animate-fade-up delay-300"
+            data-category="system web"
+          >
+            <div class="service-icon">
+              <i class="fas fa-network-wired"></i>
+            </div>
+            <h3>System Development (Web-Based)</h3>
+            <p>
+              Advanced web applications with complex functionality and
+              integrations.
+            </p>
+            <ul class="service-features">
+              <li>
+                <i class="fas fa-check-circle"></i> Interactive Web Applications
+              </li>
+              <li><i class="fas fa-check-circle"></i> E-commerce Platforms</li>
+              <li>
+                <i class="fas fa-check-circle"></i> Learning Management Systems
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Payment Gateway Integration
+              </li>
+              <li><i class="fas fa-check-circle"></i> Real-time Features</li>
+              <li>
+                <i class="fas fa-check-circle"></i> Admin Dashboard & Analytics
+              </li>
+            </ul>
+            <div class="service-price">
+              <span>Starting at</span>
+              <div class="price">$700+</div>
+            </div>
+          </div>
+
+          <!-- Digital Marketing & Support -->
+          <div class="service-card animate-fade-up" data-category="marketing">
+            <div class="service-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>Digital Marketing & Support</h3>
+            <p>
+              Complete digital presence setup with ongoing support,
+              optimization, and 24/7 monitoring.
+            </p>
+            <ul class="service-features">
+              <li>
+                <i class="fas fa-check-circle"></i> Social Media Set-up &
+                Integration
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Google Search Console Set-up
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Google Analytics Integration
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> 24/7 Support: Phone, Email,
+                Chat
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Monthly Maintenance Plans
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Performance Optimization
+              </li>
+            </ul>
+            <div class="service-price">
+              <span>Starting at</span>
+              <div class="price">$100/mo</div>
+            </div>
+          </div>
+
+          <!-- Creative Design Services -->
+          <div
+            class="service-card animate-fade-up delay-100"
+            data-category="design"
+          >
+            <div class="service-icon">
+              <i class="fas fa-paint-brush"></i>
+            </div>
+            <h3>Creative Design Services</h3>
+            <p>
+              Professional branding, logo design, and marketing materials that
+              elevate your business.
+            </p>
+            <ul class="service-features">
+              <li>
+                <i class="fas fa-check-circle"></i> Logo & Brand Identity Design
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> UI/UX Design for Websites &
+                Apps
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Marketing Materials Design
+              </li>
+              <li><i class="fas fa-check-circle"></i> Social Media Graphics</li>
+              <li><i class="fas fa-check-circle"></i> Print Design Services</li>
+              <li><i class="fas fa-check-circle"></i> Brand Style Guides</li>
+            </ul>
+            <div class="service-price">
+              <span>Starting at</span>
+              <div class="price">$75+</div>
+            </div>
+          </div>
         </div>
-    </div>
-</section>
+      </div>
+    </section>
 
     <!-- Testimonials Section -->
-<section class="testimonials-section" id="testimonials">
-    <div class="container">
+    <section class="testimonials-section" id="testimonials">
+      <div class="container">
         <div class="section-header">
-            <h2 class="animate-fade-up">What Our Clients Say</h2>
-            <p class="animate-fade-up delay-100">Hear from businesses we've helped transform digitally</p>
+          <h2 class="animate-fade-up">What Our Clients Say</h2>
+          <p class="animate-fade-up delay-100">
+            Hear from businesses we've helped transform digitally
+          </p>
         </div>
-        
-        <div class="testimonials-container">
-            <div class="testimonial-slider" id="testimonialSlider">
-                <!-- Testimonials loaded dynamically -->
-            </div>
 
-            <div class="testimonial-controls">
-                <button class="testimonial-prev"><i class="fas fa-chevron-left"></i></button>
-                <div class="testimonial-dots" id="testimonialDots">
-                    <!-- Dots generated dynamically -->
-                </div>
-                <button class="testimonial-next"><i class="fas fa-chevron-right"></i></button>
+        <div class="testimonials-container">
+          <div class="testimonial-slider" id="testimonialSlider">
+            <!-- Testimonials loaded dynamically -->
+          </div>
+
+          <div class="testimonial-controls">
+            <button class="testimonial-prev">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="testimonial-dots" id="testimonialDots">
+              <!-- Dots generated dynamically -->
             </div>
+            <button class="testimonial-next">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
         </div>
 
         <div class="testimonial-actions">
-            <button class="btn btn-primary" id="submitTestimonialBtn">
-                <i class="fas fa-comment-medical"></i> Add a testimonial.
-            </button>
+          <button class="btn btn-primary" id="submitTestimonialBtn">
+            <i class="fas fa-comment-medical"></i> Add a testimonial.
+          </button>
         </div>
-    </div>
-</section>
+      </div>
+    </section>
 
-<!-- Testimonial Submission Modal -->
-<div class="modal" id="testimonialSubmissionModal">
-    <div class="modal-content">
+    <!-- Testimonial Submission Modal -->
+    <div class="modal" id="testimonialSubmissionModal">
+      <div class="modal-content">
         <div class="modal-header">
-            <h3>Share Your Experience</h3>
-            <button class="modal-close" id="closeTestimonialModal">&times;</button>
+          <h3>Share Your Experience</h3>
+          <button class="modal-close" id="closeTestimonialModal">
+            &times;
+          </button>
         </div>
         <form id="testimonialSubmissionForm">
-            <div class="form-group">
-                <label for="testimonialName">Your Name *</label>
-                <input type="text" id="testimonialName" required placeholder="Your full name">
+          <div class="form-group">
+            <label for="testimonialName">Your Name *</label>
+            <input
+              type="text"
+              id="testimonialName"
+              required
+              placeholder="Your full name"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="testimonialPosition">Your Position/Company</label>
+            <input
+              type="text"
+              id="testimonialPosition"
+              placeholder="CEO, Marketing Manager, etc."
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="testimonialCountry">Your Country *</label>
+            <input
+              type="text"
+              id="testimonialCountry"
+              required
+              placeholder="e.g., Zimbabwe, South Africa"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Rating (1-5) *</label>
+            <div class="rating-stars" id="testimonialRatingStars">
+              <i class="far fa-star" data-rating="1"></i>
+              <i class="far fa-star" data-rating="2"></i>
+              <i class="far fa-star" data-rating="3"></i>
+              <i class="far fa-star" data-rating="4"></i>
+              <i class="far fa-star" data-rating="5"></i>
             </div>
-            
-            <div class="form-group">
-                <label for="testimonialPosition">Your Position/Company</label>
-                <input type="text" id="testimonialPosition" placeholder="CEO, Marketing Manager, etc.">
-            </div>
-            
-            <div class="form-group">
-                <label for="testimonialCountry">Your Country *</label>
-                <input type="text" id="testimonialCountry" required placeholder="e.g., Zimbabwe, South Africa">
-            </div>
-            
-            <div class="form-group">
-                <label>Rating (1-5) *</label>
-                <div class="rating-stars" id="testimonialRatingStars">
-                    <i class="far fa-star" data-rating="1"></i>
-                    <i class="far fa-star" data-rating="2"></i>
-                    <i class="far fa-star" data-rating="3"></i>
-                    <i class="far fa-star" data-rating="4"></i>
-                    <i class="far fa-star" data-rating="5"></i>
-                </div>
-                <input type="hidden" id="testimonialRating" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="testimonialText">Your Feedback *</label>
-                <textarea id="testimonialText" rows="5" required placeholder="Tell us about your experience with Nash Digitech..."></textarea>
-            </div>
-            
-            <div class="form-group">
-                <label for="testimonialEmail">Email (for verification)</label>
-                <input type="email" id="testimonialEmail" placeholder="your@email.com">
-            </div>
-            
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-paper-plane"></i> Submit Feedback
-            </button>
+            <input type="hidden" id="testimonialRating" required />
+          </div>
+
+          <div class="form-group">
+            <label for="testimonialText">Your Feedback *</label>
+            <textarea
+              id="testimonialText"
+              rows="5"
+              required
+              placeholder="Tell us about your experience with Nash Digitech..."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="testimonialEmail">Email (for verification)</label>
+            <input
+              type="email"
+              id="testimonialEmail"
+              placeholder="your@email.com"
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-paper-plane"></i> Submit Feedback
+          </button>
         </form>
+      </div>
     </div>
-</div>
 
     <!-- Newsletter Section -->
     <section class="newsletter-section">
-        <div class="container">
-            <div class="newsletter-content animate-fade-up">
-                <div class="newsletter-text">
-                    <h3>Stay Updated with Tech Insights</h3>
-                    <p>Subscribe to our newsletter for the latest in technology trends, business tips, and exclusive offers.</p>
-                </div>
-                <div class="newsletter-form">
-                    <form id="newsletterForm">
-                        <div class="form-group">
-                            <input type="email" id="newsletterEmail" placeholder="Enter your email address" required>
-                            <button type="submit" class="btn btn-accent">Subscribe</button>
-                        </div>
-                        <div class="form-message" id="newsletterMessage"></div>
-                    </form>
-                </div>
-            </div>
+      <div class="container">
+        <div class="newsletter-content animate-fade-up">
+          <div class="newsletter-text">
+            <h3>Stay Updated with Tech Insights</h3>
+            <p>
+              Subscribe to our newsletter for the latest in technology trends,
+              business tips, and exclusive offers.
+            </p>
+          </div>
+          <div class="newsletter-form">
+            <form id="newsletterForm">
+              <div class="form-group">
+                <input
+                  type="email"
+                  id="newsletterEmail"
+                  placeholder="Enter your email address"
+                  required
+                />
+                <button type="submit" class="btn btn-accent">Subscribe</button>
+              </div>
+              <div class="form-message" id="newsletterMessage"></div>
+            </form>
+          </div>
         </div>
+      </div>
+    </section>
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="animate-fade-up">Get In Touch</h2>
+          <p class="animate-fade-up delay-100">
+            Ready to transform your digital presence? Contact us today for a
+            free consultation
+          </p>
+        </div>
+
+        <div class="contact-container">
+          <div class="contact-info animate-fade-up">
+            <h3>Start Your Digital Journey</h3>
+            <p>
+              Whether you need a new website, custom software, or digital
+              transformation consulting, we're here to help. Reach out to
+              discuss your project requirements.
+            </p>
+
+            <div class="contact-details">
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <i class="fas fa-phone"></i>
+                </div>
+                <div class="contact-text">
+                  <h4>Phone</h4>
+                  <p><a href="tel:+263787182780">+263 78 718 2780</a></p>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <div class="contact-text">
+                  <h4>Email</h4>
+                  <p>
+                    <a href="mailto:nashdigitechsolutions@gmail.com"
+                      >nashdigitechsolutions@gmail.com</a
+                    >
+                  </p>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="contact-text">
+                  <h4>Address</h4>
+                  <p>
+                    <a
+                      href="https://maps.google.com/?q=Victoria+Falls+Zimbabwe"
+                      target="_blank"
+                      >Victoria Falls, Zimbabwe</a
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="social-media-platforms">
+              <h4>Connect With Us</h4>
+              <div class="social-icons">
+                <a
+                  href="https://wa.me/263787182780"
+                  class="social-icon"
+                  target="_blank"
+                  title="WhatsApp"
+                >
+                  <i class="fab fa-whatsapp"></i>
+                </a>
+                <a
+                  href="https://www.instagram.com/nashdigitechsolutions?igsh=MWc4a2hheHNsbnliMg=="
+                  class="social-icon"
+                  target="_blank"
+                  title="Instagram"
+                >
+                  <i class="fab fa-instagram"></i>
+                </a>
+                <a
+                  href="https://www.facebook.com/share/195SwG8c2m/"
+                  class="social-icon"
+                  target="_blank"
+                  title="Facebook"
+                >
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a
+                  href="https://x.com/ianrikes"
+                  class="social-icon"
+                  target="_blank"
+                  title="X (formerly Twitter)"
+                  style="display: inline-flex; align-items: center"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"
+                    />
+                  </svg>
+                </a>
+                <a
+                  href="https://youtube.com/@nashdigitechsolutions?si=tGFhf5Xv-qzIu2fU"
+                  class="social-icon"
+                  target="_blank"
+                  title="YouTube"
+                >
+                  <i class="fab fa-youtube"></i>
+                </a>
+                <a
+                  href="mailto:nashdigitechsolutions@gmail.com"
+                  class="social-icon"
+                  target="_blank"
+                  title="Email"
+                >
+                  <i class="fas fa-envelope"></i>
+                </a>
+              </div>
+            </div>
+
+            <div class="business-hours">
+              <h4>Business Hours</h4>
+              <p>
+                <i class="far fa-clock"></i> Monday - Friday: 8:00 AM - 6:00 PM
+              </p>
+              <p><i class="far fa-clock"></i> Saturday: 9:00 AM - 1:00 PM</p>
+              <p>
+                <i class="fas fa-headset"></i> 24/7 Emergency Support Available
+              </p>
+            </div>
+
+            <div class="pricing-summary">
+              <h4>Starting Prices</h4>
+              <ul>
+                <li>
+                  <i class="fas fa-check"></i> Website Design:
+                  <strong>$500+</strong>
+                </li>
+                <li>
+                  <i class="fas fa-check"></i> Mobile Apps:
+                  <strong>$250+</strong>
+                </li>
+                <li>
+                  <i class="fas fa-check"></i> System Development (Web):
+                  <strong>$700+</strong>
+                </li>
+                <li>
+                  <i class="fas fa-check"></i> System Development (Non-Web):
+                  <strong>$1,000+</strong>
+                </li>
+                <li>
+                  <i class="fas fa-check"></i> Digital Marketing:
+                  <strong>$100/month</strong>
+                </li>
+                <li>
+                  <i class="fas fa-check"></i> Creative Design:
+                  <strong>$75+</strong>
+                </li>
+              </ul>
+            </div>
+
+            <div class="signature-box">
+              <div class="signature-name">Ian T. Dzingira</div>
+              <div class="signature-title">CEO and Founder</div>
+              <div class="signature-contact">
+                <p>
+                  <i class="fas fa-quote-left"></i> From Code to Cognition: Your
+                  Complete Technology Partner
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-form animate-fade-up delay-100">
+            <form id="contactForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="name">Full Name *</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    required
+                    placeholder="Enter your full name"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="email">Email Address *</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="form-control"
+                    required
+                    placeholder="your@email.com"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="phone">Phone Number</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  class="form-control"
+                  placeholder="+263 xxx xxx xxx"
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="service"
+                  >Service Interested In *</label
+                >
+                <select
+                  id="service"
+                  name="service"
+                  class="form-control"
+                  required
+                >
+                  <option value="">Select a service</option>
+                  <option value="website-design" data-price="$500+">
+                    Website Design ($500+)
+                  </option>
+                  <option value="mobile-app" data-price="$250+">
+                    Mobile App Development ($250+)
+                  </option>
+                  <option value="system-non-web" data-price="$1,000+">
+                    System Development - Non-Web ($1,000+)
+                  </option>
+                  <option value="system-web" data-price="$700+">
+                    System Development - Web ($700+)
+                  </option>
+                  <option value="digital-marketing" data-price="$100/month">
+                    Digital Marketing ($100/month)
+                  </option>
+                  <option value="creative-design" data-price="$75+">
+                    Creative Design ($75+)
+                  </option>
+                  <option value="ai-ml">AI & Machine Learning</option>
+                  <option value="consulting">Technology Consulting</option>
+                  <option value="training">Skills Training</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="budget"
+                  >Project Budget (USD)</label
+                >
+                <select id="budget" name="budget" class="form-control">
+                  <option value="">Select budget range</option>
+                  <option value="500-1000">$500 - $1,000</option>
+                  <option value="1000-5000">$1,000 - $5,000</option>
+                  <option value="5000-10000">$5,000 - $10,000</option>
+                  <option value="10000-25000">$10,000 - $25,000</option>
+                  <option value="25000+">$25,000+</option>
+                  <option value="not-sure">Not Sure / Not Above</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="message"
+                  >Project Details *</label
+                >
+                <textarea
+                  id="message"
+                  name="message"
+                  class="form-control"
+                  rows="6"
+                  required
+                  placeholder="Tell us about your project requirements, timeline, and expectations..."
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input
+                    type="checkbox"
+                    id="newsletterOptIn"
+                    name="newsletterOptIn"
+                    checked
+                  />
+                  <span
+                    >Subscribe to our newsletter for tech insights and
+                    updates</span
+                  >
+                </label>
+              </div>
+
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input
+                    type="checkbox"
+                    id="agreeTerms"
+                    name="agreeTerms"
+                    required
+                  />
+                  <span
+                    >I agree to receive communication via selected platforms
+                    *</span
+                  >
+                </label>
+              </div>
+
+              <button
+                type="button"
+                class="btn btn-primary"
+                id="sendFeedbackBtn"
+                style="width: 100%"
+              >
+                <i class="fas fa-paper-plane"></i> Send Feedback
+              </button>
+
+              <div id="formStatus" class="form-status"></div>
+            </form>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Contact Section -->
-<section class="contact-section" id="contact">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="animate-fade-up">Get In Touch</h2>
-            <p class="animate-fade-up delay-100">Ready to transform your digital presence? Contact us today for a free consultation</p>
-        </div>
-        
-        <div class="contact-container">
-            <div class="contact-info animate-fade-up">
-                <h3>Start Your Digital Journey</h3>
-                <p>Whether you need a new website, custom software, or digital transformation consulting, we're here to help. Reach out to discuss your project requirements.</p>
-                
-                <div class="contact-details">
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h4>Phone</h4>
-                            <p><a href="tel:+263787182780">+263 78 718 2780</a></p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h4>Email</h4>
-                            <p><a href="mailto:nashdigitechsolutions@gmail.com">nashdigitechsolutions@gmail.com</a></p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="contact-text">
-                            <h4>Address</h4>
-                            <p><a href="https://maps.google.com/?q=Victoria+Falls+Zimbabwe" target="_blank">Victoria Falls, Zimbabwe</a></p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="social-media-platforms">
-                    <h4>Connect With Us</h4>
-                    <div class="social-icons">
-                        <a href="https://wa.me/263787182780" class="social-icon" target="_blank" title="WhatsApp">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                        <a href="https://t.me/nashdigitech" class="social-icon" target="_blank" title="Telegram">
-                            <i class="fab fa-telegram"></i>
-                        </a>
-                        <a href="https://www.instagram.com/nashdigitech" class="social-icon" target="_blank" title="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://www.facebook.com/nashdigitech" class="social-icon" target="_blank" title="Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="https://twitter.com/nashdigitech" class="social-icon" target="_blank" title="Twitter/X">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/company/nash-digitech" class="social-icon" target="_blank" title="LinkedIn">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="https://www.tiktok.com/@nashdigitech" class="social-icon" target="_blank" title="TikTok">
-                            <i class="fab fa-tiktok"></i>
-                        </a>
-                        <a href="https://www.snapchat.com/add/nashdigitech" class="social-icon" target="_blank" title="Snapchat">
-                            <i class="fab fa-snapchat-ghost"></i>
-                        </a>
-                        <a href="https://join.skype.com/invite/nashdigitech" class="social-icon" target="_blank" title="Skype">
-                            <i class="fab fa-skype"></i>
-                        </a>
-                        <a href="https://signal.me/#p/nashdigitech" class="social-icon" target="_blank" title="Signal">
-                            <i class="fas fa-comment"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="business-hours">
-                    <h4>Business Hours</h4>
-                    <p><i class="far fa-clock"></i> Monday - Friday: 8:00 AM - 6:00 PM</p>
-                    <p><i class="far fa-clock"></i> Saturday: 9:00 AM - 1:00 PM</p>
-                    <p><i class="fas fa-headset"></i> 24/7 Emergency Support Available</p>
-                </div>
-                
-                <div class="pricing-summary">
-                    <h4>Starting Prices</h4>
-                    <ul>
-                        <li><i class="fas fa-check"></i> Website Design: <strong>$500+</strong></li>
-                        <li><i class="fas fa-check"></i> Mobile Apps: <strong>$250+</strong></li>
-                        <li><i class="fas fa-check"></i> System Development (Web): <strong>$700+</strong></li>
-                        <li><i class="fas fa-check"></i> System Development (Non-Web): <strong>$1,000+</strong></li>
-                        <li><i class="fas fa-check"></i> Digital Marketing: <strong>$100/month</strong></li>
-                        <li><i class="fas fa-check"></i> Creative Design: <strong>$75+</strong></li>
-                    </ul>
-                </div>
-                
-                <div class="signature-box">
-                    <div class="signature-name">Ian T. Dzingira</div>
-                    <div class="signature-title">CEO and Founder</div>
-                    <div class="signature-contact">
-                        <p><i class="fas fa-quote-left"></i> From Code to Cognition: Your Complete Technology Partner</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="contact-form animate-fade-up delay-100">
-                <form id="contactForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label" for="name">Full Name *</label>
-                            <input type="text" id="name" name="name" class="form-control" required placeholder="Enter your full name">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" class="form-control" required placeholder="your@email.com">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="+263 xxx xxx xxx">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="service">Service Interested In *</label>
-                        <select id="service" name="service" class="form-control" required>
-                            <option value="">Select a service</option>
-                            <option value="website-design" data-price="$500+">Website Design ($500+)</option>
-                            <option value="mobile-app" data-price="$250+">Mobile App Development ($250+)</option>
-                            <option value="system-non-web" data-price="$1,000+">System Development - Non-Web ($1,000+)</option>
-                            <option value="system-web" data-price="$700+">System Development - Web ($700+)</option>
-                            <option value="digital-marketing" data-price="$100/month">Digital Marketing ($100/month)</option>
-                            <option value="creative-design" data-price="$75+">Creative Design ($75+)</option>
-                            <option value="ai-ml">AI & Machine Learning</option>
-                            <option value="consulting">Technology Consulting</option>
-                            <option value="training">Skills Training</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="budget">Project Budget (USD)</label>
-                        <select id="budget" name="budget" class="form-control">
-                            <option value="">Select budget range</option>
-                            <option value="500-1000">$500 - $1,000</option>
-                            <option value="1000-5000">$1,000 - $5,000</option>
-                            <option value="5000-10000">$5,000 - $10,000</option>
-                            <option value="10000-25000">$10,000 - $25,000</option>
-                            <option value="25000+">$25,000+</option>
-                            <option value="not-sure">Not Sure / Need Quote</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="message">Project Details *</label>
-                        <textarea id="message" name="message" class="form-control" rows="6" required placeholder="Tell us about your project requirements, timeline, and expectations..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="newsletterOptIn" name="newsletterOptIn" checked>
-                            <span>Subscribe to our newsletter for tech insights and updates</span>
-                        </label>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
-                            <span>I agree to receive communication via selected platforms *</span>
-                        </label>
-                    </div>
-                    
-                    <button type="button" class="btn btn-primary" id="sendFeedbackBtn" style="width: 100%;">
-                        <i class="fas fa-paper-plane"></i> Send Feedback
-                    </button>
-                    
-                    <div id="formStatus" class="form-status"></div>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Social Media Platform Modal -->
-<div class="modal" id="socialMediaModal">
-    <div class="modal-content">
+    <!-- Social Media Platform Modal -->
+    <div class="modal" id="socialMediaModal">
+      <div class="modal-content">
         <div class="modal-header">
-            <h3>Select Contact Platform</h3>
-            <button class="modal-close" id="closeSocialModal">&times;</button>
+          <h3>Select Contact Platform</h3>
+          <button class="modal-close" id="closeSocialModal">&times;</button>
         </div>
         <div class="modal-body">
-            <p>Where would you like us to contact you? (Select one or more)</p>
-            <div class="social-platform-options">
-                <label class="platform-option-modal">
-                    <input type="checkbox" name="contact-platform" value="whatsapp">
-                    <div class="platform-content">
-                        <i class="fab fa-whatsapp"></i>
-                        <span>WhatsApp</span>
-                    </div>
-                </label>
-                
-                <label class="platform-option-modal">
-                    <input type="checkbox" name="contact-platform" value="telegram">
-                    <div class="platform-content">
-                        <i class="fab fa-telegram"></i>
-                        <span>Telegram</span>
-                    </div>
-                </label>
-                
-                <label class="platform-option-modal">
-                    <input type="checkbox" name="contact-platform" value="instagram">
-                    <div class="platform-content">
-                        <i class="fab fa-instagram"></i>
-                        <span>Instagram</span>
-                    </div>
-                </label>
-                
-                <label class="platform-option-modal">
-                    <input type="checkbox" name="contact-platform" value="facebook">
-                    <div class="platform-content">
-                        <i class="fab fa-facebook"></i>
-                        <span>Facebook</span>
-                    </div>
-                </label>
-                
-                <label class="platform-option-modal">
-                    <input type="checkbox" name="contact-platform" value="twitter">
-                    <div class="platform-content">
-                        <i class="fab fa-twitter"></i>
-                        <span>Twitter/X</span>
-                    </div>
-                </label>
-                
-                <label class="platform-option-modal">
-                    <input type="checkbox" name="contact-platform" value="linkedin">
-                    <div class="platform-content">
-                        <i class="fab fa-linkedin"></i>
-                        <span>LinkedIn</span>
-                    </div>
-                </label>
-                
-                <label class="platform-option-modal">
-                    <input type="checkbox" name="contact-platform" value="tiktok">
-                    <div class="platform-content">
-                        <i class="fab fa-tiktok"></i>
-                        <span>TikTok</span>
-                    </div>
-                </label>
-                
-                <label class="platform-option-modal">
-                    <input type="checkbox" name="contact-platform" value="signal">
-                    <div class="platform-content">
-                        <i class="fas fa-comment"></i>
-                        <span>Signal</span>
-                    </div>
-                </label>
-                
-                <label class="platform-option-modal">
-                    <input type="checkbox" name="contact-platform" value="skype">
-                    <div class="platform-content">
-                        <i class="fab fa-skype"></i>
-                        <span>Skype</span>
-                    </div>
-                </label>
-                
-                <label class="platform-option-modal">
-                    <input type="checkbox" name="contact-platform" value="email">
-                    <div class="platform-content">
-                        <i class="fas fa-envelope"></i>
-                        <span>Email</span>
-                    </div>
-                </label>
-                
-                <label class="platform-option-modal">
-                    <input type="checkbox" name="contact-platform" value="phone">
-                    <div class="platform-content">
-                        <i class="fas fa-phone"></i>
-                        <span>Phone Call</span>
-                    </div>
-                </label>
-                
-                <label class="platform-option-modal">
-                    <input type="checkbox" name="contact-platform" value="zoom">
-                    <div class="platform-content">
-                        <i class="fas fa-video"></i>
-                        <span>Zoom</span>
-                    </div>
-                </label>
-            </div>
-            
-            <div class="modal-actions">
-                <button class="btn btn-secondary" id="cancelSocial">Cancel</button>
-                <button class="btn btn-primary" id="confirmPlatforms">
-                    <i class="fas fa-paper-plane"></i> Send via Selected Platforms
-                </button>
-            </div>
+          <p>Where would you like us to contact you? (Select one or more)</p>
+          <div class="social-platform-options">
+            <label class="platform-option-modal">
+              <input type="checkbox" name="contact-platform" value="whatsapp" />
+              <div class="platform-content">
+                <i class="fab fa-whatsapp"></i>
+                <span>WhatsApp</span>
+              </div>
+            </label>
+
+            <label class="platform-option-modal">
+              <input
+                type="checkbox"
+                name="contact-platform"
+                value="instagram"
+              />
+              <div class="platform-content">
+                <i class="fab fa-instagram"></i>
+                <span>Instagram</span>
+              </div>
+            </label>
+
+            <label class="platform-option-modal">
+              <input type="checkbox" name="contact-platform" value="facebook" />
+              <div class="platform-content">
+                <i class="fab fa-facebook"></i>
+                <span>Facebook</span>
+              </div>
+            </label>
+
+            <label class="platform-option-modal">
+              <input type="checkbox" name="contact-platform" value="twitter" />
+              <div
+                class="platform-content"
+                style="display: flex; align-items: center"
+              >
+                <!-- Using the SVG inside the platform option for consistency -->
+                <span
+                  class="platform-icon"
+                  style="
+                    margin-right: 12px;
+                    display: flex;
+                    align-items: center;
+                    width: 20px;
+                  "
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"
+                    />
+                  </svg>
+                </span>
+                <span>X (Twitter)</span>
+              </div>
+            </label>
+
+            <label class="platform-option-modal">
+              <input type="checkbox" name="contact-platform" value="youtube" />
+              <div class="platform-content">
+                <i class="fab fa-youtube"></i>
+                <span>YouTube</span>
+              </div>
+            </label>
+
+            <label class="platform-option-modal">
+              <input type="checkbox" name="contact-platform" value="email" />
+              <div class="platform-content">
+                <i class="fas fa-envelope"></i>
+                <span>Email</span>
+              </div>
+            </label>
+
+            <label class="platform-option-modal">
+              <input type="checkbox" name="contact-platform" value="phone" />
+              <div class="platform-content">
+                <i class="fas fa-phone"></i>
+                <span>Phone Call</span>
+              </div>
+            </label>
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn btn-secondary" id="cancelSocial">Cancel</button>
+            <button class="btn btn-primary" id="confirmPlatforms">
+              <i class="fas fa-paper-plane"></i> Send via Selected Platforms
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
     <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/263787182780?text=Hello%20Nash%20Digitech%20Solutions!%20I'm%20interested%20in%20your%20website%20design%20and%20development%20services.%20Can%20we%20discuss%20my%20project%20requirements?" target="_blank" class="whatsapp-float">
-        <i class="fab fa-whatsapp"></i>
-        <div class="whatsapp-tooltip">Chat with us on WhatsApp!</div>
+    <a
+      href="https://wa.me/263787182780?text=Hello%20Nash%20Digitech%20Solutions!%20I'm%20interested%20in%20your%20website%20design%20and%20development%20services.%20Can%20we%20discuss%20my%20project%20requirements?"
+      target="_blank"
+      class="whatsapp-float"
+    >
+      <i class="fab fa-whatsapp"></i>
+      <div class="whatsapp-tooltip">Chat with us on WhatsApp!</div>
     </a>
 
     <!-- Live Chat Button -->
     <div class="live-chat" id="liveChat">
-        <div class="chat-header">
-            <div class="chat-title">
-                <i class="fas fa-comments"></i>
-                <span>Live Chat</span>
-            </div>
-            <button class="chat-close" id="chatClose">
-                <i class="fas fa-times"></i>
-            </button>
+      <div class="chat-header">
+        <div class="chat-title">
+          <i class="fas fa-comments"></i>
+          <span>Live Chat</span>
         </div>
-        <div class="chat-body">
-            <div class="chat-messages" id="chatMessages">
-                <div class="chat-message bot">
-                    <div class="message-content">
-                        <p>Hello! 👋 I'm Nash, your virtual assistant. How can I help you today?</p>
-                    </div>
-                </div>
+        <button class="chat-close" id="chatClose">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="chat-body">
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-message bot">
+            <div class="message-content">
+              <p>
+                Hello! 👋 I'm Nash, your virtual assistant. How can I help you
+                today?
+              </p>
             </div>
-            <div class="chat-input">
-                <input type="text" id="chatInput" placeholder="Type your message...">
-                <button id="chatSend"><i class="fas fa-paper-plane"></i></button>
-            </div>
+          </div>
         </div>
+        <div class="chat-input">
+          <input
+            type="text"
+            id="chatInput"
+            placeholder="Type your message..."
+          />
+          <button id="chatSend"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
     </div>
 
     <!-- Chat Toggle Button -->
     <button class="chat-toggle" id="chatToggle">
-        <i class="fas fa-comment-alt"></i>
-        <span class="chat-notification">1</span>
+      <i class="fas fa-comment-alt"></i>
+      <span class="chat-notification">1</span>
     </button>
 
     <!-- Back to Top Button -->
     <a href="#home" class="back-to-top" id="backToTop">
-        <i class="fas fa-chevron-up"></i>
+      <i class="fas fa-chevron-up"></i>
     </a>
 
     <!-- Footer -->
     <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-about">
-                    <div class="footer-logo">
-                        <span>Nash</span>Digitech
-                    </div>
-                    <p>From Code to Cognition: Your Complete Technology Partner. We build intelligent software, design compelling brands, and train the next generation of tech leaders.</p>
-                    <div class="social-icons">
-                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                
-                <div class="footer-links">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#pillars">Our Pillars</a></li>
-                        <li><a href="#portfolio">Portfolio</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#testimonials">Testimonials</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-services">
-                    <h3>Our Services</h3>
-                    <ul>
-                        <li><a href="#services">Website Design</a></li>
-                        <li><a href="#services">Web Development</a></li>
-                        <li><a href="#services">Mobile Apps</a></li>
-                        <li><a href="#services">AI & Machine Learning</a></li>
-                        <li><a href="#services">Digital Marketing</a></li>
-                        <li><a href="#services">IT Consulting</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-contact">
-                    <h3>Contact Info</h3>
-                    <p><i class="fas fa-envelope"></i> <a href="mailto:nashdigitechsolutions@gmail.com">nashdigitechsolutions@gmail.com</a></p>
-                    <p><i class="fas fa-phone"></i> <a href="tel:+263787182780">+263 78 718 2780</a></p>
-                    <p><i class="fas fa-map-marker-alt"></i> <a href="https://maps.google.com/?q=Victoria+Falls+Zimbabwe" target="_blank">Victoria Falls, Zimbabwe</a></p>
-                    <p><i class="fas fa-clock"></i> 24/7 Support Available</p>
-                </div>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-about">
+            <div class="footer-logo"><span>Nash</span>Digitech</div>
+            <p>
+              From Code to Cognition: Your Complete Technology Partner. We build
+              intelligent software, design compelling brands, and train the next
+              generation of tech leaders.
+            </p>
+            <div class="social-icons">
+              <a
+                href="https://www.facebook.com/share/195SwG8c2m/"
+                class="social-icon"
+                target="_blank"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a
+                href="https://x.com/ianrikes"
+                class="social-icon"
+                target="_blank"
+                title="X (Twitter)"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"
+                  />
+                </svg>
+              </a>
+              <a
+                href="https://www.instagram.com/nashdigitechsolutions?igsh=MWc4a2hheHNsbnliMg=="
+                class="social-icon"
+                target="_blank"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a
+                href="https://youtube.com/@nashdigitechsolutions?si=tGFhf5Xv-qzIu2fU"
+                class="social-icon"
+                target="_blank"
+                ><i class="fab fa-youtube"></i
+              ></a>
+              <a
+                href="mailto:nashdigitechsolutions@gmail.com"
+                class="social-icon"
+                target="_blank"
+                ><i class="fas fa-envelope"></i
+              ></a>
             </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; <span id="currentYear"></span> Nash Digitech Solutions. All Rights Reserved. | Web, App, AI, Robotics, Design, & Training</p>
-                <div class="footer-extra">
-                    <a href="privacy.html">Privacy Policy</a> | 
-                    <a href="terms.html">Terms of Service</a> |
-                    <a href="admin.html">Admin</a>
-                </div>
-            </div>
+          </div>
+
+          <div class="footer-links">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#pillars">Our Pillars</a></li>
+              <li><a href="#portfolio">Portfolio</a></li>
+              <li><a href="#services">Services</a></li>
+              <li><a href="#testimonials">Testimonials</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-services">
+            <h3>Our Services</h3>
+            <ul>
+              <li><a href="#services">Website Design</a></li>
+              <li><a href="#services">Web Development</a></li>
+              <li><a href="#services">Mobile Apps</a></li>
+              <li><a href="#services">AI & Machine Learning</a></li>
+              <li><a href="#services">Digital Marketing</a></li>
+              <li><a href="#services">IT Consulting</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-contact">
+            <h3>Contact Info</h3>
+            <p>
+              <i class="fas fa-envelope"></i>
+              <a href="mailto:nashdigitechsolutions@gmail.com"
+                >nashdigitechsolutions@gmail.com</a
+              >
+            </p>
+            <p>
+              <i class="fas fa-phone"></i>
+              <a href="tel:+263787182780">+263 78 718 2780</a>
+            </p>
+            <p>
+              <i class="fas fa-map-marker-alt"></i>
+              <a
+                href="https://maps.google.com/?q=Victoria+Falls+Zimbabwe"
+                target="_blank"
+                >Victoria Falls, Zimbabwe</a
+              >
+            </p>
+            <p><i class="fas fa-clock"></i> 24/7 Support Available</p>
+          </div>
         </div>
+
+        <div class="footer-bottom">
+          <p>
+            &copy; <span id="currentYear"></span> Nash Digitech Solutions. All
+            Rights Reserved. | Web, App, AI, Robotics, Design, & Training
+          </p>
+          <div class="footer-extra">
+            <a href="privacy.html">Privacy Policy</a> |
+            <a href="terms.html">Terms of Service</a> |
+            <a href="admin.html">Admin</a>
+          </div>
+        </div>
+      </div>
     </footer>
 
     <!-- Scripts -->
@@ -877,5 +1308,127 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="https://smtpjs.com/v3/smtp.js"></script>
     <script src="script.js"></script>
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        /* Cookie Banner Styles */
+        .cookie-banner {
+            position: fixed;
+            bottom: -100%; /* Hidden by default */
+            left: 0;
+            right: 0;
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 9999;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+            transition: bottom 0.5s ease-in-out;
+        }
+
+        .cookie-banner.show {
+            bottom: 0;
+        }
+
+        .cookie-content {
+            max-width: 1000px;
+            margin-bottom: 15px;
+        }
+
+        .cookie-content p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .cookie-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .cookie-btn {
+            padding: 10px 25px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-accept {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-decline {
+            background: transparent;
+            border: 1px solid #bdc3c7;
+            color: #bdc3c7;
+        }
+
+        .cookie-btn:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+
+        @media (min-width: 768px) {
+            .cookie-banner {
+                flex-direction: row;
+                text-align: left;
+                justify-content: space-between;
+                padding: 15px 50px;
+            }
+            .cookie-content {
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cookie Banner HTML -->
+    <div id="cookieBanner" class="cookie-banner">
+        <div class="cookie-content">
+            <p>
+                We use cookies to enhance your experience, serve personalized ads or content, and analyze our traffic. 
+                By clicking "Accept All", you consent to our use of cookies.
+            </p>
+        </div>
+        <div class="cookie-buttons">
+            <button class="cookie-btn btn-decline" onclick="closeBanner('declined')">Decline</button>
+            <button class="cookie-btn btn-accept" onclick="closeBanner('accepted')">Accept All</button>
+        </div>
+    </div>
+
+    <script>
+        // Check if user has already made a choice
+        window.onload = function() {
+            const cookieChoice = localStorage.getItem('nash_cookie_consent');
+            if (!cookieChoice) {
+                // Show banner after a slight delay
+                setTimeout(() => {
+                    document.getElementById('cookieBanner').classList.add('show');
+                }, 1000);
+            }
+        };
+
+        function closeBanner(choice) {
+            // Save choice to localStorage (lasts until cleared)
+            localStorage.setItem('nash_cookie_consent', choice);
+            
+            // Hide the banner
+            document.getElementById('cookieBanner').classList.remove('show');
+            
+            console.log("User " + choice + " cookies.");
+        }
+    </script>
+
 </body>
 </html>
