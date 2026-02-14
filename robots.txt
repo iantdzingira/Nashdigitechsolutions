@@ -1,0 +1,7 @@
+# robots.txt for Nash Digitech Solutions
+User-agent: *
+Disallow: /admin.html
+Allow: /
+
+# Sitemap location
+Sitemap: https://nashdigitechsolutions.co.zw/sitemap.xml
