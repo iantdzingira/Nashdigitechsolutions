@@ -1240,164 +1240,242 @@ header.scrolled {
     font-size: 0.95rem;
 }    
 
-/* ===== WhatsApp Button ===== */
+/* WhatsApp Button - smaller */
 .whatsapp-float {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    width: 70px;
-    height: 70px;
+    width: 55px;                /* reduced */
+    height: 55px;               /* reduced */
     background-color: #25D366;
     color: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 1.6rem;          /* adjusted */
     box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
     z-index: 999;
-    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
+    transition: var(--transition);
     animation: pulse 2s infinite;
     text-decoration: none;
 }
 
 .whatsapp-float:hover {
     background-color: #128C7E;
-    transform: scale(1.1) rotate(5deg);
+    transform: scale(1.1);
     box-shadow: 0 8px 25px rgba(37, 211, 102, 0.6);
 }
 
+/* Tooltip repositioned for smaller button */
 .whatsapp-tooltip {
     position: absolute;
-    right: 80px;
-    background-color: var(--dark-navy, #0F1B4D);
+    right: 65px;                 /* was 80px */
+    background-color: var(--dark-navy);
     color: white;
-    padding: 8px 14px;
-    border-radius: 40px;
+    padding: 8px 12px;           /* slightly smaller */
+    border-radius: 8px;
     font-size: 0.85rem;
-    font-weight: 500;
     white-space: nowrap;
     opacity: 0;
-    pointer-events: none;
     transition: opacity 0.3s ease;
-    box-shadow: var(--shadow-md);
+    pointer-events: none;
 }
 
-.whatsapp-float:hover .whatsapp-tooltip {
-    opacity: 1;
-}
-
-/* ===== Live Chat Toggle Button ===== */
-.chat-toggle {
-    position: fixed;
-    bottom: 120px;
-    right: 30px;
-    width: 70px;
-    height: 70px;
-    background: var(--gradient-primary);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    box-shadow: var(--shadow-lg), 0 5px 15px rgba(67, 97, 238, 0.5);
-    z-index: 997;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
-    animation: gentlePulse 3s infinite;
-}
-
-@keyframes gentlePulse {
-    0% { box-shadow: var(--shadow-lg), 0 5px 15px rgba(67, 97, 238, 0.5); }
-    50% { box-shadow: var(--shadow-lg), 0 10px 25px rgba(67, 97, 238, 0.8); transform: scale(1.02); }
-    100% { box-shadow: var(--shadow-lg), 0 5px 15px rgba(67, 97, 238, 0.5); }
-}
-
-.chat-toggle:hover {
-    transform: scale(1.12) rotate(3deg);
-    background: linear-gradient(145deg, #3a5bbe, #1e3a8a);
-    box-shadow: var(--shadow-lg), 0 15px 30px rgba(67, 97, 238, 0.7);
-}
-
-.chat-notification {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    background: var(--accent);
-    color: white;
-    font-size: 0.7rem;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    border: 2px solid white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-/* ===== Live Chat Window ===== */
+/* Live Chat window – increased z-index */
 .live-chat {
     position: fixed;
     bottom: 120px;
     right: 30px;
     width: 350px;
     background: var(--white);
-    border-radius: 24px;
-    box-shadow: var(--shadow-lg), 0 10px 30px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
+    border-radius: 15px;
+    box-shadow: var(--shadow-lg);
+    z-index: 1001;               /* above toggle & WhatsApp */
     display: none;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(4px);
+    border: 1px solid var(--gray-light);
 }
 
 .live-chat.active {
     display: block;
-    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: fadeUp 0.3s ease;
 }
 
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Chat header unchanged */
+.chat-header {
+    background: var(--gradient-primary);
+    color: var(--white);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* ... rest of chat styles (header, messages, input) remain exactly as before ... */
-
-/* ===== MOBILE ADJUSTMENTS – NO OVERLAP ===== */
-@media (max-width: 768px) {
-    .whatsapp-float {
-        bottom: 20px;
-        right: 20px;
-        width: 60px;
-        height: 60px;
-        font-size: 1.8rem;
-    }
-
-    .chat-toggle {
-        bottom: 100px;  /* sits above WhatsApp */
-        right: 20px;
-        width: 60px;
-        height: 60px;
-        font-size: 1.6rem;
-    }
-
-    .live-chat {
-        bottom: 100px;
-        right: 20px;
-        width: 300px;
-    }
-
-    /* Hide WhatsApp when chat is open */
-    body.chat-open .whatsapp-float {
-        display: none;
-    }
+.chat-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 1.1rem;
 }
 
-/* Fallback for browsers without :has() – we'll use JS to add/remove .chat-open on body */
+.chat-close {
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.chat-body {
+    padding: 20px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.chat-message {
+    margin-bottom: 15px;
+    display: flex;
+}
+
+.chat-message.bot {
+    justify-content: flex-start;
+}
+
+.chat-message.user {
+    justify-content: flex-end;
+    position: relative;          /* for double ticks */
+}
+
+.message-content {
+    max-width: 80%;
+    padding: 12px 15px;
+    border-radius: 18px;
+    line-height: 1.4;
+}
+
+.chat-message.bot .message-content {
+    background: var(--gray-light);
+    border-bottom-left-radius: 5px;
+}
+
+.chat-message.user .message-content {
+    background: var(--gradient-primary);
+    color: var(--white);
+    border-bottom-right-radius: 5px;
+}
+
+/* Double ticks for user messages (appear after the bubble) */
+.chat-message.user::after {
+    content: "\f560";            /* Font Awesome double-check */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 0.8rem;
+    color: #34B7F1;              /* light blue tick */
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 5px;
+    line-height: 1;
+}
+
+/* Chat input area */
+.chat-input {
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid var(--gray-light);
+    border-radius: 25px;
+    font-size: 0.95rem;
+}
+
+.chat-input input:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+}
+
+/* New send button style – rectangular with double‑check icon */
+.chat-input button {
+    width: auto;                 /* remove fixed width */
+    height: auto;                /* remove fixed height */
+    padding: 0 20px;             /* horizontal padding */
+    background: var(--gradient-primary);
+    color: var(--white);
+    border: none;
+    border-radius: 30px;         /* rounded rectangle */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;                    /* space if text appears */
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.chat-input button:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
+}
+
+/* Replace the icon inside the button with double‑check (assumes Font Awesome) */
+.chat-input button i::before {
+    content: "\f560";            /* fa-check-double */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+
+/* Chat toggle button – smaller & above WhatsApp */
+.chat-toggle {
+    position: fixed;
+    bottom: 120px;
+    right: 30px;
+    width: 55px;                 /* reduced */
+    height: 55px;                /* reduced */
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;           /* adjusted */
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;               /* above WhatsApp */
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.chat-toggle:hover {
+    transform: scale(1.1);
+}
+
+.chat-notification {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--accent);
+    color: white;
+    font-size: 0.7rem;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
 
 /* Back to Top */
 .back-to-top {
