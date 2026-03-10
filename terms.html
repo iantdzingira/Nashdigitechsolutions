@@ -1,15 +1,439 @@
-<section class="policy-container">
-    <h2>Terms of Service</h2>
-    
-    <h3>1. Service Agreement</h3>
-    <p>By engaging Nash Digitech Solutions, you agree to the terms outlined here. All project timelines and specific deliverables will be governed by individual Project Service Agreements.</p>
-    
-    <h3>2. Payments & Deposits</h3>
-    <p>Project starts typically require a commencement deposit. All prices quoted on our website (e.g., Website Design starting at $500) are base estimates and may vary based on project complexity.</p>
-    
-    <h3>3. Intellectual Property</h3>
-    <p>Upon final payment, the client owns the end-product (website/app code). Nash Digitech Solutions retains the right to display the work in our portfolio for promotional purposes unless otherwise agreed in writing.</p>
-    
-    <h3>4. Liability</h3>
-    <p>While we strive for 100% uptime and bug-free code, Nash Digitech Solutions is not liable for indirect losses resulting from service interruptions beyond our immediate control.</p>
-</section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service – Nash Digitech Solutions</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #1a3b5d;        /* deep navy blue */
+      --primary-light: #2c4e73;
+      --accent: #c44536;          /* terracotta / orange */
+      --bg-light: #f9fafc;
+      --text-dark: #1e293b;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+      --white: #ffffff;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.7;
+      padding: 2rem 1.5rem;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background-color: var(--white);
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+      padding: 3rem 2.5rem;
+      border: 1px solid var(--border);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .last-updated {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .last-updated i {
+      color: var(--accent);
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin: 2.5rem 0 1rem;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin: 1.8rem 0 0.8rem;
+    }
+
+    p, li {
+      color: var(--text-dark);
+      margin-bottom: 1rem;
+    }
+
+    ul, ol {
+      padding-left: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    li {
+      margin-bottom: 0.4rem;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-note {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* Modal styles */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal {
+      background: var(--white);
+      border-radius: 24px;
+      max-width: 450px;
+      width: 90%;
+      padding: 2rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      border-top: 5px solid var(--accent);
+      position: relative;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal h3 {
+      font-size: 1.6rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    .modal p {
+      color: var(--text-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    .modal .date-highlight {
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .modal-close {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.7rem 2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .modal-close:hover {
+      background-color: var(--primary-light);
+    }
+
+    /* WhatsApp Floating Button (same as main site) */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 70px;
+      height: 70px;
+      background-color: #25D366;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+      z-index: 999;
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+      text-decoration: none;
+    }
+
+    .whatsapp-float:hover {
+      background-color: #128C7E;
+      transform: scale(1.1);
+      box-shadow: 0 8px 25px rgba(37, 211, 102, 0.6);
+    }
+
+    .whatsapp-tooltip {
+      position: absolute;
+      right: 80px;
+      background-color: var(--primary);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .whatsapp-float:hover .whatsapp-tooltip {
+      opacity: 1;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* responsive */
+    @media (max-width: 600px) {
+      .container {
+        padding: 2rem 1.5rem;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      .whatsapp-float {
+        width: 56px;
+        height: 56px;
+        font-size: 1.6rem;
+        bottom: 20px;
+        right: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/263787182780?text=Hello%20Nash%20Digitech%20Solutions!%20I'm%20interested%20in%20your%20services." 
+     target="_blank" 
+     class="whatsapp-float">
+    <i class="fab fa-whatsapp"></i>
+    <div class="whatsapp-tooltip">Chat with us on WhatsApp!</div>
+  </a>
+
+  <div class="container">
+    <h1>Terms of Service</h1>
+    <div class="last-updated">
+      <i>📅</i> Last Updated: <span id="lastUpdatedDate"></span>
+    </div>
+
+    <p>Welcome to Nash Digitech Solutions. By engaging our services, accessing our website, or using any of our products, you agree to be bound by the following terms and conditions. Please read them carefully. These terms form the basis of our relationship and govern all projects, whether website design, software development, consulting, or training.</p>
+
+    <h2>1. Service Agreement & Scope</h2>
+    <p>All services provided by Nash Digitech Solutions (“we”, “us”, “our”) are subject to a separate Project Service Agreement (PSA) that will be signed by both parties before work commences. The PSA will detail deliverables, timelines, milestones, and any specific requirements. In case of conflict between this document and the PSA, the PSA shall prevail.</p>
+    <p>For smaller engagements (e.g., one‑off design tasks) a simplified Statement of Work may be used; nevertheless, these Terms of Service still apply.</p>
+
+    <h2>2. Payments, Deposits & Fees</h2>
+    <p>Unless otherwise agreed in writing:</p>
+    <ul>
+      <li>A non‑refundable deposit of <strong>50%</strong> is required to start any project. The remaining balance is due upon completion and before final delivery of source files or live deployment.</li>
+      <li>All prices quoted on our website (e.g., “Website Design starting at $500”) are estimates and may be adjusted based on final scope, complexity, or additional features requested.</li>
+      <li>Invoices are payable within 7 days of receipt. Late payments may incur a 1.5% monthly interest charge and work may be paused until cleared.</li>
+      <li>For ongoing services (maintenance, marketing, hosting), fees are billed monthly in advance and are non‑refundable. Cancellation requires 30 days’ written notice.</li>
+      <li>All fees are in United States Dollars (USD) unless otherwise stated. Bank transfer charges are the responsibility of the client.</li>
+    </ul>
+
+    <h2>3. Intellectual Property Rights</h2>
+    <ul>
+      <li><strong>Ownership of Deliverables:</strong> Upon full payment, the client (“you”) owns the final delivered work (code, design files, content). You may use it for any lawful purpose.</li>
+      <li><strong>Portfolio & Promotion:</strong> We reserve the right to display the work in our portfolio, case studies, and promotional materials unless you request confidentiality in writing before project completion.</li>
+      <li><strong>Third‑Party Assets:</strong> Any fonts, images, libraries, or software licensed from third parties remain under their original licenses; we will advise you on any required attributions or additional purchases.</li>
+      <li><strong>Background IP:</strong> Any pre‑existing tools, frameworks, or code libraries owned by us remain our property, but we grant you a perpetual, royalty‑free, non‑exclusive license to use them as part of the delivered work.</li>
+      <li><strong>Unauthorised Use:</strong> You may not resell, redistribute, or sublicense our work as a template or stock product.</li>
+    </ul>
+
+    <h2>4. Client Responsibilities</h2>
+    <p>You agree to provide timely feedback, content (text, images, branding), and access to any required systems. Delays caused by the client may shift project timelines; we are not liable for such delays. If we do not receive necessary materials for more than 30 days, we may close the project and retain any deposits paid.</p>
+    <p>You are responsible for ensuring that all content you provide does not infringe any third‑party rights and complies with applicable laws.</p>
+
+    <h2>5. Revisions & Acceptance</h2>
+    <p>Our packages include a reasonable number of revision rounds (as stated in the PSA). Additional revisions may be billed at our standard hourly rate. The project is considered accepted 7 days after final deliverables are shared, unless you provide written feedback or a snag list within that period. After acceptance, further changes will be treated as new work.</p>
+
+    <h2>6. Confidentiality</h2>
+    <p>Both parties agree to keep confidential any proprietary information disclosed during the project. We will never share your login credentials, business data, or trade secrets. This obligation survives termination of our agreement. We may engage third‑party contractors under strict NDAs to assist with work; they are bound by the same confidentiality.</p>
+
+    <h2>7. Warranties & Support</h2>
+    <ul>
+      <li><strong>Warranty:</strong> We warrant that our work will conform to the agreed specifications for 30 days after acceptance. During this period, we will fix any bugs or errors at no cost. This warranty does not cover issues caused by third‑party software, hosting changes, or modifications made by you or others.</li>
+      <li><strong>Support:</strong> After 30 days, support and maintenance can be provided under a separate agreement. We do not warrant that the software will be error‑free or uninterrupted, or that it will meet your specific needs beyond the agreed scope.</li>
+      <li><strong>No Malicious Code:</strong> We warrant that deliverables will not contain any viruses, malware, or intentionally harmful code.</li>
+    </ul>
+
+    <h2>8. Limitation of Liability</h2>
+    <p>To the maximum extent permitted by law, Nash Digitech Solutions shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses, resulting from:</p>
+    <ul>
+      <li>Your use or inability to use our services;</li>
+      <li>Any unauthorized access to or alteration of your transmissions or data;</li>
+      <li>Statements or conduct of any third party on the service;</li>
+      <li>Any bugs, errors, or interruptions in service, even if we have been advised of the possibility of such damages.</li>
+    </ul>
+    <p>Our total liability for any claim arising from the project is limited to the amount you paid us for the specific project giving rise to the claim.</p>
+
+    <h2>9. Indemnification</h2>
+    <p>You agree to indemnify and hold harmless Nash Digitech Solutions, its employees, and contractors from any claims, damages, or expenses (including legal fees) arising out of your content, your use of our work, or your violation of any law or third‑party rights.</p>
+
+    <h2>10. Termination</h2>
+    <p>Either party may terminate a project with 7 days’ written notice if the other party materially breaches the agreement and fails to cure the breach within that period. Upon termination, you pay for all work completed up to that point, and we deliver all work products for which payment has been received. We may suspend work immediately if payment is overdue.</p>
+
+    <h2>11. Force Majeure</h2>
+    <p>Neither party shall be liable for delays or failures in performance resulting from causes beyond its reasonable control, including but not limited to acts of God, war, strikes, pandemics, or internet disruptions. We will notify you promptly and resume work as soon as practicable.</p>
+
+    <h2>12. Dispute Resolution & Governing Law</h2>
+    <p>These terms shall be governed by the laws of Zimbabwe. Any disputes arising out of or relating to these terms or our services shall first be attempted to be resolved through good‑faith negotiations. If unresolved, disputes shall be referred to arbitration in Victoria Falls, Zimbabwe, in accordance with the rules of the Zimbabwean Centre for Dispute Resolution. The arbitration shall be conducted in English, and the decision of the arbitrator shall be final and binding.</p>
+
+    <h2>13. Entire Agreement & Severability</h2>
+    <p>These Terms of Service, together with any Project Service Agreement, constitute the entire agreement between you and Nash Digitech Solutions regarding the subject matter. If any provision is found to be unenforceable, the remaining provisions shall remain in full force and effect.</p>
+
+    <h2>14. Changes to These Terms</h2>
+    <p>We may update these Terms of Service from time to time. The “Last Updated” date at the top of this page reflects the most recent revision. Your continued engagement with us after changes constitutes acceptance of the new terms. We will notify you of material changes via email or a notice on our website.</p>
+
+    <div class="footer-note">
+      <p>© <span id="currentYear"></span> Nash Digitech Solutions. All rights reserved. <a href="index.html">Return to Home</a></p>
+    </div>
+  </div>
+
+  <!-- Modal overlay (hidden by default) -->
+  <div class="modal-overlay" id="termsUpdateModal">
+    <div class="modal">
+      <h3>📋 Terms Updated</h3>
+      <p>Our Terms of Service were last updated on <span class="date-highlight" id="modalDate"></span>.</p>
+      <p>We encourage you to review the changes, especially if you are a current client or considering working with us.</p>
+      <button class="modal-close" id="closeModalBtn">I understand</button>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ---------- DYNAMIC LAST UPDATED DATE (always shows most recent 27th) ----------
+      function getLastUpdatedDate() {
+        const today = new Date();
+        const currentYear = today.getFullYear();
+        const currentMonth = today.getMonth(); // 0-11
+        const currentDay = today.getDate();
+
+        let year = currentYear;
+        let month = currentMonth;
+
+        // If today's day is less than 27, we use the previous month's 27th
+        if (currentDay < 27) {
+          // go back one month
+          if (currentMonth === 0) { // January
+            year = currentYear - 1;
+            month = 11; // December
+          } else {
+            month = currentMonth - 1;
+          }
+        }
+        // else use current month
+
+        // Create date object for the 27th of that month
+        const lastUpdated = new Date(year, month, 27);
+        
+        // Format: "March 27, 2026"
+        return lastUpdated.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      }
+
+      const lastUpdatedSpan = document.getElementById('lastUpdatedDate');
+      if (lastUpdatedSpan) {
+        lastUpdatedSpan.textContent = getLastUpdatedDate();
+      }
+
+      // ---------- SHOW MODAL IF TODAY IS THE 27TH, OR IF TEST PARAM IS PRESENT ----------
+      const today = new Date();
+      const urlParams = new URLSearchParams(window.location.search);
+      const forceModal = urlParams.has('test'); // for testing: add ?test to URL
+
+      if (today.getDate() === 27 || forceModal) {
+        const modal = document.getElementById('termsUpdateModal');
+        const modalDateSpan = document.getElementById('modalDate');
+        if (modalDateSpan) {
+          // Format today's date nicely (or the last updated date if forced)
+          const displayDate = forceModal ? getLastUpdatedDate() : today.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          modalDateSpan.textContent = displayDate;
+        }
+        if (modal) {
+          modal.style.display = 'flex';
+        }
+      }
+
+      // ---------- CLOSE MODAL ----------
+      const closeBtn = document.getElementById('closeModalBtn');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+          document.getElementById('termsUpdateModal').style.display = 'none';
+        });
+      }
+
+      // Optional: close if user clicks outside modal content
+      window.addEventListener('click', function(e) {
+        const modal = document.getElementById('termsUpdateModal');
+        if (e.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+
+      // ---------- CURRENT YEAR FOR FOOTER ----------
+      const yearSpan = document.getElementById('currentYear');
+      if (yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+      }
+    })();
+  </script>
+</body>
+</html>
