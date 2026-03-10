@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ – Nash Digitech Solutions</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #1a3b5d;
+      --primary-light: #2c4e73;
+      --accent: #c44536;
+      --bg-light: #f9fafc;
+      --text-dark: #1e293b;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+      --white: #ffffff;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.7;
+      padding: 2rem 1.5rem;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background-color: var(--white);
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+      padding: 3rem 2.5rem;
+      border: 1px solid var(--border);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .subhead {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .faq-item {
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .faq-item:hover {
+      border-color: var(--primary-light);
+      box-shadow: var(--shadow);
+    }
+
+    .faq-question {
+      background-color: var(--white);
+      padding: 1.2rem 1.8rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      color: var(--primary);
+      transition: background-color 0.2s;
+    }
+
+    .faq-question:hover {
+      background-color: #f8fafc;
+    }
+
+    .faq-question i {
+      color: var(--accent);
+      transition: transform 0.3s ease;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      padding: 0 1.8rem;
+      background-color: #f9fafc;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      border-top: 0 solid var(--border);
+    }
+
+    .faq-answer p {
+      margin: 1.5rem 0;
+      color: var(--text-dark);
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 300px; /* enough for typical answers */
+      padding: 0 1.8rem;
+      border-top-width: 1px;
+    }
+
+    .faq-item.active .faq-question i {
+      transform: rotate(180deg);
+    }
+
+    .footer-note {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* WhatsApp Floating Button */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 70px;
+      height: 70px;
+      background-color: #25D366;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+      z-index: 999;
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+      text-decoration: none;
+    }
+
+    .whatsapp-float:hover {
+      background-color: #128C7E;
+      transform: scale(1.1);
+      box-shadow: 0 8px 25px rgba(37, 211, 102, 0.6);
+    }
+
+    .whatsapp-tooltip {
+      position: absolute;
+      right: 80px;
+      background-color: var(--primary);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .whatsapp-float:hover .whatsapp-tooltip {
+      opacity: 1;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 2rem 1.5rem; }
+      h1 { font-size: 2rem; }
+      .whatsapp-float {
+        width: 56px;
+        height: 56px;
+        font-size: 1.6rem;
+        bottom: 20px;
+        right: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/263787182780?text=Hello%20Nash%20Digitech%20Solutions!%20I%20have%20a%20question%20from%20your%20FAQ%20page." 
+     target="_blank" 
+     class="whatsapp-float">
+    <i class="fab fa-whatsapp"></i>
+    <div class="whatsapp-tooltip">Chat with us on WhatsApp!</div>
+  </a>
+
+  <div class="container">
+    <h1>Frequently Asked Questions</h1>
+    <div class="subhead">Find quick answers about our services, process, and pricing.</div>
+
+    <div class="faq-list">
+      <!-- FAQ Item 1 -->
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>What services does Nash Digitech offer?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <p>We offer a full range of digital solutions: website design & development, mobile apps (iOS/Android), custom software systems, AI & machine learning, branding & UI/UX design, and digital marketing. We also provide tech training for individuals and teams.</p>
+        </div>
+      </div>
+
+      <!-- FAQ Item 2 -->
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>How much does a website cost?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <p>Our website design starts at $500 for a basic informational site. Complex e‑commerce or custom web applications range from $1,000 to $10,000+. Every project is unique – we’ll provide a detailed quote after understanding your requirements.</p>
+        </div>
+      </div>
+
+      <!-- FAQ Item 3 -->
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>How long does it take to build a website?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <p>A standard brochure website typically takes 2–4 weeks. More complex projects (e‑commerce, custom platforms) can take 6–12 weeks, depending on scope and feedback speed. We’ll give you a timeline estimate before starting.</p>
+        </div>
+      </div>
+
+      <!-- FAQ Item 4 -->
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Do you require a deposit?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <p>Yes, we ask for a 50% non‑refundable deposit to begin work. The remaining balance is due upon completion and before final delivery. This is standard practice in the industry and secures your slot in our schedule.</p>
+        </div>
+      </div>
+
+      <!-- FAQ Item 5 -->
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Will I own the source code / design?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <p>Absolutely. After full payment, you own the final deliverables (code, design files). We only retain the right to showcase the work in our portfolio unless we agree otherwise.</p>
+        </div>
+      </div>
+
+      <!-- FAQ Item 6 -->
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Do you offer ongoing maintenance and support?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <p>Yes. We offer monthly maintenance packages (starting at $100/month) that include security updates, backups, content changes, and priority support. You can also request one‑off fixes as needed.</p>
+        </div>
+      </div>
+
+      <!-- FAQ Item 7 -->
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>What technologies do you specialize in?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <p>We’re fluent in modern stacks: HTML5/CSS3/JavaScript, React, Vue, Node.js, Python (Django/Flask), PHP (Laravel), WordPress, Shopify, and mobile with Flutter / React Native. For AI/ML we use TensorFlow, PyTorch, and cloud platforms.</p>
+        </div>
+      </div>
+
+      <!-- FAQ Item 8 -->
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Are you based in Zimbabwe? Do you work with international clients?</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          <p>Yes, our headquarters are in Victoria Falls, Zimbabwe. We happily serve clients worldwide – most communication is via email, WhatsApp, and video calls. Time zone differences are managed flexibly.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <p>© <span id="currentYear"></span> Nash Digitech Solutions. All rights reserved. <a href="index.html">Return to Home</a></p>
+    </div>
+  </div>
+
+  <script>
+    // Accordion functionality
+    document.querySelectorAll('.faq-question').forEach(question => {
+      question.addEventListener('click', () => {
+        const item = question.parentElement;
+        const isActive = item.classList.contains('active');
+        
+        // Optional: close others (if you want only one open at a time)
+        document.querySelectorAll('.faq-item').forEach(otherItem => {
+          if (otherItem !== item) otherItem.classList.remove('active');
+        });
+        
+        // Toggle current
+        if (!isActive) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    });
+
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
