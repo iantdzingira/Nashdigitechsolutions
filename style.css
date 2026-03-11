@@ -145,50 +145,64 @@ section {
 }
 
 .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 15px 35px;
-    border-radius: 10px;
-    font-weight: 700;
-    text-decoration: none;
-    transition: var(--transition);
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    gap: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 36px;
+  border-radius: 50px;
+  font-weight: 900;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border: 2px solid #000000;
+  position: relative;
+  transition: all 0.1s ease-in-out;
+  box-shadow: 4px 4px 0px #000000;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.btn i {
+  color: inherit;
 }
 
 .btn-primary {
-    background: var(--gradient-primary);
-    color: var(--white);
-}
-
-.btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
+  color: #1A365D;
+  background-color: #fdfdfd;
 }
 
 .btn-secondary {
-    background-color: transparent;
-    color: var(--primary-blue);
-    border: 2px solid var(--primary-blue);
+  color: #000000;
+  background-color: #D94126;
 }
 
-.btn-secondary:hover {
-    background-color: var(--primary-blue);
-    color: var(--white);
-    transform: translateY(-3px);
+.btn:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #000000;
 }
 
-.btn-accent {
-    background: var(--gradient-accent);
-    color: var(--white);
+.btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0px 0px 0px #000000;
 }
 
-.btn-accent:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
+body.dark .btn-primary {
+  color: #1A365D;
+  background-color: #FFFFFF;
+  border-color: #FFFFFF;
+  box-shadow: 4px 4px 0px rgba(0,0,0,0.4);
+}
+
+body.dark .btn-primary:hover {
+  box-shadow: 2px 2px 0px rgba(0,0,0,0.4);
+}
+
+body.dark .btn-secondary {
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+  box-shadow: 4px 4px 0px rgba(0,0,0,0.4);
 }
 
 /* Animations */
@@ -376,26 +390,6 @@ header.scrolled {
     align-items: center;
     gap: 20px;
 }
-
-.theme-toggle {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    color: var(--primary-blue);
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
-}
-
-.theme-toggle:hover {
-    background-color: var(--gray-light);
-}
-
 .hamburger {
     display: none;
     background: none;
@@ -1233,7 +1227,6 @@ header.scrolled {
     background-color: rgba(239, 68, 68, 0.2);
     color: #7f1d1d;
     display: block;
-}
     padding: 12px 15px;
     border: 1px solid var(--gray-light);
     border-radius: 25px;
@@ -1282,7 +1275,7 @@ header.scrolled {
     pointer-events: none;
 }
 
-/* Live Chat window – increased z-index */
+/* ---------- Live Chat window ---------- */
 .live-chat {
     position: fixed;
     bottom: 120px;
@@ -1291,7 +1284,7 @@ header.scrolled {
     background: var(--white);
     border-radius: 15px;
     box-shadow: var(--shadow-lg);
-    z-index: 1001;               /* above toggle & WhatsApp */
+    z-index: 1002;               /* above toggle & dropdown */
     display: none;
     overflow: hidden;
     border: 1px solid var(--gray-light);
@@ -1302,7 +1295,7 @@ header.scrolled {
     animation: fadeUp 0.3s ease;
 }
 
-/* Chat header unchanged */
+/* Chat header (unchanged) */
 .chat-header {
     background: var(--gradient-primary);
     color: var(--white);
@@ -1352,7 +1345,7 @@ header.scrolled {
 
 .chat-message.user {
     justify-content: flex-end;
-    position: relative;          /* for double ticks */
+    position: relative;
 }
 
 .message-content {
@@ -1373,13 +1366,13 @@ header.scrolled {
     border-bottom-right-radius: 5px;
 }
 
-/* Double ticks for user messages (appear after the bubble) */
+/* Double ticks for user messages */
 .chat-message.user::after {
     content: "\f560";            /* Font Awesome double-check */
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
     font-size: 0.8rem;
-    color: #34B7F1;              /* light blue tick */
+    color: #34B7F1;
     position: absolute;
     bottom: 0;
     right: 0;
@@ -1406,19 +1399,19 @@ header.scrolled {
     border-color: var(--primary-blue);
 }
 
-/* New send button style – rectangular with double‑check icon */
+/* Send button */
 .chat-input button {
-    width: auto;                 /* remove fixed width */
-    height: auto;                /* remove fixed height */
-    padding: 0 20px;             /* horizontal padding */
+    width: auto;
+    height: auto;
+    padding: 0 20px;
     background: var(--gradient-primary);
     color: var(--white);
     border: none;
-    border-radius: 30px;         /* rounded rectangle */
+    border-radius: 30px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;                    /* space if text appears */
+    gap: 5px;
     font-size: 1rem;
     cursor: pointer;
     transition: var(--transition);
@@ -1429,29 +1422,29 @@ header.scrolled {
     box-shadow: var(--shadow-md);
 }
 
-/* Replace the icon inside the button with double‑check (assumes Font Awesome) */
+/* Replace icon inside send button with double-check */
 .chat-input button i::before {
     content: "\f560";            /* fa-check-double */
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
 }
 
-/* Chat toggle button – smaller & above WhatsApp */
+/* ---------- Chat toggle button (opens dropdown) ---------- */
 .chat-toggle {
     position: fixed;
-    bottom: 120px;
+    bottom: 30px;                /* keep at bottom */
     right: 30px;
-    width: 55px;                 /* reduced */
-    height: 55px;                /* reduced */
+    width: 55px;
+    height: 55px;
     background: var(--gradient-primary);
     color: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;           /* adjusted */
+    font-size: 1.5rem;
     box-shadow: var(--shadow-lg);
-    z-index: 1000;               /* above WhatsApp */
+    z-index: 1000;               /* above WhatsApp (which is at z-index: 999) */
     border: none;
     cursor: pointer;
     transition: var(--transition);
@@ -1477,7 +1470,76 @@ header.scrolled {
     font-weight: 700;
 }
 
-/* Back to Top */
+/* ---------- Contact dropdown (5 options) ---------- */
+.contact-dropdown {
+    position: fixed;
+    bottom: 100px;               /* sits just above the toggle */
+    right: 30px;
+    width: 260px;
+    background: var(--white);
+    border-radius: 15px;
+    box-shadow: var(--shadow-lg);
+    z-index: 1001;               /* between toggle and live-chat */
+    display: none;
+    overflow: hidden;
+    border: 1px solid var(--gray-light);
+    animation: fadeUp 0.2s ease;
+}
+
+.contact-dropdown.show {
+    display: block;
+}
+
+.dropdown-header {
+    padding: 15px 20px;
+    background: var(--gradient-primary);
+    color: var(--white);
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-header button {
+    background: transparent;
+    border: none;
+    color: var(--white);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 14px 20px;
+    text-decoration: none;
+    color: var(--text-dark);
+    border-bottom: 1px solid var(--gray-light);
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background: rgba(0,0,0,0.02);
+}
+
+.dropdown-item i {
+    width: 24px;
+    font-size: 1.2rem;
+    color: var(--primary-blue);
+}
+
+.dropdown-item span {
+    font-size: 1rem;
+    flex: 1;
+}
+
+/* ---------- Back to Top (unchanged) ---------- */
 .back-to-top {
     position: fixed;
     bottom: 30px;
@@ -2307,4 +2369,34 @@ body.dark-theme .form-group textarea {
     0% { opacity: 0.1; }
     20% { opacity: 1; }
     100% { opacity: 0.1; }
+}
+
+
+/* The Icon - Forced to 16x16 */
+.logo-image {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  /* Subtle contrast boost to look "printed" */
+  filter: contrast(1.1); 
+  flex-shrink: 0; /* Prevents the icon from squishing */
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  flex-shrink: 0; /* Ensures the logo stays its full size */
+  margin-right: 20px; /* Creates a fixed gap before the menu starts */
+}
+
+.logo-text {
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: wrap; /* Forces name onto one line */
+  font-size: 1.1rem; /* Slightly smaller to accommodate the long name */
+  font-stretch: condensed; 
+  letter-spacing: -0.05em; 
+  font-size: 1.1rem;
+
 }

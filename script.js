@@ -4,7 +4,6 @@ const API_BASE_URL = 'https://nashdigitechsolutions-backend.onrender.com/api';
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all components
     initNavigation();
-    initThemeToggle();
     initPortfolioCarousel();
     initServiceFilter();
     initLiveChat();
@@ -121,38 +120,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Theme toggle functionality
-    function initThemeToggle() {
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = themeToggle.querySelector('i');
-        
-        // Check for saved theme preference or default to light
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        updateThemeIcon(savedTheme);
-        
-        // Toggle theme on button click
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
-        });
-        
-        // Update theme icon based on current theme
-        function updateThemeIcon(theme) {
-            if (theme === 'dark') {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            } else {
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-            }
-        }
-    }
-    
     // Portfolio carousel initialization
     function initPortfolioCarousel() {
         if ($('#portfolioCarousel').length) {
@@ -216,16 +183,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-
-
-    function initLiveChat() {
+function initLiveChat() {
+    // DOM elements
     const chatToggle = document.getElementById('chatToggle');
-    const chatClose = document.getElementById('chatClose');
+    const contactDropdown = document.getElementById('contactDropdown');
+    const closeDropdown = document.getElementById('closeDropdown');
     const liveChat = document.getElementById('liveChat');
+    const chatClose = document.getElementById('chatClose');
     const chatSend = document.getElementById('chatSend');
     const chatInput = document.getElementById('chatInput');
     const chatMessages = document.getElementById('chatMessages');
     const chatNotification = document.querySelector('.chat-notification');
+
+    // Dropdown options
+    const optionEmail = document.getElementById('optionEmail');
+    const optionWhatsApp = document.getElementById('optionWhatsApp');
+    const optionLiveChat = document.getElementById('optionLiveChat');
+    const optionFacebook = document.getElementById('optionFacebook');
+    const optionCall = document.getElementById('optionCall');
 
     // Helper: Generate or retrieve a persistent session ID
     function getSessionId() {
@@ -237,17 +212,79 @@ document.addEventListener('DOMContentLoaded', function() {
         return sid;
     }
 
-    // Toggle chat window
-    chatToggle.addEventListener('click', () => {
+    // Dropdown functions
+    function closeDropdownMenu() {
+        contactDropdown.classList.remove('show');
+    }
+
+    function openDropdownMenu() {
+        // If live chat is open, close it first
+        liveChat.classList.remove('active');
+        contactDropdown.classList.add('show');
+        // Hide notification when dropdown opens
+        if (chatNotification) chatNotification.style.display = 'none';
+    }
+
+    // Toggle dropdown on chat toggle click
+    chatToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (contactDropdown.classList.contains('show')) {
+            closeDropdownMenu();
+        } else {
+            openDropdownMenu();
+        }
+    });
+
+    // Close dropdown when clicking the X
+    closeDropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeDropdownMenu();
+    });
+
+    // Close dropdown when clicking outside
+    window.addEventListener('click', (e) => {
+        if (!contactDropdown.contains(e.target) && !chatToggle.contains(e.target)) {
+            closeDropdownMenu();
+        }
+    });
+
+    // Prevent dropdown from closing when interacting inside it
+    contactDropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    // Option handlers
+    optionEmail.addEventListener('click', () => {
+        window.location.href = 'mailto:nashdigitechsolutions@gmail.com';
+        closeDropdownMenu();
+    });
+
+    optionWhatsApp.addEventListener('click', () => {
+        window.open('https://wa.me/263787182780?text=Hello%20Nash%20Digitech%20Solutions!%20I%20have%20a%20question.', '_blank');
+        closeDropdownMenu();
+    });
+
+    optionLiveChat.addEventListener('click', () => {
+        closeDropdownMenu();
         liveChat.classList.add('active');
-        chatToggle.style.display = 'none';
+        chatToggle.style.display = 'none';   // Hide toggle while chat is open
         if (chatNotification) chatNotification.style.display = 'none';
     });
 
-    // Close chat
+    optionFacebook.addEventListener('click', () => {
+        window.open('https://m.me/61584904127188', '_blank');
+        closeDropdownMenu();
+    });
+
+    optionCall.addEventListener('click', () => {
+        window.location.href = 'tel:+263787182780';
+        closeDropdownMenu();
+    });
+
+    // Close live chat
     chatClose.addEventListener('click', () => {
         liveChat.classList.remove('active');
-        chatToggle.style.display = 'flex';
+        chatToggle.style.display = 'flex';    // Show toggle again
     });
 
     // Send message triggers
@@ -282,11 +319,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             const data = await response.json();
-            
+
             // Remove typing indicator and add real response
             removeMessage(typingId);
-            
-            // Note: Adjusting for your specific backend return structure
+
+            // Adjust for your specific backend return structure
             const replyText = data.reply || data.message || "I'm processed your request, but I'm having trouble phrasing it. Could you try again?";
             addChatMessage('bot', replyText);
 
@@ -299,20 +336,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add message to chat UI
     function addChatMessage(sender, text, isTyping = false) {
-        const id = 'msg_' + Date.now();
+        const id = 'msg_' + Date.now() + Math.random().toString(36).substr(2, 5);
         const messageDiv = document.createElement('div');
         messageDiv.className = `chat-message ${sender}`;
         messageDiv.id = id;
-        
+
         const contentDiv = document.createElement('div');
         contentDiv.className = 'message-content';
-        
+
         if (isTyping) {
             contentDiv.innerHTML = `<p class="typing-dots"><span>.</span><span>.</span><span>.</span></p>`;
         } else {
             contentDiv.innerHTML = `<p>${text}</p>`;
         }
-        
+
         messageDiv.appendChild(contentDiv);
         chatMessages.appendChild(messageDiv);
         chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -324,72 +361,68 @@ document.addEventListener('DOMContentLoaded', function() {
         if (el) el.remove();
     }
 
-    
-
-    // Show notification after 10 seconds if not already opened
+    // Show notification after 10 seconds if chat hasn't been opened and dropdown isn't open
     setTimeout(() => {
-        if (chatNotification && !liveChat.classList.contains('active')) {
+        if (chatNotification && !liveChat.classList.contains('active') && !contactDropdown.classList.contains('show')) {
             chatNotification.style.display = 'flex';
         }
     }, 10000);
-
-    
 }
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', initLiveChat);
-    
-    // Stats counter animation
-    function initStatsCounter() {
-        const statNumbers = document.querySelectorAll('.stat-number');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const statNumber = entry.target;
-                    const target = parseInt(statNumber.textContent);
-                    const duration = 2000; // 2 seconds
-                    const increment = target / (duration / 16); // 60fps
-                    let current = 0;
-                    
-                    const timer = setInterval(() => {
-                        current += increment;
-                        if (current >= target) {
-                            current = target;
-                            clearInterval(timer);
-                        }
-                        statNumber.textContent = Math.floor(current);
-                    }, 16);
-                    
-                    // Stop observing once animated
-                    observer.unobserve(statNumber);
-                }
-            });
-        }, { threshold: 0.5 });
-        
-        statNumbers.forEach(stat => observer.observe(stat));
-    }
-    
-    // Scroll animations
-    function initScrollAnimations() {
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animated');
-                }
-            });
-        }, observerOptions);
-        
-        // Observe elements with animation classes
-        document.querySelectorAll('.animate-fade-up, .animate-fade-in, .animate-slide-in').forEach(el => {
-            observer.observe(el);
+
+// Stats counter animation (unchanged)
+function initStatsCounter() {
+    const statNumbers = document.querySelectorAll('.stat-number');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const statNumber = entry.target;
+                const target = parseInt(statNumber.textContent);
+                const duration = 2000; // 2 seconds
+                const increment = target / (duration / 16); // 60fps
+                let current = 0;
+
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    statNumber.textContent = Math.floor(current);
+                }, 16);
+
+                // Stop observing once animated
+                observer.unobserve(statNumber);
+            }
         });
-    }
+    }, { threshold: 0.5 });
+
+    statNumbers.forEach(stat => observer.observe(stat));
+}
+
+// Scroll animations (unchanged)
+function initScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animated');
+            }
+        });
+    }, observerOptions);
+
+    // Observe elements with animation classes
+    document.querySelectorAll('.animate-fade-up, .animate-fade-in, .animate-slide-in').forEach(el => {
+        observer.observe(el);
+    });
+}
     
     // Back to top button
     function initBackToTop() {
