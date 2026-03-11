@@ -1,26 +1,14 @@
-# ===============================
-# Dependency directories
-# ===============================
+# Ignore node modules
 node_modules/
 
-# ===============================
-# Local environment variables
-# ===============================
+# Ignore build output
+dist/
+build/
+
+# Ignore environment variables and secrets
 .env
-data/
-db/
+*.pem
 
-# ===============================
-# Log files
-# ===============================
-*.log
-
-# ===============================
-# macOS system files
-# ===============================
+# Ignore OS-specific files
 .DS_Store
-
-# ===============================
-# IDE / Editor folders
-# ===============================
-.vscode/
+Thumbs.db
