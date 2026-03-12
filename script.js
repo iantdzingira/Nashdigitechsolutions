@@ -202,7 +202,7 @@ function initLiveChat() {
     const optionFacebook = document.getElementById('optionFacebook');
     const optionCall = document.getElementById('optionCall');
 
-    // Helper: Generate or retrieve a persistent session ID
+    // Helper: Session ID management
     function getSessionId() {
         let sid = localStorage.getItem('nash_chat_session_id');
         if (!sid) {
@@ -212,63 +212,41 @@ function initLiveChat() {
         return sid;
     }
 
-    // Dropdown functions
+    // Dropdown Visibility logic
     function closeDropdownMenu() {
         contactDropdown.classList.remove('show');
     }
 
     function openDropdownMenu() {
-        // If live chat is open, close it first
         liveChat.classList.remove('active');
         contactDropdown.classList.add('show');
-        // Hide notification when dropdown opens
         if (chatNotification) chatNotification.style.display = 'none';
     }
 
-    // Toggle dropdown on chat toggle click
+    // --- EVENT LISTENERS ---
+
     chatToggle.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (contactDropdown.classList.contains('show')) {
-            closeDropdownMenu();
-        } else {
-            openDropdownMenu();
-        }
+        contactDropdown.classList.contains('show') ? closeDropdownMenu() : openDropdownMenu();
     });
 
-    // Close dropdown when clicking the X
-    closeDropdown.addEventListener('click', (e) => {
-        e.stopPropagation();
-        closeDropdownMenu();
-    });
+    closeDropdown.addEventListener('click', closeDropdownMenu);
 
-    // Close dropdown when clicking outside
     window.addEventListener('click', (e) => {
         if (!contactDropdown.contains(e.target) && !chatToggle.contains(e.target)) {
             closeDropdownMenu();
         }
     });
 
-    // Prevent dropdown from closing when interacting inside it
-    contactDropdown.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
-
-    // Option handlers
+    // Option Handlers
     optionEmail.addEventListener('click', () => {
         window.location.href = 'mailto:nashdigitechsolutions@gmail.com';
         closeDropdownMenu();
     });
 
     optionWhatsApp.addEventListener('click', () => {
-        window.open('https://wa.me/263787182780?text=Hello%20Nash%20Digitech%20Solutions!%20I%20have%20a%20question.', '_blank');
+        window.open('https://wa.me/263787182780?text=Hello%20Nash%20Digitech!', '_blank');
         closeDropdownMenu();
-    });
-
-    optionLiveChat.addEventListener('click', () => {
-        closeDropdownMenu();
-        liveChat.classList.add('active');
-        chatToggle.style.display = 'none';   // Hide toggle while chat is open
-        if (chatNotification) chatNotification.style.display = 'none';
     });
 
     optionFacebook.addEventListener('click', () => {
@@ -281,37 +259,43 @@ function initLiveChat() {
         closeDropdownMenu();
     });
 
-    // Close live chat
+    optionLiveChat.addEventListener('click', () => {
+        closeDropdownMenu();
+        liveChat.classList.add('active');
+        chatToggle.style.display = 'none';
+        
+        // Initial Bot Greeting if chat is empty
+        if (chatMessages.children.length === 0) {
+            setTimeout(() => {
+                addChatMessage('bot', "Hi! I'm Nash-AI. I can help you with info on our web dev, mobile apps, and systems. What are you looking to build?");
+            }, 600);
+        }
+    });
+
     chatClose.addEventListener('click', () => {
         liveChat.classList.remove('active');
-        chatToggle.style.display = 'flex';    // Show toggle again
+        chatToggle.style.display = 'flex';
     });
 
-    // Send message triggers
     chatSend.addEventListener('click', sendMessage);
-    chatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') sendMessage();
-    });
+    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
 
-    // Main send function
+    // --- MAIN CHAT LOGIC ---
+
     async function sendMessage() {
         const message = chatInput.value.trim();
         if (!message) return;
 
-        // 1. Add user message to UI
         addChatMessage('user', message);
         chatInput.value = '';
 
-        // 2. Show typing indicator
+        // Show typing indicator
         const typingId = addChatMessage('bot', '...', true);
 
-        // 3. Fetch AI response from backend
         try {
             const response = await fetch('https://nashdigitechsolutions-backend.onrender.com/api/chat/ai', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     message: message,
                     sessionId: getSessionId()
@@ -319,24 +303,24 @@ function initLiveChat() {
             });
 
             const data = await response.json();
-
-            // Remove typing indicator and add real response
             removeMessage(typingId);
 
-            // Adjust for your specific backend return structure
-            const replyText = data.reply || data.message || "I'm processed your request, but I'm having trouble phrasing it. Could you try again?";
-            addChatMessage('bot', replyText);
+            // Handle the OpenAI-style response from your backend
+            if (data.success && data.reply) {
+                addChatMessage('bot', data.reply);
+            } else {
+                addChatMessage('bot', "I received the data, but I'm having trouble displaying it. Could you try again?");
+            }
 
         } catch (error) {
             console.error('Chat error:', error);
             removeMessage(typingId);
-            addChatMessage('bot', "I'm having trouble connecting to my brain right now. Please try again or reach out to us at +263 78 718 2780!");
+            addChatMessage('bot', "I'm having trouble connecting to my brain. Please try again or WhatsApp us at +263 78 718 2780!");
         }
     }
 
-    // Add message to chat UI
     function addChatMessage(sender, text, isTyping = false) {
-        const id = 'msg_' + Date.now() + Math.random().toString(36).substr(2, 5);
+        const id = 'msg_' + Date.now();
         const messageDiv = document.createElement('div');
         messageDiv.className = `chat-message ${sender}`;
         messageDiv.id = id;
@@ -361,7 +345,7 @@ function initLiveChat() {
         if (el) el.remove();
     }
 
-    // Show notification after 10 seconds if chat hasn't been opened and dropdown isn't open
+    // Auto-notification logic
     setTimeout(() => {
         if (chatNotification && !liveChat.classList.contains('active') && !contactDropdown.classList.contains('show')) {
             chatNotification.style.display = 'flex';
@@ -369,7 +353,6 @@ function initLiveChat() {
     }, 10000);
 }
 
-// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', initLiveChat);
 
 // Stats counter animation (unchanged)
@@ -796,10 +779,6 @@ function submitTestimonialToLocalStorage(testimonialData) {
         return { success: false, message: 'Error saving testimonial. Please try again.' };
     }
 }
-
-// ============================================
-// CONTACT FORM WITH SOCIAL MEDIA SELECTION
-// ============================================
 
 function initContactFormWithSocialMedia() {
     const contactForm = document.getElementById('contactForm');

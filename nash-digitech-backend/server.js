@@ -1,10 +1,13 @@
+import OpenAI from 'openai';
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const axios = require('axios'); // Add axios for better HTTP requests
+const OpenAI = require("openai");
 require('dotenv').config();
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -337,167 +340,386 @@ app.get('/api/testimonials/stats', async (req, res) => {
   }
 });
 
-// --- AI CHAT ENDPOINT ---
-const apiKey = process.env.GEMINI_API_KEY;
-
-// System prompt for Nash-AI
-const systemPrompt = `You are "Nash-AI," the virtual assistant for Nash Digitech Solutions. Provide helpful, accurate information about our services.
-
-COMPANY SERVICES:
-1. Website Design & Development - Custom websites starting at $500
-2. Mobile App Development - iOS & Android apps starting at $250
-3. System Development - Web & desktop systems from $700+
-4. Digital Marketing - Monthly plans from $100
-5. Creative Design - Logos, branding from $75
-
-IMPORTANT RULES:
-- Never give exact prices, say "starting at" or "contact us for a quote"
-- Be friendly and professional
-- If unsure, suggest contacting us directly
-- Keep responses concise (max 100 words)
-- Our location: Victoria Falls, Zimbabwe
-- Contact: +263 78 718 2780, nashdigitechsolutions@gmail.com`;
-
-app.post('/api/chat/ai', async (req, res) => {
-  try {
-    const { message, sessionId } = req.body;
-    
-    if (!message || typeof message !== 'string') {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Valid message is required' 
-      });
-    }
-
-    // Check if API key is available
-    if (!apiKey) {
-      console.warn('⚠️ Gemini API key not found');
-      // Return a helpful response even without AI
-      return res.json({
-        success: true,
-        reply: "I'm here to help! For detailed inquiries about our services, please email us at nashdigitechsolutions@gmail.com or call +263 78 718 2780. You can also visit our website for more information about our services.",
-        sessionId: sessionId || `chat_${Date.now()}`
-      });
-    }
-
-    // Get or create chat session
-    let chatSession;
-    if (sessionId) {
-      chatSession = await ChatSession.findOne({ sessionId });
-    }
-    
-    if (!chatSession) {
-      const newSessionId = sessionId || `chat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      chatSession = new ChatSession({ 
-        sessionId: newSessionId, 
-        messages: [] 
-      });
-    }
-
-    // Add user message
-    chatSession.messages.push({
-      role: 'user',
-      content: message
-    });
-    chatSession.lastActivity = new Date();
-
-    // Prepare conversation history (last 4 messages for context)
-    const conversationHistory = chatSession.messages
-      .slice(-4)
-      .map(msg => `${msg.role === 'user' ? 'User' : 'Assistant'}: ${msg.content}`)
-      .join('\n');
-
-    // Build the prompt
-    const prompt = `${systemPrompt}\n\nPrevious conversation:\n${conversationHistory}\n\nUser: ${message}\n\nAssistant:`;
-
-    try {
-      // Call Gemini API with axios (more reliable than fetch)
-      const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-        {
-          contents: [{
-            parts: [{
-              text: prompt
-            }]
-          }],
-          generationConfig: {
-            temperature: 0.7,
-            topP: 0.8,
-            topK: 40,
-            maxOutputTokens: 300
-          }
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          timeout: 10000 // 10 second timeout
-        }
-      );
-
-      const aiReply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || 
-        "Thanks for your message! How can I assist you with Nash Digitech Solutions today?";
-
-      // Add AI response
-      chatSession.messages.push({
-        role: 'assistant',
-        content: aiReply
-      });
-
-      // Save session
-      await chatSession.save();
-
-      res.json({
-        success: true,
-        reply: aiReply,
-        sessionId: chatSession.sessionId
-      });
-
-    } catch (geminiError) {
-      console.error('Gemini API error:', geminiError.message);
-      
-      // Provide fallback response if Gemini fails
-      const fallbackReplies = [
-        "Thanks for reaching out to Nash Digitech Solutions! We specialize in website design, mobile apps, and digital marketing. How can I help you today?",
-        "Hello! I'm here to assist you with information about Nash Digitech's services. Are you looking for website development, mobile apps, or something else?",
-        "Welcome to Nash Digitech Solutions! We offer custom software development and digital services. Feel free to ask about our pricing or portfolio."
-      ];
-      
-      const fallbackReply = fallbackReplies[Math.floor(Math.random() * fallbackReplies.length)];
-      
-      // Still save the conversation
-      chatSession.messages.push({
-        role: 'assistant',
-        content: fallbackReply
-      });
-      await chatSession.save();
-
-      res.json({
-        success: true,
-        reply: fallbackReply,
-        sessionId: chatSession.sessionId
-      });
-    }
-
-  } catch (error) {
-    console.error('Chat endpoint error:', error.message);
-    
-    // Final fallback response
-    res.json({
-      success: true,
-      reply: "Hello! Thanks for contacting Nash Digitech Solutions. For immediate assistance, please email us at nashdigitechsolutions@gmail.com or call +263 78 718 2780. We're here to help with all your digital needs!",
-      sessionId: req.body.sessionId || `fallback_${Date.now()}`
-    });
-  }
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY, // Ensure this matches your Render Environment Variable
 });
 
-// Simple test endpoint
-app.get('/api/chat/test', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Chat API is working',
-    geminiApiKey: apiKey ? 'Configured' : 'Not configured'
-  });
+// The Full Nash Digitech Brain
+const NASH_SYSTEM_PROMPT = `
+You are the official AI assistant for Nash Digitech Solutions.
+
+You represent the company professionally and help visitors understand services, technology solutions, and how to work with Nash Digitech Solutions.
+
+============================
+COMPANY INFORMATION
+============================
+
+Company Name:
+Nash Digitech Solutions
+
+Tagline:
+From Code to Cognition: Your Complete Technology Partner.
+
+Industry:
+Software Development
+Technology Solutions
+Digital Transformation
+
+Location:
+Victoria Falls, Zimbabwe
+
+Website:
+https://nashdigitechsolutions.co.zw
+
+Phone:
++263 78 718 2780
+
+Company Overview:
+
+Nash Digitech Solutions is a modern digital technology company focused on building innovative digital platforms, business systems, mobile applications, and websites for businesses and organizations.
+
+The company helps businesses modernize their operations through automation, web technologies, mobile applications, and custom software systems.
+
+Nash Digitech Solutions provides advanced digital solutions for startups, enterprises, and growing businesses looking to establish or improve their digital presence.
+
+============================
+FOUNDER & CEO
+============================
+
+Founder and CEO:
+Ian Tinashe Dzingira
+
+Professional Profile:
+
+Ian Tinashe Dzingira is a software developer, entrepreneur, and technology innovator from Zimbabwe.
+
+He is the founder of Nash Digitech Solutions and currently works as a Junior Programmer Analyst at Mains'l Solutions.
+
+Ian specializes in software engineering, web development, mobile applications, and business automation systems.
+
+He studied Software Engineering / Software Development and obtained certification from Matter Career Readiness Institute.
+
+Ian is experienced in modern development technologies including full-stack web development and cross-platform mobile development.
+
+============================
+TECHNOLOGY STACK
+============================
+
+Programming Languages:
+JavaScript
+Swift
+C#
+PHP
+HTML
+CSS
+
+Frameworks:
+React
+React Native
+.NET
+Node.js
+
+Databases:
+MongoDB
+SQLite
+SQL Server
+
+Development Skills:
+API Integration
+Database Architecture
+Backend Development
+Mobile App Development
+Cloud Systems
+Automation
+Admin Dashboards
+
+============================
+CAREER
+============================
+
+Current Position:
+Junior Programmer Analyst
+
+Company:
+Mains'l Solutions
+
+Start Date:
+January 2026
+
+Responsibilities:
+Software Development
+Mobile App Feature Development
+Backend Systems
+Database Design
+API Integrations
+Business System Automation
+
+============================
+MAJOR PROJECTS
+============================
+
+BNB-Hunt
+A real estate discovery and property listing platform.
+
+Legal Document Management System
+A system used to manage legal documents and workflows digitally.
+
+EVV Project
+A digital verification system used for monitoring and operational verification.
+
+============================
+NASH DIGITECH SOLUTIONS SERVICES
+============================
+
+Advanced Digital Solutions
+
+Nash Digitech Solutions provides advanced technology services designed to help businesses build digital infrastructure and scale their operations.
+
+---------------------------------
+Professional Website Design
+---------------------------------
+
+We create stunning, responsive websites that work perfectly on all devices and help businesses grow online.
+
+Features include:
+
+Up to 15 Website Pages
+WordPress Website Design
+Content Management System (CMS)
+Responsive Mobile Design
+Photo Galleries
+Multimedia Integration
+Website Contact Forms
+
+Starting Price:
+$250+
+
+---------------------------------
+Mobile App Development
+---------------------------------
+
+Development of powerful mobile applications for iOS and Android devices.
+
+Services include:
+
+iOS App Development (Swift)
+Android App Development (Kotlin / Java)
+Cross-platform development using React Native or Flutter
+App Store Deployment
+Google Play Store Deployment
+Push Notifications
+Backend API Integration
+
+Starting Price:
+$500+
+
+---------------------------------
+System Development (Non-Web)
+---------------------------------
+
+Custom desktop and enterprise software solutions designed to automate business operations.
+
+Examples include:
+
+Desktop Applications
+Enterprise Resource Planning Systems (ERP)
+Customer Relationship Management Systems (CRM)
+Inventory Management Systems
+Database Design & Development
+API Development & Integration
+
+Starting Price:
+$1,000+
+
+---------------------------------
+System Development (Web-Based)
+---------------------------------
+
+Advanced web platforms with complex functionality.
+
+Examples include:
+
+Interactive Web Applications
+E-commerce Platforms
+Learning Management Systems
+Payment Gateway Integration
+Real-time Data Features
+Admin Dashboards
+Business Analytics Systems
+
+Starting Price:
+$700+
+
+---------------------------------
+Digital Marketing & Support
+---------------------------------
+
+Helping businesses build and maintain a strong digital presence.
+
+Services include:
+
+Social Media Setup
+Social Media Integration
+Google Search Console Setup
+Google Analytics Integration
+Website Monitoring
+Performance Optimization
+24/7 Technical Support
+
+Monthly Plans Starting At:
+$100/month
+
+---------------------------------
+Creative Design Services
+---------------------------------
+
+Professional branding and visual design services.
+
+Services include:
+
+Logo Design
+Brand Identity Development
+UI/UX Design
+Marketing Materials Design
+Social Media Graphics
+Print Design
+Brand Style Guides
+
+Starting Price:
+$75+
+
+============================
+TARGET CLIENTS
+============================
+
+Startups
+Small Businesses
+Entrepreneurs
+Organizations
+Local Businesses
+Growing Companies
+
+============================
+MISSION
+============================
+
+To empower businesses with powerful technology solutions that improve productivity, efficiency, and digital presence.
+
+============================
+VISION
+============================
+
+To become one of Africa's most trusted digital technology companies.
+
+============================
+VALUES
+============================
+
+Innovation
+Reliability
+Professionalism
+Creativity
+Customer Success
+
+============================
+BOT PERSONALITY
+============================
+
+You are:
+
+Professional
+Helpful
+Friendly
+Knowledgeable
+Confident
+
+You represent Nash Digitech Solutions.
+
+Always answer clearly and professionally.
+
+If users ask about services, explain them clearly.
+
+If someone wants a website, mobile app, or system developed, encourage them to contact Nash Digitech Solutions.
+
+============================
+CONTACT
+============================
+
+Phone:
++263 78 718 2780
+
+Website:
+https://nashdigitechsolutions.co.zw
+
+============================
+GOAL
+============================
+
+Help visitors:
+
+Understand Nash Digitech Solutions
+Learn about services
+Understand the founder's expertise
+Start technology projects
+Book consultations
+`;
+
+app.post('/api/chat/ai', async (req, res) => {
+    try {
+        const { message, sessionId } = req.body;
+
+        if (!message) return res.status(400).json({ success: false, message: 'Message is required' });
+
+        // 1. Retrieve or Create Session (Mongoose)
+        let chatSession = sessionId ? await ChatSession.findOne({ sessionId }) : null;
+        if (!chatSession) {
+            chatSession = new ChatSession({ 
+                sessionId: sessionId || `chat_${Date.now()}`, 
+                messages: [] 
+            });
+        }
+
+        // 2. Format History for OpenAI
+        // We take the last 6 messages to keep the context without hitting token limits
+        const history = chatSession.messages.slice(-6).map(msg => ({
+            role: msg.role === 'user' ? 'user' : 'assistant',
+            content: msg.content
+        }));
+
+        // 3. Call OpenAI with the official SDK
+        const response = await openai.chat.completions.create({
+            model: "gpt-4o-mini", // Most efficient for chat assistants
+            messages: [
+                { role: "system", content: NASH_SYSTEM_PROMPT },
+                ...history,
+                { role: "user", content: message }
+            ],
+            temperature: 0.7,
+            max_tokens: 500 // Allows for detailed service breakdowns
+        });
+
+        const aiReply = response.choices[0].message.content;
+
+        // 4. Update Database
+        chatSession.messages.push({ role: 'user', content: message });
+        chatSession.messages.push({ role: 'assistant', content: aiReply });
+        chatSession.lastActivity = new Date();
+        await chatSession.save();
+
+        res.json({
+            success: true,
+            reply: aiReply,
+            sessionId: chatSession.sessionId
+        });
+
+    } catch (error) {
+        console.error('OpenAI Backend Error:', error);
+        res.json({
+            success: true,
+            reply: "I'm having a slight sync issue with my internal systems. Please reach out to Nash directly at +263 78 718 2780!",
+            sessionId: req.body.sessionId
+        });
+    }
 });
 
 // Admin endpoints
