@@ -712,13 +712,17 @@ app.post('/api/chat/ai', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('OpenAI Backend Error:', error);
-        res.json({
-            success: true,
-            reply: "I'm having a slight sync issue with my internal systems. Please reach out to Nash directly at +263 78 718 2780!",
-            sessionId: req.body.sessionId
-        });
-    }
+    console.error('OpenAI Backend Error:', error);
+    
+    // IMPORTANT: Check if the error is from the OpenAI API specifically
+    const errorMessage = error.response ? error.response.data : error.message;
+
+    res.json({
+        success: false, // Change to false so frontend knows it failed
+        message: errorMessage, // Send the real error message for debugging
+        reply: `DEBUG ERROR: ${error.message}. Please check the server logs.`
+    });
+}
 });
 
 // Admin endpoints
