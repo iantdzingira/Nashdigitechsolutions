@@ -5,6 +5,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const axios = require('axios'); // Add axios for better HTTP requests
 const OpenAI = require("openai");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 require('dotenv').config();
 
 
