@@ -799,6 +799,14 @@ async function startServer() {
   });
 }
 
+app.get('/api/chat/test', (req, res) => {
+  res.json({
+    success: true,
+    message: "Nash Digitech API is active",
+    timestamp: new Date().toISOString(),
+    apikey: process.env.OPENAI_API_KEY ? '✅ Loaded' : '❌ Not Found'
+  });
+});
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
