@@ -667,56 +667,53 @@ Book consultations
 app.post('/api/chat/ai', async (req, res) => {
     try {
         const { message, sessionId } = req.body;
-        if (!message) return res.status(400).json({ success: false, message: 'Message is required' });
-
-        // 1. Database Session Logic (Keeping your existing logic)
+        
+        // 1. Fetch the Session
         let chatSession = await ChatSession.findOne({ sessionId });
         if (!chatSession) {
-            chatSession = new ChatSession({ 
-                sessionId: sessionId || `session_${Date.now()}`, 
-                messages: [] 
-            });
+            chatSession = new ChatSession({ sessionId: sessionId || `session_${Date.now()}`, messages: [] });
         }
 
-        // 2. Format History for the NEW SDK
-        // Important: 'assistant' must become 'model'
-        const history = chatSession.messages.slice(-10).map(msg => ({
-          role: msg.role === 'assistant' ? 'model' : 'user',
-          parts: [{ text: msg.content }] // MUST be an array containing an object with 'text'
-        }));
+        // 2. Format & CLEAN History
+        // We filter out any messages that might have empty content to avoid ContentUnion errors
+        const history = chatSession.messages
+            .filter(msg => msg.content && msg.content.trim() !== "") 
+            .slice(-10)
+            .map(msg => ({
+                role: msg.role === 'assistant' ? 'model' : 'user',
+                parts: [{ text: msg.content }]
+            }));
 
-        // 3. Start Chat with the New SDK Structure
+        // 3. Initialize Chat
         const chat = ai.chats.create({
-            model: "gemini-3-flash-preview", 
+            model: "gemini-3-flash-preview",
+            history: history,
             config: {
                 systemInstruction: NASH_SYSTEM_PROMPT,
                 temperature: 0.7,
-                history: history,
             },
         });
 
-        // 4. Send Message (Note: response.text() is now just .text)
+        // 4. Send using the explicit Part structure
+        // This is the specific fix for 'ContentUnion is required'
         const result = await chat.sendMessage({
-            parts: [{ text: message }] 
+            parts: [{ text: message }]
         });
-        const aiReply = result.text; 
 
-        // 5. Update Database
+        const aiReply = result.text;
+
+        // 5. Save to MongoDB using your Schema fields
         chatSession.messages.push({ role: 'user', content: message });
         chatSession.messages.push({ role: 'assistant', content: aiReply });
         chatSession.lastActivity = new Date();
         
         await chatSession.save();
 
-        res.json({
-            success: true,
-            reply: aiReply,
-            sessionId: chatSession.sessionId
-        });
+        res.json({ success: true, reply: aiReply, sessionId: chatSession.sessionId });
 
     } catch (error) {
         console.error('Gemini Backend Error:', error);
-        res.json({
+        res.status(500).json({
             success: false,
             message: error.message,
             reply: "I'm having a quick look at my systems. Please try again or WhatsApp Nash at +263 78 718 2780!"
