@@ -669,42 +669,45 @@ app.post('/api/chat/ai', async (req, res) => {
 
         if (!message) return res.status(400).json({ success: false, message: 'Message is required' });
 
-        // 1. Retrieve or Create Session (Mongoose)
-        let chatSession = sessionId ? await ChatSession.findOne({ sessionId }) : null;
+        // 1. Find the session or create a new one if it doesn't exist
+        let chatSession = await ChatSession.findOne({ sessionId: sessionId });
+        
         if (!chatSession) {
             chatSession = new ChatSession({ 
-                sessionId: sessionId || `chat_${Date.now()}`, 
+                sessionId: sessionId || `session_${Date.now()}`, 
                 messages: [] 
             });
         }
 
-        // 2. Format History for OpenAI
-        // We take the last 6 messages to keep the context without hitting token limits
-        const history = chatSession.messages.slice(-6).map(msg => ({
-            role: msg.role === 'user' ? 'user' : 'assistant',
+        // 2. Prepare the history for OpenAI
+        const history = chatSession.messages.slice(-10).map(msg => ({
+            role: msg.role,
             content: msg.content
         }));
 
-        // 3. Call OpenAI with the official SDK
+        // 3. Request completion from OpenAI
         const response = await openai.chat.completions.create({
-            model: "gpt-4o-mini", // Most efficient for chat assistants
+            model: "gpt-4o-mini",
             messages: [
                 { role: "system", content: NASH_SYSTEM_PROMPT },
                 ...history,
                 { role: "user", content: message }
             ],
             temperature: 0.7,
-            max_tokens: 500 // Allows for detailed service breakdowns
+            max_tokens: 500
         });
 
         const aiReply = response.choices[0].message.content;
 
-        // 4. Update Database
+        // 4. Update the database (User message + AI reply)
         chatSession.messages.push({ role: 'user', content: message });
         chatSession.messages.push({ role: 'assistant', content: aiReply });
         chatSession.lastActivity = new Date();
-        await chatSession.save();
+        
+        // Save in the background so the user gets the reply faster
+        chatSession.save().catch(err => console.error("Database Save Error:", err));
 
+        // 5. Send the successful response
         res.json({
             success: true,
             reply: aiReply,
@@ -712,17 +715,15 @@ app.post('/api/chat/ai', async (req, res) => {
         });
 
     } catch (error) {
-    console.error('OpenAI Backend Error:', error);
-    
-    // IMPORTANT: Check if the error is from the OpenAI API specifically
-    const errorMessage = error.response ? error.response.data : error.message;
-
-    res.json({
-        success: false, // Change to false so frontend knows it failed
-        message: errorMessage, // Send the real error message for debugging
-        reply: `DEBUG ERROR: ${error.message}. Please check the server logs.`
-    });
-}
+        console.error('OpenAI Backend Error:', error);
+        
+        // Detailed error for you in the logs, clean message for the user
+        res.json({
+            success: false,
+            message: error.message,
+            reply: "I'm having a quick look at my systems. Please try again in a moment or contact Nash at +263 78 718 2780!"
+        });
+    }
 });
 
 // Admin endpoints
