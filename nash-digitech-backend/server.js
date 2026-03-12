@@ -785,11 +785,11 @@ async function startServer() {
   
   await initializeDatabase();
   
-  if (!apiKey) {
-    console.log('⚠️ GEMINI_API_KEY not found. AI chat will use fallback responses.');
-    console.log('ℹ️  To enable full AI chat, add GEMINI_API_KEY to your environment variables');
+  if (!process.env.OPENAI_API_KEY) {
+    console.log('⚠️ OPENAI_API_KEY not found. AI chat will use fallback responses.');
+    console.log('ℹ️  To enable full AI chat, add OPENAI_API_KEY to your environment variables');
   } else {
-    console.log('✅ Gemini API key loaded');
+    console.log('✅ OpenAI API key loaded');
   }
   
   app.listen(PORT, '0.0.0.0', () => {
