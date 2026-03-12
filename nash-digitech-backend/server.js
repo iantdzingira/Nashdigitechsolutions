@@ -5,7 +5,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const axios = require('axios'); // Add axios for better HTTP requests
 const OpenAI = require("openai");
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenAI } = require("@google/genai");
 require('dotenv').config();
 
 
@@ -340,8 +340,9 @@ app.get('/api/testimonials/stats', async (req, res) => {
   }
 });
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }); // Fast and free
+const ai = new GoogleGenAI({ 
+    apiKey: process.env.GEMINI_API_KEY 
+});
 
 // The Full Nash Digitech Brain
 const NASH_SYSTEM_PROMPT = `
@@ -668,7 +669,7 @@ app.post('/api/chat/ai', async (req, res) => {
         const { message, sessionId } = req.body;
         if (!message) return res.status(400).json({ success: false, message: 'Message is required' });
 
-        // 2. Database Session Logic (Keep your existing code)
+        // 1. Database Session Logic (Keeping your existing logic)
         let chatSession = await ChatSession.findOne({ sessionId });
         if (!chatSession) {
             chatSession = new ChatSession({ 
@@ -677,28 +678,33 @@ app.post('/api/chat/ai', async (req, res) => {
             });
         }
 
-        // 3. Format History for Gemini
-        // Gemini expects { role: "user" or "model", parts: [{ text: "..." }] }
+        // 2. Format History for the NEW SDK
+        // Important: 'assistant' must become 'model'
         const history = chatSession.messages.slice(-10).map(msg => ({
             role: msg.role === 'assistant' ? 'model' : 'user',
             parts: [{ text: msg.content }]
         }));
 
-        // 4. Start Chat with System Instructions
-        const chat = model.startChat({
+        // 3. Start Chat with the New SDK Structure
+        const chat = ai.chats.create({
+            model: "gemini-3-flash-preview", // Use the latest GA model
             history: history,
-            systemInstruction: NASH_SYSTEM_PROMPT, // Your existing prompt
+            config: {
+                systemInstruction: NASH_SYSTEM_PROMPT,
+                temperature: 0.7,
+            },
         });
 
+        // 4. Send Message (Note: response.text() is now just .text)
         const result = await chat.sendMessage(message);
-        const aiReply = result.response.text();
+        const aiReply = result.text; 
 
         // 5. Update Database
         chatSession.messages.push({ role: 'user', content: message });
         chatSession.messages.push({ role: 'assistant', content: aiReply });
         chatSession.lastActivity = new Date();
         
-        await chatSession.save().catch(err => console.error("DB Save Error:", err));
+        await chatSession.save();
 
         res.json({
             success: true,
@@ -715,7 +721,6 @@ app.post('/api/chat/ai', async (req, res) => {
         });
     }
 });
-
 // Admin endpoints
 app.get('/api/admin/testimonials/all', async (req, res) => {
   try {
