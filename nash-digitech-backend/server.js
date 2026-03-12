@@ -339,9 +339,8 @@ app.get('/api/testimonials/stats', async (req, res) => {
   }
 });
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY, // Ensure this matches your Render Environment Variable
-});
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }); // Fast and free
 
 // The Full Nash Digitech Brain
 const NASH_SYSTEM_PROMPT = `
@@ -666,12 +665,10 @@ Book consultations
 app.post('/api/chat/ai', async (req, res) => {
     try {
         const { message, sessionId } = req.body;
-
         if (!message) return res.status(400).json({ success: false, message: 'Message is required' });
 
-        // 1. Find the session or create a new one if it doesn't exist
-        let chatSession = await ChatSession.findOne({ sessionId: sessionId });
-        
+        // 2. Database Session Logic (Keep your existing code)
+        let chatSession = await ChatSession.findOne({ sessionId });
         if (!chatSession) {
             chatSession = new ChatSession({ 
                 sessionId: sessionId || `session_${Date.now()}`, 
@@ -679,35 +676,29 @@ app.post('/api/chat/ai', async (req, res) => {
             });
         }
 
-        // 2. Prepare the history for OpenAI
+        // 3. Format History for Gemini
+        // Gemini expects { role: "user" or "model", parts: [{ text: "..." }] }
         const history = chatSession.messages.slice(-10).map(msg => ({
-            role: msg.role,
-            content: msg.content
+            role: msg.role === 'assistant' ? 'model' : 'user',
+            parts: [{ text: msg.content }]
         }));
 
-        // 3. Request completion from OpenAI
-        const response = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
-            messages: [
-                { role: "system", content: NASH_SYSTEM_PROMPT },
-                ...history,
-                { role: "user", content: message }
-            ],
-            temperature: 0.7,
-            max_tokens: 500
+        // 4. Start Chat with System Instructions
+        const chat = model.startChat({
+            history: history,
+            systemInstruction: NASH_SYSTEM_PROMPT, // Your existing prompt
         });
 
-        const aiReply = response.choices[0].message.content;
+        const result = await chat.sendMessage(message);
+        const aiReply = result.response.text();
 
-        // 4. Update the database (User message + AI reply)
+        // 5. Update Database
         chatSession.messages.push({ role: 'user', content: message });
         chatSession.messages.push({ role: 'assistant', content: aiReply });
         chatSession.lastActivity = new Date();
         
-        // Save in the background so the user gets the reply faster
-        chatSession.save().catch(err => console.error("Database Save Error:", err));
+        await chatSession.save().catch(err => console.error("DB Save Error:", err));
 
-        // 5. Send the successful response
         res.json({
             success: true,
             reply: aiReply,
@@ -715,13 +706,11 @@ app.post('/api/chat/ai', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('OpenAI Backend Error:', error);
-        
-        // Detailed error for you in the logs, clean message for the user
+        console.error('Gemini Backend Error:', error);
         res.json({
             success: false,
             message: error.message,
-            reply: "I'm having a quick look at my systems. Please try again in a moment or contact Nash at +263 78 718 2780!"
+            reply: "I'm having a quick look at my systems. Please try again or WhatsApp Nash at +263 78 718 2780!"
         });
     }
 });
