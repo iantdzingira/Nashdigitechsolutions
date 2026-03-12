@@ -681,22 +681,24 @@ app.post('/api/chat/ai', async (req, res) => {
         // 2. Format History for the NEW SDK
         // Important: 'assistant' must become 'model'
         const history = chatSession.messages.slice(-10).map(msg => ({
-            role: msg.role === 'assistant' ? 'model' : 'user',
-            parts: [{ text: msg.content }]
+          role: msg.role === 'assistant' ? 'model' : 'user',
+          parts: [{ text: msg.content }] // MUST be an array containing an object with 'text'
         }));
 
         // 3. Start Chat with the New SDK Structure
         const chat = ai.chats.create({
-            model: "gemini-3-flash-preview", // Use the latest GA model
-            history: history,
+            model: "gemini-3-flash-preview", 
             config: {
                 systemInstruction: NASH_SYSTEM_PROMPT,
                 temperature: 0.7,
+                history: history,
             },
         });
 
         // 4. Send Message (Note: response.text() is now just .text)
-        const result = await chat.sendMessage(message);
+        const result = await chat.sendMessage({
+            parts: [{ text: message }] 
+        });
         const aiReply = result.text; 
 
         // 5. Update Database
