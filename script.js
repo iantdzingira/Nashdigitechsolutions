@@ -282,20 +282,25 @@ function initLiveChat() {
 
     // --- MAIN CHAT LOGIC ---
 
+   // Main send function
     async function sendMessage() {
         const message = chatInput.value.trim();
         if (!message) return;
 
+        // 1. Add user message to UI
         addChatMessage('user', message);
         chatInput.value = '';
 
-        // Show typing indicator
+        // 2. Show typing indicator
         const typingId = addChatMessage('bot', '...', true);
 
         try {
+            // 3. Fetch AI response from backend
             const response = await fetch('https://nashdigitechsolutions-backend.onrender.com/api/chat/ai', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify({
                     message: message,
                     sessionId: getSessionId()
@@ -303,19 +308,31 @@ function initLiveChat() {
             });
 
             const data = await response.json();
+            
+            // Log the full data to your Browser Console (F12) to see exactly what arrives
+            console.log("Full Backend Data:", data);
+
+            // Remove typing indicator
             removeMessage(typingId);
 
-            // Handle the OpenAI-style response from your backend
-            if (data.success && data.reply) {
+            // 4. Logic to handle the response keys
+            if (data.reply) {
+                // Success: Show the AI's response
                 addChatMessage('bot', data.reply);
+            } else if (data.message) {
+                // Backend Error: Show the specific error message (e.g., API key issue)
+                addChatMessage('bot', `System Error: ${data.message}`);
             } else {
-                addChatMessage('bot', "I received the data, but I'm having trouble displaying it. Could you try again?");
+                // Fallback: Data arrived but the keys don't match
+                addChatMessage('bot', "I received an empty response. Please try again or refresh the page.");
             }
 
         } catch (error) {
-            console.error('Chat error:', error);
+            console.error('Frontend Fetch Error:', error);
             removeMessage(typingId);
-            addChatMessage('bot', "I'm having trouble connecting to my brain. Please try again or WhatsApp us at +263 78 718 2780!");
+            
+            // This usually means the Render server is asleep or the URL is wrong
+            addChatMessage('bot', "I'm having trouble connecting to my brain. Please wait a few seconds and try again, or WhatsApp us at +263 78 718 2780!");
         }
     }
 
