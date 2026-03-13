@@ -1,473 +1,587 @@
-// Main JavaScript for Nash Digitech Solutions Website
-const API_BASE_URL = 'https://nashdigitechsolutions-backend.onrender.com/api';
+import { GoogleGenAI } from "https://esm.sh/@google/genai";
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize all components
-    initNavigation();
-    initPortfolioCarousel();
-    initServiceFilter();
-    initLiveChat();
-    initStatsCounter();
-    initScrollAnimations();
-    initBackToTop();
-    initCurrentYear();
-    initFormValidation();
-    
-    // Load testimonials from backend
-    loadTestimonials();
-    
-    // Initialize testimonial system
-    initTestimonialSystem();
-    
-    // Initialize contact form with social media selection
-    initContactFormWithSocialMedia();
-    
-    // Initialize newsletter form
-    initNewsletterForm();
-    
-    // Set current year in footer and calculate years experience
-    function initCurrentYear() {
-        const currentYear = new Date().getFullYear();
-        document.getElementById('currentYear').textContent = currentYear;
-        
-        // Calculate years experience (starting from 2023)
-        const startYear = 2025;
-        const yearsExperience = currentYear - startYear;
-        document.getElementById('yearsExperience').textContent = yearsExperience;
-    }
-    
-    // Navigation functionality
-    function initNavigation() {
-        const hamburger = document.getElementById('hamburger');
-        const sidebar = document.getElementById('sidebar');
-        const closeSidebar = document.getElementById('closeSidebar');
-        const navLinks = document.querySelectorAll('.nav-menu a, .sidebar-nav a');
-        
-        // Toggle sidebar
-        hamburger.addEventListener('click', () => {
-            sidebar.classList.add('active');
-        });
-        
-        closeSidebar.addEventListener('click', () => {
-            sidebar.classList.remove('active');
-        });
-        
-        // Close sidebar when clicking outside
-        document.addEventListener('click', (event) => {
-            if (!sidebar.contains(event.target) && !hamburger.contains(event.target) && sidebar.classList.contains('active')) {
-                sidebar.classList.remove('active');
-            }
-        });
-        
-        // Smooth scrolling for anchor links
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                const targetId = this.getAttribute('href');
-                if (targetId.startsWith('#')) {
-                    e.preventDefault();
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        // Close sidebar if open
-                        sidebar.classList.remove('active');
-                        
-                        // Scroll to target
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                        
-                        // Update active nav link
-                        navLinks.forEach(l => l.classList.remove('active'));
-                        this.classList.add('active');
-                    }
-                }
+const API_BASE_URL = "https://nashdigitechsolutions-backend.onrender.com/api";
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Initialize all components
+  initNavigation();
+  initPortfolioCarousel();
+  initServiceFilter();
+  initLiveChat();
+  initStatsCounter();
+  initScrollAnimations();
+  initBackToTop();
+  initCurrentYear();
+  initFormValidation();
+
+  // Load testimonials from backend
+  loadTestimonials();
+
+  // Initialize testimonial system
+  initTestimonialSystem();
+
+  // Initialize contact form with social media selection
+  initContactFormWithSocialMedia();
+
+  // Initialize newsletter form
+  initNewsletterForm();
+
+  // Set current year in footer and calculate years experience
+  function initCurrentYear() {
+    const currentYear = new Date().getFullYear();
+    document.getElementById("currentYear").textContent = currentYear;
+
+    // Calculate years experience (starting from 2023)
+    const startYear = 2025;
+    const yearsExperience = currentYear - startYear;
+    document.getElementById("yearsExperience").textContent = yearsExperience;
+  }
+
+  // Navigation functionality
+  function initNavigation() {
+    const hamburger = document.getElementById("hamburger");
+    const sidebar = document.getElementById("sidebar");
+    const closeSidebar = document.getElementById("closeSidebar");
+    const navLinks = document.querySelectorAll(".nav-menu a, .sidebar-nav a");
+
+    // Toggle sidebar
+    hamburger.addEventListener("click", () => {
+      sidebar.classList.add("active");
+    });
+
+    closeSidebar.addEventListener("click", () => {
+      sidebar.classList.remove("active");
+    });
+
+    // Close sidebar when clicking outside
+    document.addEventListener("click", (event) => {
+      if (
+        !sidebar.contains(event.target) &&
+        !hamburger.contains(event.target) &&
+        sidebar.classList.contains("active")
+      ) {
+        sidebar.classList.remove("active");
+      }
+    });
+
+    // Smooth scrolling for anchor links
+    navLinks.forEach((link) => {
+      link.addEventListener("click", function (e) {
+        const targetId = this.getAttribute("href");
+        if (targetId.startsWith("#")) {
+          e.preventDefault();
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            // Close sidebar if open
+            sidebar.classList.remove("active");
+
+            // Scroll to target
+            window.scrollTo({
+              top: targetElement.offsetTop - 80,
+              behavior: "smooth",
             });
-        });
-        
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            
-            // Update active nav link based on scroll position
-            updateActiveNavLink();
-        });
-        
-        // Function to update active nav link based on scroll position
-        function updateActiveNavLink() {
-            const sections = document.querySelectorAll('section[id]');
-            const navLinks = document.querySelectorAll('.nav-menu a, .sidebar-nav a');
-            
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (window.scrollY >= (sectionTop - 150)) {
-                    current = section.getAttribute('id');
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('active');
-                }
-            });
+
+            // Update active nav link
+            navLinks.forEach((l) => l.classList.remove("active"));
+            this.classList.add("active");
+          }
         }
-    }
-    
-    // Portfolio carousel initialization
-    function initPortfolioCarousel() {
-        if ($('#portfolioCarousel').length) {
-            $('#portfolioCarousel').owlCarousel({
-                items: 1,
-                loop: true,
-                margin: 20,
-                autoplay: true,
-                autoplayTimeout: 3000,
-                autoplayHoverPause: true,
-                nav: true,
-                dots: true,
-                responsive:{
-                    0:{
-                        items:1
-                    },
-                    768:{
-                        items:2
-                    },
-                    992:{
-                        items:3
-                    }
-                }
-            });
+      });
+    });
+
+    // Header scroll effect
+    window.addEventListener("scroll", () => {
+      const header = document.getElementById("header");
+      if (window.scrollY > 100) {
+        header.classList.add("scrolled");
+      } else {
+        header.classList.remove("scrolled");
+      }
+
+      // Update active nav link based on scroll position
+      updateActiveNavLink();
+    });
+
+    // Function to update active nav link based on scroll position
+    function updateActiveNavLink() {
+      const sections = document.querySelectorAll("section[id]");
+      const navLinks = document.querySelectorAll(".nav-menu a, .sidebar-nav a");
+
+      let current = "";
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (window.scrollY >= sectionTop - 150) {
+          current = section.getAttribute("id");
         }
+      });
+
+      navLinks.forEach((link) => {
+        link.classList.remove("active");
+        if (link.getAttribute("href") === `#${current}`) {
+          link.classList.add("active");
+        }
+      });
     }
-    
-    // Service filter functionality
-    function initServiceFilter() {
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const serviceCards = document.querySelectorAll('.service-card');
-        
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Remove active class from all buttons
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                // Add active class to clicked button
-                button.classList.add('active');
-                
-                const filterValue = button.getAttribute('data-filter');
-                
-                // Show/hide service cards based on filter
-                serviceCards.forEach(card => {
-                    const categories = card.getAttribute('data-category').split(' ');
-                    
-                    if (filterValue === 'all' || categories.includes(filterValue)) {
-                        card.style.display = 'block';
-                        setTimeout(() => {
-                            card.style.opacity = '1';
-                            card.style.transform = 'translateY(0)';
-                        }, 10);
-                    } else {
-                        card.style.opacity = '0';
-                        card.style.transform = 'translateY(20px)';
-                        setTimeout(() => {
-                            card.style.display = 'none';
-                        }, 300);
-                    }
-                });
-            });
+  }
+
+  // Portfolio carousel initialization
+  function initPortfolioCarousel() {
+    if ($("#portfolioCarousel").length) {
+      $("#portfolioCarousel").owlCarousel({
+        items: 1,
+        loop: true,
+        margin: 20,
+        autoplay: true,
+        autoplayTimeout: 3000,
+        autoplayHoverPause: true,
+        nav: true,
+        dots: true,
+        responsive: {
+          0: {
+            items: 1,
+          },
+          768: {
+            items: 2,
+          },
+          992: {
+            items: 3,
+          },
+        },
+      });
+    }
+  }
+
+  // Service filter functionality
+  function initServiceFilter() {
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const serviceCards = document.querySelectorAll(".service-card");
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        // Remove active class from all buttons
+        filterButtons.forEach((btn) => btn.classList.remove("active"));
+        // Add active class to clicked button
+        button.classList.add("active");
+
+        const filterValue = button.getAttribute("data-filter");
+
+        // Show/hide service cards based on filter
+        serviceCards.forEach((card) => {
+          const categories = card.getAttribute("data-category").split(" ");
+
+          if (filterValue === "all" || categories.includes(filterValue)) {
+            card.style.display = "block";
+            setTimeout(() => {
+              card.style.opacity = "1";
+              card.style.transform = "translateY(0)";
+            }, 10);
+          } else {
+            card.style.opacity = "0";
+            card.style.transform = "translateY(20px)";
+            setTimeout(() => {
+              card.style.display = "none";
+            }, 300);
+          }
         });
-    }
-    
-function initLiveChat() {
-    // DOM elements
-    const chatToggle = document.getElementById('chatToggle');
-    const contactDropdown = document.getElementById('contactDropdown');
-    const closeDropdown = document.getElementById('closeDropdown');
-    const liveChat = document.getElementById('liveChat');
-    const chatClose = document.getElementById('chatClose');
-    const chatSend = document.getElementById('chatSend');
-    const chatInput = document.getElementById('chatInput');
-    const chatMessages = document.getElementById('chatMessages');
-    const chatNotification = document.querySelector('.chat-notification');
+      });
+    });
+  }
+
+  function initLiveChat() {
+    const ai = new GoogleGenAI({
+      apiKey: "AIzaSyD7f3XFCNvez4dimXoE-gU47hYaTPtIsOU",
+    });
+
+    // The Full Nash Digitech Brain
+    const NASH_SYSTEM_PROMPT = `
+You are the official AI assistant for Nash Digitech Solutions.
+
+You represent the company professionally and help visitors understand services, technology solutions, and how to work with Nash Digitech Solutions.
+
+IMPORTANT GUIDELINES:
+1. BE CONCISE: Answer only what the user asks. Do not dump all information at once.
+2. SHOW EMPATHY: If a client mentions a challenge, frustration, or problem, acknowledge it with empathy before providing a solution.
+3. NO ASTERISKS: Do not use asterisks (*) for formatting or bullet points in your responses. Use plain text or simple dashes (-) if needed.
+4. GREETINGS: Respond warmly to greetings without overwhelming the user with company info immediately.
+5. STRUCTURE: Use clear spacing between thoughts. Use line breaks to separate different points. If listing things, use a simple dash (-) followed by a space. Use capital letters for section titles if necessary, but keep it clean.
+6. NO BOLDING: Do not use double asterisks for bolding. Just use plain text.
+
+COMPANY INFORMATION
+
+Company Name: Nash Digitech Solutions
+Tagline: From Code to Cognition: Your Complete Technology Partner.
+Industry: Software Development, Technology Solutions, Digital Transformation
+Location: Victoria Falls, Zimbabwe
+Website: https://nashdigitechsolutions.co.zw
+Phone: +263 78 718 2780
+
+Company Overview:
+Nash Digitech Solutions is a modern digital technology company focused on building innovative digital platforms, business systems, mobile applications, and websites. We help businesses modernize through automation and custom software.
+
+FOUNDER & CEO
+Ian Tinashe Dzingira
+Ian is a software developer, entrepreneur, and technology innovator from Zimbabwe. He specializes in software engineering, web development, mobile applications, and business automation systems. He studied Software Engineering and is certified by Matter Career Readiness Institute.
+
+TECHNOLOGY STACK
+Languages: JavaScript, Swift, C#, PHP, HTML, CSS
+Frameworks: React, React Native, .NET, Node.js
+Databases: MongoDB, SQLite, SQL Server
+Skills: API Integration, Database Architecture, Backend Development, Mobile App Development, Cloud Systems, Automation, Admin Dashboards
+
+MAJOR PROJECTS
+BNB-Hunt: Real estate discovery platform.
+Legal Document Management System: Digital workflow for legal documents.
+SchoolSys - School management system
+
+NASH DIGITECH SOLUTIONS SERVICES
+
+Professional Website Design
+Stunning, responsive websites. Up to 15 pages, CMS, mobile design, multimedia.
+Starting Price: $250+
+
+Mobile App Development
+Powerful apps for iOS and Android using Swift, Kotlin, or React Native.
+Starting Price: $500+
+
+System Development (Non-Web)
+Custom desktop/enterprise software like ERP, CRM, or Inventory systems.
+Starting Price: $1,000+
+
+System Development (Web-Based)
+Advanced web platforms, E-commerce, LMS, Payment gateways, Admin dashboards.
+Starting Price: $700+
+
+Digital Marketing & Support
+Social media setup, Google Analytics, monitoring, 24/7 support.
+Monthly Plans: $100/month
+
+Creative Design Services
+Logo design, Brand identity, UI/UX, Marketing materials.
+Starting Price: $75+
+
+TARGET CLIENTS
+Startups, Small Businesses, Entrepreneurs, Organizations, Local Businesses.
+
+MISSION
+To empower businesses with powerful technology solutions that improve productivity, efficiency, and digital presence.
+
+VISION
+To become one of Africa's most trusted digital technology companies.
+
+VALUES
+Innovation, Reliability, Professionalism, Creativity, Customer Success.
+
+BOT PERSONALITY
+Professional, Helpful, Friendly, Knowledgeable, Confident, and Empathetic.
+Always answer clearly. If users ask about services, explain them concisely. Encourage consultations for projects.
+
+CONTACT
+Phone: +263 78 718 2780
+Website: https://nashdigitechsolutions.co.zw
+`;
+
+    const chatModel = ai.chats.create({
+      model: "gemini-3-flash-preview",
+      config: {
+        systemInstruction: NASH_SYSTEM_PROMPT,
+      },
+    });
+
+    // --- DOM ELEMENTS ---
+    const chatToggle = document.getElementById("chatToggle");
+    const contactDropdown = document.getElementById("contactDropdown");
+    const closeDropdown = document.getElementById("closeDropdown");
+    const liveChat = document.getElementById("liveChat");
+    const chatClose = document.getElementById("chatClose");
+    const chatSend = document.getElementById("chatSend");
+    const chatInput = document.getElementById("chatInput");
+    const chatMessages = document.getElementById("chatMessages");
+    const chatNotification = document.querySelector(".chat-notification");
 
     // Dropdown options
-    const optionEmail = document.getElementById('optionEmail');
-    const optionWhatsApp = document.getElementById('optionWhatsApp');
-    const optionLiveChat = document.getElementById('optionLiveChat');
-    const optionFacebook = document.getElementById('optionFacebook');
-    const optionCall = document.getElementById('optionCall');
+    const optionEmail = document.getElementById("optionEmail");
+    const optionWhatsApp = document.getElementById("optionWhatsApp");
+    const optionLiveChat = document.getElementById("optionLiveChat");
+    const optionFacebook = document.getElementById("optionFacebook");
+    const optionCall = document.getElementById("optionCall");
 
-    // Helper: Session ID management
+    // --- HELPER: Session Management ---
     function getSessionId() {
-        let sid = localStorage.getItem('nash_chat_session_id');
-        if (!sid) {
-            sid = 'session_' + Math.random().toString(36).substr(2, 9);
-            localStorage.setItem('nash_chat_session_id', sid);
-        }
-        return sid;
+      let sid = localStorage.getItem("nash_chat_session_id");
+      if (!sid) {
+        sid = "session_" + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem("nash_chat_session_id", sid);
+      }
+      return sid;
     }
 
-    // Dropdown Visibility logic
+    // --- DROPDOWN LOGIC ---
     function closeDropdownMenu() {
-        contactDropdown.classList.remove('show');
+      contactDropdown.classList.remove("show");
     }
 
     function openDropdownMenu() {
-        liveChat.classList.remove('active');
-        contactDropdown.classList.add('show');
-        if (chatNotification) chatNotification.style.display = 'none';
+      liveChat.classList.remove("active");
+      contactDropdown.classList.add("show");
+      if (chatNotification) chatNotification.style.display = "none";
     }
 
     // --- EVENT LISTENERS ---
-
-    chatToggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        contactDropdown.classList.contains('show') ? closeDropdownMenu() : openDropdownMenu();
+    chatToggle.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevents the click from closing the menu immediately
+      if (contactDropdown.classList.contains("show")) {
+        closeDropdownMenu();
+      } else {
+        openDropdownMenu();
+      }
     });
 
-    closeDropdown.addEventListener('click', closeDropdownMenu);
+    closeDropdown.addEventListener("click", closeDropdownMenu);
 
-    window.addEventListener('click', (e) => {
-        if (!contactDropdown.contains(e.target) && !chatToggle.contains(e.target)) {
-            closeDropdownMenu();
-        }
+    window.addEventListener("click", (e) => {
+      if (
+        !contactDropdown.contains(e.target) &&
+        !chatToggle.contains(e.target)
+      ) {
+        closeDropdownMenu();
+      }
     });
 
     // Option Handlers
-    optionEmail.addEventListener('click', () => {
-        window.location.href = 'mailto:nashdigitechsolutions@gmail.com';
-        closeDropdownMenu();
+    optionEmail.addEventListener("click", () => {
+      window.location.href = "mailto:nashdigitechsolutions@gmail.com";
+      closeDropdownMenu();
     });
 
-    optionWhatsApp.addEventListener('click', () => {
-        window.open('https://wa.me/263787182780?text=Hello%20Nash%20Digitech!', '_blank');
-        closeDropdownMenu();
+    optionWhatsApp.addEventListener("click", () => {
+      window.open(
+        "https://wa.me/263787182780?text=Hello%20Nash%20Digitech!",
+        "_blank",
+      );
+      closeDropdownMenu();
     });
 
-    optionFacebook.addEventListener('click', () => {
-        window.open('https://m.me/61584904127188', '_blank');
-        closeDropdownMenu();
+    optionFacebook.addEventListener("click", () => {
+      window.open("https://m.me/61584904127188", "_blank");
+      closeDropdownMenu();
     });
 
-    optionCall.addEventListener('click', () => {
-        window.location.href = 'tel:+263787182780';
-        closeDropdownMenu();
+    optionCall.addEventListener("click", () => {
+      window.location.href = "tel:+263787182780";
+      closeDropdownMenu();
     });
 
-    optionLiveChat.addEventListener('click', () => {
-        closeDropdownMenu();
-        liveChat.classList.add('active');
-        chatToggle.style.display = 'none';
-        
-        // Initial Bot Greeting if chat is empty
-        if (chatMessages.children.length === 0) {
-            setTimeout(() => {
-                addChatMessage('bot', "Hi! I'm Nash-AI. I can help you with info on our web dev, mobile apps, and systems. What are you looking to build?");
-            }, 600);
-        }
+    optionLiveChat.addEventListener("click", () => {
+      closeDropdownMenu();
+      liveChat.classList.add("active");
+      chatToggle.style.display = "none";
+
+      // Initial Bot Greeting if chat is empty
+      if (chatMessages.children.length === 0) {
+        setTimeout(() => {
+          addChatMessage(
+            "bot",
+            "Hi! I'm Nash-AI. I can help you with info on our web dev, mobile apps, and systems. What are you looking to build?",
+          );
+        }, 600);
+      }
     });
 
-    chatClose.addEventListener('click', () => {
-        liveChat.classList.remove('active');
-        chatToggle.style.display = 'flex';
+    chatClose.addEventListener("click", () => {
+      liveChat.classList.remove("active");
+      chatToggle.style.display = "flex";
     });
 
-    chatSend.addEventListener('click', sendMessage);
-    chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+    chatSend.addEventListener("click", sendMessage);
+    chatInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
 
     // --- MAIN CHAT LOGIC ---
+    async function sendMessage() {
+      const message = chatInput.value.trim();
+      if (!message) return;
 
-   async function sendMessage() {
-    const message = chatInput.value.trim();
-    if (!message) return;
+      // 1. Add User Message to UI
+      addChatMessage("user", message);
+      chatInput.value = "";
+      chatInput.disabled = true;
+      chatSend.disabled = true;
 
-    // 1. Add User Message to UI
-    addChatMessage('user', message);
-    chatInput.value = '';
+      // 2. Show typing indicator
+      const typingId = addChatMessage("bot", "...", true);
 
-    // 2. Show typing indicator (and store its ID/Element to remove later)
-    const typingId = addChatMessage('bot', '...', true);
+      try {
+        // Use Gemini AI to generate response
+        const result = await chatModel.sendMessage({ message });
 
-    try {
-        const response = await fetch('https://nashdigitechsolutions-backend.onrender.com/api/chat/ai', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                message: message,
-                sessionId: getSessionId()
-            })
-        });
-
-        // Handle Render.com cold starts or server errors
-        if (!response.ok) {
-            throw new Error(`Server responded with ${response.status}`);
-        }
-
-        const data = await response.json();
-        
-        // 3. Remove typing indicator before showing the real reply
+        // 3. Remove typing indicator
         removeMessage(typingId);
 
-        console.log("Backend response:", data);
-
-        // 4. Logic to display the reply
-        if (data.success && data.reply) {
-            addChatMessage('bot', data.reply);
-        } else if (data.reply) {
-            // Fallback: If success flag is missing but reply exists
-            addChatMessage('bot', data.reply);
+        // 4. Display the reply
+        if (result.text) {
+          addChatMessage("bot", result.text);
         } else {
-            // Detailed error reporting
-            const errorMsg = data.message || "I couldn't process that. Try again!";
-            addChatMessage('bot', `System Note: ${errorMsg}`);
+          addChatMessage("bot", "I couldn't process that. Try again!");
         }
-
-    } catch (error) {
-        console.error('Chat error:', error);
+      } catch (error) {
+        console.error("Chat error:", error);
         removeMessage(typingId);
-        
+
         // Friendly Zimbabwean-context error message
-        addChatMessage('bot', "I'm having trouble connecting to my brain. Please try again or WhatsApp us at +263 78 718 2780!");
+        addChatMessage(
+          "bot",
+          "I'm having trouble connecting to my brain. Please try again or WhatsApp us at +263 78 718 2780!",
+        );
+      } finally {
+        chatInput.disabled = false;
+        chatSend.disabled = false;
+        chatInput.focus();
+      }
     }
-}
 
     function addChatMessage(sender, text, isTyping = false) {
-        const id = 'msg_' + Date.now();
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `chat-message ${sender}`;
-        messageDiv.id = id;
+      const id = "msg_" + Date.now();
+      const messageDiv = document.createElement("div");
+      messageDiv.className = `chat-message ${sender}`;
+      messageDiv.id = id;
 
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'message-content';
+      const contentDiv = document.createElement("div");
+      contentDiv.className = "message-content";
 
-        if (isTyping) {
-            contentDiv.innerHTML = `<p class="typing-dots"><span>.</span><span>.</span><span>.</span></p>`;
-        } else {
-            contentDiv.innerHTML = `<p>${text}</p>`;
-        }
+      if (isTyping) {
+        contentDiv.innerHTML = `<p class="typing-dots"><span></span><span></span><span></span></p>`;
+      } else {
+        contentDiv.innerHTML = `<p>${text}</p>`;
+      }
 
-        messageDiv.appendChild(contentDiv);
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        return id;
+      messageDiv.appendChild(contentDiv);
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      return id;
     }
 
     function removeMessage(id) {
-        const el = document.getElementById(id);
-        if (el) el.remove();
+      const el = document.getElementById(id);
+      if (el) el.remove();
     }
 
     // Auto-notification logic
     setTimeout(() => {
-        if (chatNotification && !liveChat.classList.contains('active') && !contactDropdown.classList.contains('show')) {
-            chatNotification.style.display = 'flex';
-        }
+      if (
+        chatNotification &&
+        !liveChat.classList.contains("active") &&
+        !contactDropdown.classList.contains("show")
+      ) {
+        chatNotification.style.display = "flex";
+      }
     }, 10000);
-}
+  }
 
-document.addEventListener('DOMContentLoaded', initLiveChat);
+  // Stats counter animation (unchanged)
+  function initStatsCounter() {
+    const statNumbers = document.querySelectorAll(".stat-number");
 
-// Stats counter animation (unchanged)
-function initStatsCounter() {
-    const statNumbers = document.querySelectorAll('.stat-number');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const statNumber = entry.target;
+            const target = parseInt(statNumber.textContent);
+            const duration = 2000; // 2 seconds
+            const increment = target / (duration / 16); // 60fps
+            let current = 0;
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const statNumber = entry.target;
-                const target = parseInt(statNumber.textContent);
-                const duration = 2000; // 2 seconds
-                const increment = target / (duration / 16); // 60fps
-                let current = 0;
+            const timer = setInterval(() => {
+              current += increment;
+              if (current >= target) {
+                current = target;
+                clearInterval(timer);
+              }
+              statNumber.textContent = Math.floor(current);
+            }, 16);
 
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        current = target;
-                        clearInterval(timer);
-                    }
-                    statNumber.textContent = Math.floor(current);
-                }, 16);
-
-                // Stop observing once animated
-                observer.unobserve(statNumber);
-            }
+            // Stop observing once animated
+            observer.unobserve(statNumber);
+          }
         });
-    }, { threshold: 0.5 });
+      },
+      { threshold: 0.5 },
+    );
 
-    statNumbers.forEach(stat => observer.observe(stat));
-}
+    statNumbers.forEach((stat) => observer.observe(stat));
+  }
 
-// Scroll animations (unchanged)
-function initScrollAnimations() {
+  // Scroll animations (unchanged)
+  function initScrollAnimations() {
     const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
+      threshold: 0.1,
+      rootMargin: "0px 0px -100px 0px",
     };
 
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animated');
-            }
-        });
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("animated");
+        }
+      });
     }, observerOptions);
 
     // Observe elements with animation classes
-    document.querySelectorAll('.animate-fade-up, .animate-fade-in, .animate-slide-in').forEach(el => {
+    document
+      .querySelectorAll(".animate-fade-up, .animate-fade-in, .animate-slide-in")
+      .forEach((el) => {
         observer.observe(el);
+      });
+  }
+
+  // Back to top button
+  function initBackToTop() {
+    const backToTop = document.getElementById("backToTop");
+
+    if (!backToTop) return;
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        backToTop.classList.add("active");
+      } else {
+        backToTop.classList.remove("active");
+      }
     });
-}
-    
-    // Back to top button
-    function initBackToTop() {
-        const backToTop = document.getElementById('backToTop');
-        
-        if (!backToTop) return;
-        
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTop.classList.add('active');
-            } else {
-                backToTop.classList.remove('active');
-            }
-        });
-        
-        backToTop.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    }
-    
-    // Form validation helpers
-    function initFormValidation() {
-        // Email validation helper
-        window.isValidEmail = function(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        };
-        
-        // Phone validation helper
-        window.isValidPhone = function(phone) {
-            const phoneRegex = /^[\+]?[0-9\s\-\(\)]{10,}$/;
-            return phoneRegex.test(phone);
-        };
-    }
-    
-    // Initialize animations on load
-    setTimeout(() => {
-        document.querySelectorAll('.animate-fade-up, .animate-fade-in').forEach(el => {
-            el.style.opacity = '1';
-        });
-    }, 100);
+
+    backToTop.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    });
+  }
+
+  // Form validation helpers
+  function initFormValidation() {
+    // Email validation helper
+    window.isValidEmail = function (email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    };
+
+    // Phone validation helper
+    window.isValidPhone = function (phone) {
+      const phoneRegex = /^[\+]?[0-9\s\-\(\)]{10,}$/;
+      return phoneRegex.test(phone);
+    };
+  }
+
+  // Initialize animations on load
+  setTimeout(() => {
+    document
+      .querySelectorAll(".animate-fade-up, .animate-fade-in")
+      .forEach((el) => {
+        el.style.opacity = "1";
+      });
+  }, 100);
 });
 
 // ============================================
@@ -476,55 +590,61 @@ function initScrollAnimations() {
 
 // Load testimonials from backend
 async function loadTestimonials() {
-    try {
-        console.log('📡 Fetching live data from Nash Digitech API...');
-        const response = await fetch(`${API_BASE_URL}/testimonials`);
-        
-        if (!response.ok) {
-            throw new Error(`Server responded with status: ${response.status}`);
-        }
+  try {
+    console.log("📡 Fetching live data from Nash Digitech API...");
+    const response = await fetch(`${API_BASE_URL}/testimonials`);
 
-        const data = await response.json();
-        
-        if (data.success) {
-            // 1. Display the actual testimonial cards
-            // If the array is empty, displayTestimonials handles the "Be the first" message
-            displayTestimonials(data.testimonials);
-            
-            // 2. Update the Testimonials Section Stats (Total, Avg Rating, Countries)
-            if (data.stats) {
-                updateTestimonialStats(data.stats);
-                
-                // 3. Update the Global "Happy Clients" counter in the Hero/Stats section
-                // We use the 'total' from approved testimonials in the DB
-                updateHappyClientsCount(data.stats.total);
-            }
-
-            console.log(`✅ Sync Complete: ${data.testimonials.length} testimonials live.`);
-        } else {
-            throw new Error(data.message || 'Backend returned success: false');
-        }
-    } catch (error) {
-        console.error('❌ Backend Sync Failed:', error.message);
-        
-        // Fallback to local data so the site doesn't look broken
-        console.log('⚠️ Reverting to local browser storage...');
-        loadTestimonialsFromLocalStorage();
+    if (!response.ok) {
+      throw new Error(`Server responded with status: ${response.status}`);
     }
+
+    const data = await response.json();
+
+    if (data.success) {
+      // 1. Display the actual testimonial cards
+      // If the array is empty, displayTestimonials handles the "Be the first" message
+      displayTestimonials(data.testimonials);
+
+      // 2. Update the Testimonials Section Stats (Total, Avg Rating, Countries)
+      if (data.stats) {
+        updateTestimonialStats(data.stats);
+
+        // 3. Update the Global "Happy Clients" counter in the Hero/Stats section
+        // We use the 'total' from approved testimonials in the DB
+        updateHappyClientsCount(data.stats.total);
+      }
+
+      console.log(
+        `✅ Sync Complete: ${data.testimonials.length} testimonials live.`,
+      );
+    } else {
+      throw new Error(data.message || "Backend returned success: false");
+    }
+  } catch (error) {
+    console.error("❌ Backend Sync Failed:", error.message);
+
+    // Fallback to local data so the site doesn't look broken
+    console.log("⚠️ Reverting to local browser storage...");
+    loadTestimonialsFromLocalStorage();
+  }
 }
 
 function loadTestimonialsFromLocalStorage() {
-    const testimonials = JSON.parse(localStorage.getItem('nashTestimonials') || '[]');
-    const approvedTestimonials = testimonials.filter(t => t.status === 'approved');
-    
-    if (approvedTestimonials.length > 0) {
-        displayTestimonials(approvedTestimonials);
-        updateHappyClientsCount(approvedTestimonials.length);
-    } else {
-        // Show default message
-        const slider = document.getElementById('testimonialSlider');
-        if (slider) {
-            slider.innerHTML = `
+  const testimonials = JSON.parse(
+    localStorage.getItem("nashTestimonials") || "[]",
+  );
+  const approvedTestimonials = testimonials.filter(
+    (t) => t.status === "approved",
+  );
+
+  if (approvedTestimonials.length > 0) {
+    displayTestimonials(approvedTestimonials);
+    updateHappyClientsCount(approvedTestimonials.length);
+  } else {
+    // Show default message
+    const slider = document.getElementById("testimonialSlider");
+    if (slider) {
+      slider.innerHTML = `
                 <div class="testimonial-slide active">
                     <div class="testimonial-content">
                         <div class="testimonial-text">
@@ -533,21 +653,21 @@ function loadTestimonialsFromLocalStorage() {
                     </div>
                 </div>
             `;
-        }
     }
+  }
 }
 
 function displayTestimonials(testimonials) {
-    const slider = document.getElementById('testimonialSlider');
-    const dotsContainer = document.getElementById('testimonialDots');
-    
-    if (!slider) return;
-    
-    slider.innerHTML = '';
-    if (dotsContainer) dotsContainer.innerHTML = '';
-    
-    if (testimonials.length === 0) {
-        slider.innerHTML = `
+  const slider = document.getElementById("testimonialSlider");
+  const dotsContainer = document.getElementById("testimonialDots");
+
+  if (!slider) return;
+
+  slider.innerHTML = "";
+  if (dotsContainer) dotsContainer.innerHTML = "";
+
+  if (testimonials.length === 0) {
+    slider.innerHTML = `
             <div class="testimonial-slide active">
                 <div class="testimonial-content">
                     <div class="testimonial-text">
@@ -556,14 +676,14 @@ function displayTestimonials(testimonials) {
                 </div>
             </div>
         `;
-        return;
-    }
-    
-    testimonials.forEach((testimonial, index) => {
-        // Create slide
-        const slide = document.createElement('div');
-        slide.className = `testimonial-slide ${index === 0 ? 'active' : ''}`;
-        slide.innerHTML = `
+    return;
+  }
+
+  testimonials.forEach((testimonial, index) => {
+    // Create slide
+    const slide = document.createElement("div");
+    slide.className = `testimonial-slide ${index === 0 ? "active" : ""}`;
+    slide.innerHTML = `
             <div class="testimonial-content">
                 <div class="testimonial-text">
                     <p>"${testimonial.testimonial}"</p>
@@ -581,392 +701,407 @@ function displayTestimonials(testimonials) {
                 </div>
             </div>
         `;
-        slider.appendChild(slide);
-        
-        // Create dot if container exists
-        if (dotsContainer) {
-            const dot = document.createElement('span');
-            dot.className = `dot ${index === 0 ? 'active' : ''}`;
-            dot.dataset.index = index;
-            dotsContainer.appendChild(dot);
-        }
-    });
-    
-    // Initialize slider controls
-    initTestimonialControls();
+    slider.appendChild(slide);
+
+    // Create dot if container exists
+    if (dotsContainer) {
+      const dot = document.createElement("span");
+      dot.className = `dot ${index === 0 ? "active" : ""}`;
+      dot.dataset.index = index;
+      dotsContainer.appendChild(dot);
+    }
+  });
+
+  // Initialize slider controls
+  initTestimonialControls();
 }
 
 function generateStars(rating) {
-    let stars = '';
-    for (let i = 1; i <= 5; i++) {
-        if (i <= rating) {
-            stars += '<i class="fas fa-star"></i>';
-        } else {
-            stars += '<i class="far fa-star"></i>';
-        }
+  let stars = "";
+  for (let i = 1; i <= 5; i++) {
+    if (i <= rating) {
+      stars += '<i class="fas fa-star"></i>';
+    } else {
+      stars += '<i class="far fa-star"></i>';
     }
-    return stars;
+  }
+  return stars;
 }
 
 function initTestimonialControls() {
-    const slides = document.querySelectorAll('.testimonial-slide');
-    const dots = document.querySelectorAll('.testimonial-dots .dot');
-    const prevBtn = document.querySelector('.testimonial-prev');
-    const nextBtn = document.querySelector('.testimonial-next');
-    
-    if (slides.length === 0) return;
-    
-    let currentSlide = 0;
-    
-    function showSlide(index) {
-        slides.forEach(slide => slide.classList.remove('active'));
-        dots.forEach(dot => dot.classList.remove('active'));
-        
-        currentSlide = (index + slides.length) % slides.length;
-        slides[currentSlide].classList.add('active');
-        if (dots[currentSlide]) dots[currentSlide].classList.add('active');
-    }
-    
-    prevBtn?.addEventListener('click', () => {
-        showSlide(currentSlide - 1);
+  const slides = document.querySelectorAll(".testimonial-slide");
+  const dots = document.querySelectorAll(".testimonial-dots .dot");
+  const prevBtn = document.querySelector(".testimonial-prev");
+  const nextBtn = document.querySelector(".testimonial-next");
+
+  if (slides.length === 0) return;
+
+  let currentSlide = 0;
+
+  function showSlide(index) {
+    slides.forEach((slide) => slide.classList.remove("active"));
+    dots.forEach((dot) => dot.classList.remove("active"));
+
+    currentSlide = (index + slides.length) % slides.length;
+    slides[currentSlide].classList.add("active");
+    if (dots[currentSlide]) dots[currentSlide].classList.add("active");
+  }
+
+  prevBtn?.addEventListener("click", () => {
+    showSlide(currentSlide - 1);
+  });
+
+  nextBtn?.addEventListener("click", () => {
+    showSlide(currentSlide + 1);
+  });
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+      showSlide(index);
     });
-    
-    nextBtn?.addEventListener('click', () => {
-        showSlide(currentSlide + 1);
-    });
-    
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            showSlide(index);
-        });
-    });
-    
-    // Auto-advance slides every 5 seconds
-    setInterval(() => {
-        showSlide(currentSlide + 1);
-    }, 5000);
+  });
+
+  // Auto-advance slides every 5 seconds
+  setInterval(() => {
+    showSlide(currentSlide + 1);
+  }, 5000);
 }
 
 function updateTestimonialStats(stats) {
-    const totalElement = document.getElementById('totalTestimonials');
-    const averageElement = document.getElementById('averageRating');
-    const countriesElement = document.getElementById('countriesCount');
-    
-    if (totalElement) totalElement.textContent = stats.total || 0;
-    if (averageElement) averageElement.textContent = stats.averageRating || '0.0';
-    if (countriesElement) countriesElement.textContent = stats.countriesCount || 0;
+  const totalElement = document.getElementById("totalTestimonials");
+  const averageElement = document.getElementById("averageRating");
+  const countriesElement = document.getElementById("countriesCount");
+
+  if (totalElement) totalElement.textContent = stats.total || 0;
+  if (averageElement) averageElement.textContent = stats.averageRating || "0.0";
+  if (countriesElement)
+    countriesElement.textContent = stats.countriesCount || 0;
 }
 
 function updateHappyClientsCount(count) {
-    const happyClientsElement = document.getElementById('happyClients');
-    if (happyClientsElement) happyClientsElement.textContent = count;
+  const happyClientsElement = document.getElementById("happyClients");
+  if (happyClientsElement) happyClientsElement.textContent = count;
 }
 
 // Testimonial Modal System
 function initTestimonialSystem() {
-    const modal = document.getElementById('testimonialModal');
-    const openBtn = document.getElementById('addTestimonialBtn');
-    const closeBtn = document.getElementById('closeTestimonialModal');
-    const form = document.getElementById('testimonialForm');
-    const stars = document.querySelectorAll('.rating-stars i');
-    
-    if (!modal || !openBtn) return;
-    
-    // Star rating functionality
-    stars.forEach(star => {
-        star.addEventListener('click', function() {
-            const rating = parseInt(this.dataset.rating);
-            document.getElementById('clientRating').value = rating;
-            
-            stars.forEach(s => {
-                if (parseInt(s.dataset.rating) <= rating) {
-                    s.classList.remove('far');
-                    s.classList.add('fas', 'selected');
-                } else {
-                    s.classList.remove('fas', 'selected');
-                    s.classList.add('far');
-                }
-            });
-        });
-    });
-    
-    // Open modal
-    openBtn.addEventListener('click', () => {
-        modal.style.display = 'flex';
-    });
-    
-    // Close modal
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-            if (form) form.reset();
-            stars.forEach(s => {
-                s.classList.remove('fas', 'selected');
-                s.classList.add('far');
-            });
-        });
-    }
-    
-    // Close modal on outside click
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.style.display = 'none';
-            if (form) form.reset();
-            stars.forEach(s => {
-                s.classList.remove('fas', 'selected');
-                s.classList.add('far');
-            });
+  const modal = document.getElementById("testimonialModal");
+  const openBtn = document.getElementById("addTestimonialBtn");
+  const closeBtn = document.getElementById("closeTestimonialModal");
+  const form = document.getElementById("testimonialForm");
+  const stars = document.querySelectorAll(".rating-stars i");
+
+  if (!modal || !openBtn) return;
+
+  // Star rating functionality
+  stars.forEach((star) => {
+    star.addEventListener("click", function () {
+      const rating = parseInt(this.dataset.rating);
+      document.getElementById("clientRating").value = rating;
+
+      stars.forEach((s) => {
+        if (parseInt(s.dataset.rating) <= rating) {
+          s.classList.remove("far");
+          s.classList.add("fas", "selected");
+        } else {
+          s.classList.remove("fas", "selected");
+          s.classList.add("far");
         }
+      });
     });
-    
-    // Submit testimonial
-    if (form) {
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const testimonialData = {
-                name: document.getElementById('clientName').value,
-                position: document.getElementById('clientPosition').value || 'Client',
-                country: document.getElementById('clientCountry').value,
-                rating: parseInt(document.getElementById('clientRating').value),
-                testimonial: document.getElementById('clientTestimonial').value,
-                status: 'pending'
-            };
-            
-            try {
-                const result = await submitTestimonialToBackend(testimonialData);
-                alert(result.message);
-                
-                modal.style.display = 'none';
-                form.reset();
-                stars.forEach(s => {
-                    s.classList.remove('fas', 'selected');
-                    s.classList.add('far');
-                });
-                
-                // Reload testimonials
-                loadTestimonials();
-                
-            } catch (error) {
-                alert('Error submitting testimonial. Please try again.');
-            }
-        });
+  });
+
+  // Open modal
+  openBtn.addEventListener("click", () => {
+    modal.style.display = "flex";
+  });
+
+  // Close modal
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+      if (form) form.reset();
+      stars.forEach((s) => {
+        s.classList.remove("fas", "selected");
+        s.classList.add("far");
+      });
+    });
+  }
+
+  // Close modal on outside click
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+      if (form) form.reset();
+      stars.forEach((s) => {
+        s.classList.remove("fas", "selected");
+        s.classList.add("far");
+      });
     }
+  });
+
+  // Submit testimonial
+  if (form) {
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const testimonialData = {
+        name: document.getElementById("clientName").value,
+        position: document.getElementById("clientPosition").value || "Client",
+        country: document.getElementById("clientCountry").value,
+        rating: parseInt(document.getElementById("clientRating").value),
+        testimonial: document.getElementById("clientTestimonial").value,
+        status: "pending",
+      };
+
+      try {
+        const result = await submitTestimonialToBackend(testimonialData);
+        alert(result.message);
+
+        modal.style.display = "none";
+        form.reset();
+        stars.forEach((s) => {
+          s.classList.remove("fas", "selected");
+          s.classList.add("far");
+        });
+
+        // Reload testimonials
+        loadTestimonials();
+      } catch (error) {
+        alert("Error submitting testimonial. Please try again.");
+      }
+    });
+  }
 }
 
 async function submitTestimonialToBackend(testimonialData) {
-    try {
-        const response = await fetch(`${API_BASE_URL}/testimonials`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(testimonialData)
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            return { success: true, message: data.message };
-        } else {
-            throw new Error(data.message || 'Failed to submit testimonial');
-        }
-    } catch (error) {
-        console.error('Error submitting testimonial to backend:', error);
-        
-        // Fallback to localStorage
-        return submitTestimonialToLocalStorage(testimonialData);
+  try {
+    const response = await fetch(`${API_BASE_URL}/testimonials`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(testimonialData),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      return { success: true, message: data.message };
+    } else {
+      throw new Error(data.message || "Failed to submit testimonial");
     }
+  } catch (error) {
+    console.error("Error submitting testimonial to backend:", error);
+
+    // Fallback to localStorage
+    return submitTestimonialToLocalStorage(testimonialData);
+  }
 }
 
 function submitTestimonialToLocalStorage(testimonialData) {
-    try {
-        let testimonials = JSON.parse(localStorage.getItem('nashTestimonials') || '[]');
-        testimonialData.id = Date.now();
-        testimonialData.createdAt = new Date().toISOString();
-        testimonials.push(testimonialData);
-        localStorage.setItem('nashTestimonials', JSON.stringify(testimonials));
-        
-        return { 
-            success: true, 
-            message: 'Thank you for your testimonial! It will be reviewed and published soon.' 
-        };
-    } catch (error) {
-        console.error('Error saving testimonial to localStorage:', error);
-        return { success: false, message: 'Error saving testimonial. Please try again.' };
-    }
+  try {
+    let testimonials = JSON.parse(
+      localStorage.getItem("nashTestimonials") || "[]",
+    );
+    testimonialData.id = Date.now();
+    testimonialData.createdAt = new Date().toISOString();
+    testimonials.push(testimonialData);
+    localStorage.setItem("nashTestimonials", JSON.stringify(testimonials));
+
+    return {
+      success: true,
+      message:
+        "Thank you for your testimonial! It will be reviewed and published soon.",
+    };
+  } catch (error) {
+    console.error("Error saving testimonial to localStorage:", error);
+    return {
+      success: false,
+      message: "Error saving testimonial. Please try again.",
+    };
+  }
 }
 
 function initContactFormWithSocialMedia() {
-    const contactForm = document.getElementById('contactForm');
-    const formStatus = document.getElementById('formStatus');
-    const socialMediaModal = document.getElementById('socialMediaModal');
-    const sendFeedbackBtn = document.getElementById('sendFeedbackBtn');
-    const closeSocialModal = document.getElementById('closeSocialModal');
-    const cancelSocial = document.getElementById('cancelSocial');
-    const confirmPlatforms = document.getElementById('confirmPlatforms');
-    
-    if (!contactForm || !sendFeedbackBtn) return;
-    
-    let formData = null;
-    
-    // Handle form submission
-    sendFeedbackBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        // Get form values
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const phone = document.getElementById('phone').value.trim();
-        const service = document.getElementById('service').value;
-        const budget = document.getElementById('budget').value;
-        const message = document.getElementById('message').value.trim();
-        const newsletterOptIn = document.getElementById('newsletterOptIn')?.checked || false;
-        const agreeTerms = document.getElementById('agreeTerms')?.checked || false;
-        
-        // Basic validation
-        if (!name || !email || !message) {
-            showFormStatus('Please fill in all required fields.', 'error');
-            return;
-        }
-        
-        if (!isValidEmail(email)) {
-            showFormStatus('Please enter a valid email address.', 'error');
-            return;
-        }
-        
-        if (!agreeTerms) {
-            showFormStatus('You must agree to receive communication via selected platforms.', 'error');
-            return;
-        }
-        
-        // Get service price
-        const serviceSelect = document.getElementById('service');
-        const selectedOption = serviceSelect.options[serviceSelect.selectedIndex];
-        const servicePrice = selectedOption?.dataset.price || '';
-        
-        // Save form data temporarily
-        formData = {
-            name,
-            email,
-            phone: phone || 'Not provided',
-            service: service || 'Not specified',
-            servicePrice: servicePrice,
-            budget: budget || 'Not specified',
-            message,
-            newsletterOptIn,
-            date: new Date().toLocaleString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            })
-        };
-        
-        // Show social media platform selection modal
-        if (socialMediaModal) {
-            socialMediaModal.style.display = 'flex';
-            // Reset checkboxes
-            document.querySelectorAll('input[name="contact-platform"]').forEach(cb => {
-                cb.checked = false;
-            });
-        } else {
-            // If modal doesn't exist, send directly
-            sendContactForm([]);
-        }
-    });
-    
-    // Close social media modal
-    if (closeSocialModal) {
-        closeSocialModal.addEventListener('click', () => {
-            if (socialMediaModal) socialMediaModal.style.display = 'none';
-        });
+  const contactForm = document.getElementById("contactForm");
+  const formStatus = document.getElementById("formStatus");
+  const socialMediaModal = document.getElementById("socialMediaModal");
+  const sendFeedbackBtn = document.getElementById("sendFeedbackBtn");
+  const closeSocialModal = document.getElementById("closeSocialModal");
+  const cancelSocial = document.getElementById("cancelSocial");
+  const confirmPlatforms = document.getElementById("confirmPlatforms");
+
+  if (!contactForm || !sendFeedbackBtn) return;
+
+  let formData = null;
+
+  // Handle form submission
+  sendFeedbackBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    // Get form values
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const service = document.getElementById("service").value;
+    const budget = document.getElementById("budget").value;
+    const message = document.getElementById("message").value.trim();
+    const newsletterOptIn =
+      document.getElementById("newsletterOptIn")?.checked || false;
+    const agreeTerms = document.getElementById("agreeTerms")?.checked || false;
+
+    // Basic validation
+    if (!name || !email || !message) {
+      showFormStatus("Please fill in all required fields.", "error");
+      return;
     }
-    
-    if (cancelSocial) {
-        cancelSocial.addEventListener('click', () => {
-            if (socialMediaModal) socialMediaModal.style.display = 'none';
-        });
+
+    if (!isValidEmail(email)) {
+      showFormStatus("Please enter a valid email address.", "error");
+      return;
     }
-    
-    // Close modal on outside click
-    window.addEventListener('click', (e) => {
-        if (socialMediaModal && e.target === socialMediaModal) {
-            socialMediaModal.style.display = 'none';
-        }
+
+    if (!agreeTerms) {
+      showFormStatus(
+        "You must agree to receive communication via selected platforms.",
+        "error",
+      );
+      return;
+    }
+
+    // Get service price
+    const serviceSelect = document.getElementById("service");
+    const selectedOption = serviceSelect.options[serviceSelect.selectedIndex];
+    const servicePrice = selectedOption?.dataset.price || "";
+
+    // Save form data temporarily
+    formData = {
+      name,
+      email,
+      phone: phone || "Not provided",
+      service: service || "Not specified",
+      servicePrice: servicePrice,
+      budget: budget || "Not specified",
+      message,
+      newsletterOptIn,
+      date: new Date().toLocaleString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+
+    // Show social media platform selection modal
+    if (socialMediaModal) {
+      socialMediaModal.style.display = "flex";
+      // Reset checkboxes
+      document
+        .querySelectorAll('input[name="contact-platform"]')
+        .forEach((cb) => {
+          cb.checked = false;
+        });
+    } else {
+      // If modal doesn't exist, send directly
+      sendContactForm([]);
+    }
+  });
+
+  // Close social media modal
+  if (closeSocialModal) {
+    closeSocialModal.addEventListener("click", () => {
+      if (socialMediaModal) socialMediaModal.style.display = "none";
     });
-    
-    // Confirm platform selection and send message
+  }
+
+  if (cancelSocial) {
+    cancelSocial.addEventListener("click", () => {
+      if (socialMediaModal) socialMediaModal.style.display = "none";
+    });
+  }
+
+  // Close modal on outside click
+  window.addEventListener("click", (e) => {
+    if (socialMediaModal && e.target === socialMediaModal) {
+      socialMediaModal.style.display = "none";
+    }
+  });
+
+  // Confirm platform selection and send message
+  if (confirmPlatforms) {
+    confirmPlatforms.addEventListener("click", async function () {
+      // Get selected platforms
+      const selectedPlatforms = Array.from(
+        document.querySelectorAll('input[name="contact-platform"]:checked'),
+      ).map((cb) => cb.value);
+
+      if (selectedPlatforms.length === 0) {
+        alert("Please select at least one contact platform.");
+        return;
+      }
+
+      // Send contact form
+      await sendContactForm(selectedPlatforms);
+    });
+  }
+
+  async function sendContactForm(selectedPlatforms) {
+    if (!formData) return;
+
+    // Update button state
+    const originalText = confirmPlatforms
+      ? confirmPlatforms.innerHTML
+      : "Sending...";
     if (confirmPlatforms) {
-        confirmPlatforms.addEventListener('click', async function() {
-            // Get selected platforms
-            const selectedPlatforms = Array.from(document.querySelectorAll('input[name="contact-platform"]:checked'))
-                .map(cb => cb.value);
-            
-            if (selectedPlatforms.length === 0) {
-                alert('Please select at least one contact platform.');
-                return;
-            }
-            
-            // Send contact form
-            await sendContactForm(selectedPlatforms);
-        });
+      confirmPlatforms.innerHTML =
+        '<i class="fas fa-spinner fa-spin"></i> Sending...';
+      confirmPlatforms.disabled = true;
     }
-    
-    async function sendContactForm(selectedPlatforms) {
-        if (!formData) return;
-        
-        // Update button state
-        const originalText = confirmPlatforms ? confirmPlatforms.innerHTML : 'Sending...';
-        if (confirmPlatforms) {
-            confirmPlatforms.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-            confirmPlatforms.disabled = true;
-        }
-        
-        try {
-            // Add platforms to form data
-            formData.platforms = selectedPlatforms;
-            
-            // Prepare message for different platforms
-            const contactMessage = prepareContactMessage(formData, selectedPlatforms);
-            
-            // Send to backend
-            const backendResult = await submitContactFormToBackend(formData);
-            
-            // Send to selected platforms
-            await sendViaPlatforms(selectedPlatforms, contactMessage);
-            
-            // Show success message
-            showFormStatus(
-                `Thank you ${formData.name}! ${backendResult.message} We'll contact you via ${selectedPlatforms.join(', ')} within 24 hours.`,
-                'success'
-            );
-            
-            // Close modal
-            if (socialMediaModal) socialMediaModal.style.display = 'none';
-            
-            // Reset form
-            contactForm.reset();
-            
-        } catch (error) {
-            console.error('Form submission error:', error);
-            showFormStatus(
-                `Sorry ${formData.name}, there was an error sending your message. Please try again or contact us directly.`,
-                'error'
-            );
-        } finally {
-            // Reset button state
-            if (confirmPlatforms) {
-                confirmPlatforms.innerHTML = originalText;
-                confirmPlatforms.disabled = false;
-            }
-            formData = null;
-        }
+
+    try {
+      // Add platforms to form data
+      formData.platforms = selectedPlatforms;
+
+      // Prepare message for different platforms
+      const contactMessage = prepareContactMessage(formData, selectedPlatforms);
+
+      // Send to backend
+      const backendResult = await submitContactFormToBackend(formData);
+
+      // Send to selected platforms
+      await sendViaPlatforms(selectedPlatforms, contactMessage);
+
+      // Show success message
+      showFormStatus(
+        `Thank you ${formData.name}! ${backendResult.message} We'll contact you via ${selectedPlatforms.join(", ")} within 24 hours.`,
+        "success",
+      );
+
+      // Close modal
+      if (socialMediaModal) socialMediaModal.style.display = "none";
+
+      // Reset form
+      contactForm.reset();
+    } catch (error) {
+      console.error("Form submission error:", error);
+      showFormStatus(
+        `Sorry ${formData.name}, there was an error sending your message. Please try again or contact us directly.`,
+        "error",
+      );
+    } finally {
+      // Reset button state
+      if (confirmPlatforms) {
+        confirmPlatforms.innerHTML = originalText;
+        confirmPlatforms.disabled = false;
+      }
+      formData = null;
     }
-    
-    function prepareContactMessage(data, platforms) {
-        return `
+  }
+
+  function prepareContactMessage(data, platforms) {
+    return `
 🌟 *New Project Inquiry - Nash Digitech Solutions* 🌟
 
 *Name:* ${data.name}
@@ -974,134 +1109,146 @@ function initContactFormWithSocialMedia() {
 *Phone:* ${data.phone}
 *Service Needed:* ${data.service} ${data.servicePrice}
 *Budget Range:* ${data.budget}
-*Preferred Contact:* ${platforms.join(', ')}
+*Preferred Contact:* ${platforms.join(", ")}
 
 *Project Details:*
 ${data.message}
 
 *Date Submitted:* ${data.date}
-${data.newsletterOptIn ? '\n✅ Subscribed to newsletter' : ''}
+${data.newsletterOptIn ? "\n✅ Subscribed to newsletter" : ""}
         `.trim();
+  }
+
+  async function sendViaPlatforms(platforms, message) {
+    for (const platform of platforms) {
+      await sendViaPlatform(platform, message);
     }
-    
-    async function sendViaPlatforms(platforms, message) {
-        for (const platform of platforms) {
-            await sendViaPlatform(platform, message);
+  }
+
+  function sendViaPlatform(platform, message) {
+    return new Promise((resolve) => {
+      try {
+        switch (platform) {
+          case "whatsapp":
+            window.open(
+              `https://wa.me/263787182780?text=${encodeURIComponent(message)}`,
+              "_blank",
+            );
+            break;
+          case "telegram":
+            window.open(
+              `https://t.me/nashdigitech?text=${encodeURIComponent(message)}`,
+              "_blank",
+            );
+            break;
+          case "instagram":
+            window.open(`https://www.instagram.com/nashdigitech`, "_blank");
+            break;
+          case "facebook":
+            window.open(`https://www.facebook.com/nashdigitech`, "_blank");
+            break;
+          case "twitter":
+            window.open(
+              `https://twitter.com/messages/compose?recipient_id=nashdigitech&text=${encodeURIComponent(message)}`,
+              "_blank",
+            );
+            break;
+          case "linkedin":
+            window.open(
+              `https://www.linkedin.com/company/nash-digitech`,
+              "_blank",
+            );
+            break;
+          case "tiktok":
+            window.open(`https://www.tiktok.com/@nashdigitech`, "_blank");
+            break;
+          case "signal":
+            window.open(`https://signal.me/#p/nashdigitech`, "_blank");
+            break;
+          case "skype":
+            window.open(`skype:nashdigitech?chat`, "_blank");
+            break;
+          case "zoom":
+            window.open(`https://zoom.us/`, "_blank");
+            break;
+          case "email":
+            window.location.href = `mailto:nashdigitechsolutions@gmail.com?subject=New Project Inquiry from ${encodeURIComponent(formData.name)}&body=${encodeURIComponent(message)}`;
+            break;
+          case "phone":
+            window.open("tel:+263787182780", "_blank");
+            break;
+          default:
+            console.log(`Message for ${platform}: ${message}`);
         }
+        resolve();
+      } catch (error) {
+        console.error(`Error sending via ${platform}:`, error);
+        resolve(); // Continue even if one platform fails
+      }
+    });
+  }
+
+  async function submitContactFormToBackend(contactData) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/contacts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(contactData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        return { success: true, message: data.message };
+      } else {
+        throw new Error(data.message || "Failed to submit contact form");
+      }
+    } catch (error) {
+      console.error("Error submitting contact form to backend:", error);
+
+      // Fallback to localStorage
+      return saveContactToLocalStorage(contactData);
     }
-    
-    function sendViaPlatform(platform, message) {
-        return new Promise((resolve) => {
-            try {
-                switch(platform) {
-                    case 'whatsapp':
-                        window.open(`https://wa.me/263787182780?text=${encodeURIComponent(message)}`, '_blank');
-                        break;
-                    case 'telegram':
-                        window.open(`https://t.me/nashdigitech?text=${encodeURIComponent(message)}`, '_blank');
-                        break;
-                    case 'instagram':
-                        window.open(`https://www.instagram.com/nashdigitech`, '_blank');
-                        break;
-                    case 'facebook':
-                        window.open(`https://www.facebook.com/nashdigitech`, '_blank');
-                        break;
-                    case 'twitter':
-                        window.open(`https://twitter.com/messages/compose?recipient_id=nashdigitech&text=${encodeURIComponent(message)}`, '_blank');
-                        break;
-                    case 'linkedin':
-                        window.open(`https://www.linkedin.com/company/nash-digitech`, '_blank');
-                        break;
-                    case 'tiktok':
-                        window.open(`https://www.tiktok.com/@nashdigitech`, '_blank');
-                        break;
-                    case 'signal':
-                        window.open(`https://signal.me/#p/nashdigitech`, '_blank');
-                        break;
-                    case 'skype':
-                        window.open(`skype:nashdigitech?chat`, '_blank');
-                        break;
-                    case 'zoom':
-                        window.open(`https://zoom.us/`, '_blank');
-                        break;
-                    case 'email':
-                        window.location.href = `mailto:nashdigitechsolutions@gmail.com?subject=New Project Inquiry from ${encodeURIComponent(formData.name)}&body=${encodeURIComponent(message)}`;
-                        break;
-                    case 'phone':
-                        window.open('tel:+263787182780', '_blank');
-                        break;
-                    default:
-                        console.log(`Message for ${platform}: ${message}`);
-                }
-                resolve();
-            } catch (error) {
-                console.error(`Error sending via ${platform}:`, error);
-                resolve(); // Continue even if one platform fails
-            }
-        });
+  }
+
+  function saveContactToLocalStorage(data) {
+    try {
+      let contacts = JSON.parse(localStorage.getItem("nashContacts") || "[]");
+      contacts.push({
+        ...data,
+        id: Date.now(),
+        timestamp: new Date().toISOString(),
+      });
+      localStorage.setItem("nashContacts", JSON.stringify(contacts));
+
+      return {
+        success: true,
+        message: "Contact form saved locally.",
+      };
+    } catch (error) {
+      console.error("Error saving contact to localStorage:", error);
+      return { success: false, message: "Error saving contact." };
     }
-    
-    async function submitContactFormToBackend(contactData) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/contacts`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(contactData)
-            });
-            
-            const data = await response.json();
-            
-            if (data.success) {
-                return { success: true, message: data.message };
-            } else {
-                throw new Error(data.message || 'Failed to submit contact form');
-            }
-        } catch (error) {
-            console.error('Error submitting contact form to backend:', error);
-            
-            // Fallback to localStorage
-            return saveContactToLocalStorage(contactData);
-        }
-    }
-    
-    function saveContactToLocalStorage(data) {
-        try {
-            let contacts = JSON.parse(localStorage.getItem('nashContacts') || '[]');
-            contacts.push({
-                ...data,
-                id: Date.now(),
-                timestamp: new Date().toISOString()
-            });
-            localStorage.setItem('nashContacts', JSON.stringify(contacts));
-            
-            return { 
-                success: true, 
-                message: 'Contact form saved locally.' 
-            };
-        } catch (error) {
-            console.error('Error saving contact to localStorage:', error);
-            return { success: false, message: 'Error saving contact.' };
-        }
-    }
-    
-    // Helper function to show form status
-    function showFormStatus(message, type) {
-        if (!formStatus) return;
-        
-        formStatus.textContent = message;
-        formStatus.className = `form-status ${type}`;
-        formStatus.style.display = 'block';
-        
-        // Scroll to status message
-        formStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        
-        // Hide status message after 8 seconds
-        setTimeout(() => {
-            formStatus.style.display = 'none';
-        }, 8000);
-    }
+  }
+
+  // Helper function to show form status
+  function showFormStatus(message, type) {
+    if (!formStatus) return;
+
+    formStatus.textContent = message;
+    formStatus.className = `form-status ${type}`;
+    formStatus.style.display = "block";
+
+    // Scroll to status message
+    formStatus.scrollIntoView({ behavior: "smooth", block: "center" });
+
+    // Hide status message after 8 seconds
+    setTimeout(() => {
+      formStatus.style.display = "none";
+    }, 8000);
+  }
 }
 
 // ============================================
@@ -1109,55 +1256,58 @@ ${data.newsletterOptIn ? '\n✅ Subscribed to newsletter' : ''}
 // ============================================
 
 function initNewsletterForm() {
-    const newsletterForm = document.getElementById('newsletterForm');
-    const newsletterMessage = document.getElementById('newsletterMessage');
-    
-    if (!newsletterForm) return;
-    
-    newsletterForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const email = document.getElementById('newsletterEmail').value.trim();
-        
-        if (!email || !isValidEmail(email)) {
-            showNewsletterMessage('Please enter a valid email address.', 'error');
-            return;
-        }
-        
-        try {
-            const response = await fetch(`${API_BASE_URL}/newsletter/subscribe`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email: email })
-            });
-            
-            const data = await response.json();
-            
-            if (data.success) {
-                showNewsletterMessage(data.message || 'Thank you for subscribing to our newsletter!', 'success');
-                document.getElementById('newsletterEmail').value = '';
-            } else {
-                showNewsletterMessage(data.message || 'Subscription failed.', 'error');
-            }
-        } catch (error) {
-            showNewsletterMessage('Error subscribing. Please try again.', 'error');
-        }
-    });
-    
-    function showNewsletterMessage(message, type) {
-        if (!newsletterMessage) return;
-        
-        newsletterMessage.textContent = message;
-        newsletterMessage.className = `form-message ${type}`;
-        newsletterMessage.style.display = 'block';
-        
-        // Hide message after 5 seconds
-        setTimeout(() => {
-            newsletterMessage.style.display = 'none';
-        }, 5000);
+  const newsletterForm = document.getElementById("newsletterForm");
+  const newsletterMessage = document.getElementById("newsletterMessage");
+
+  if (!newsletterForm) return;
+
+  newsletterForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const email = document.getElementById("newsletterEmail").value.trim();
+
+    if (!email || !isValidEmail(email)) {
+      showNewsletterMessage("Please enter a valid email address.", "error");
+      return;
     }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/newsletter/subscribe`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: email }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        showNewsletterMessage(
+          data.message || "Thank you for subscribing to our newsletter!",
+          "success",
+        );
+        document.getElementById("newsletterEmail").value = "";
+      } else {
+        showNewsletterMessage(data.message || "Subscription failed.", "error");
+      }
+    } catch (error) {
+      showNewsletterMessage("Error subscribing. Please try again.", "error");
+    }
+  });
+
+  function showNewsletterMessage(message, type) {
+    if (!newsletterMessage) return;
+
+    newsletterMessage.textContent = message;
+    newsletterMessage.className = `form-message ${type}`;
+    newsletterMessage.style.display = "block";
+
+    // Hide message after 5 seconds
+    setTimeout(() => {
+      newsletterMessage.style.display = "none";
+    }, 5000);
+  }
 }
 
 // ============================================
@@ -1165,167 +1315,173 @@ function initNewsletterForm() {
 // ============================================
 
 // Make sure all systems are initialized when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // Functions already initialized in the main DOMContentLoaded event
-    // This ensures they're available globally
+document.addEventListener("DOMContentLoaded", function () {
+  // Functions already initialized in the main DOMContentLoaded event
+  // This ensures they're available globally
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Select elements
-    const testimonialModal = document.getElementById('testimonialSubmissionModal');
-    const openBtn = document.getElementById('submitTestimonialBtn');
-    const closeBtn = document.getElementById('closeTestimonialModal');
+document.addEventListener("DOMContentLoaded", function () {
+  // Select elements
+  const testimonialModal = document.getElementById(
+    "testimonialSubmissionModal",
+  );
+  const openBtn = document.getElementById("submitTestimonialBtn");
+  const closeBtn = document.getElementById("closeTestimonialModal");
 
-    // 1. Open Modal when button is clicked
-    if (openBtn) {
-        openBtn.addEventListener('click', () => {
-            testimonialModal.style.display = 'flex'; // Ensure your CSS handles 'flex' or 'block'
-            testimonialModal.classList.add('active'); // Good for animations
-        });
-    }
-
-    // 2. Close Modal when 'X' is clicked
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            testimonialModal.style.display = 'none';
-            testimonialModal.classList.remove('active');
-        });
-    }
-
-    // 3. Close Modal if user clicks outside the content box
-    window.addEventListener('click', (e) => {
-        if (e.target === testimonialModal) {
-            testimonialModal.style.display = 'none';
-            testimonialModal.classList.remove('active');
-        }
+  // 1. Open Modal when button is clicked
+  if (openBtn) {
+    openBtn.addEventListener("click", () => {
+      testimonialModal.style.display = "flex"; // Ensure your CSS handles 'flex' or 'block'
+      testimonialModal.classList.add("active"); // Good for animations
     });
+  }
+
+  // 2. Close Modal when 'X' is clicked
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      testimonialModal.style.display = "none";
+      testimonialModal.classList.remove("active");
+    });
+  }
+
+  // 3. Close Modal if user clicks outside the content box
+  window.addEventListener("click", (e) => {
+    if (e.target === testimonialModal) {
+      testimonialModal.style.display = "none";
+      testimonialModal.classList.remove("active");
+    }
+  });
 });
 
 // Star Rating Interaction
-const stars = document.querySelectorAll('#testimonialRatingStars i');
-stars.forEach(star => {
-    star.addEventListener('click', function() {
-        const rating = this.getAttribute('data-rating');
-        document.getElementById('testimonialRating').value = rating;
-        
-        stars.forEach(s => {
-            s.classList.remove('fas', 'active');
-            s.classList.add('far');
-            if(s.getAttribute('data-rating') <= rating) {
-                s.classList.remove('far');
-                s.classList.add('fas', 'active');
-            }
-        });
+const stars = document.querySelectorAll("#testimonialRatingStars i");
+stars.forEach((star) => {
+  star.addEventListener("click", function () {
+    const rating = this.getAttribute("data-rating");
+    document.getElementById("testimonialRating").value = rating;
+
+    stars.forEach((s) => {
+      s.classList.remove("fas", "active");
+      s.classList.add("far");
+      if (s.getAttribute("data-rating") <= rating) {
+        s.classList.remove("far");
+        s.classList.add("fas", "active");
+      }
     });
+  });
 });
 
 // --- 2. SELECTORS (Matching your HTML exactly) ---
-const testimonialForm = document.getElementById('testimonialSubmissionForm');
-const testimonialModal = document.getElementById('testimonialSubmissionModal');
-const openModalBtn = document.getElementById('submitTestimonialBtn');
-const closeModalBtn = document.getElementById('closeTestimonialModal');
-const ratingStars = document.querySelectorAll('#testimonialRatingStars i');
-const ratingInput = document.getElementById('testimonialRating');
+const testimonialForm = document.getElementById("testimonialSubmissionForm");
+const testimonialModal = document.getElementById("testimonialSubmissionModal");
+const openModalBtn = document.getElementById("submitTestimonialBtn");
+const closeModalBtn = document.getElementById("closeTestimonialModal");
+const ratingStars = document.querySelectorAll("#testimonialRatingStars i");
+const ratingInput = document.getElementById("testimonialRating");
 
 // --- 3. MODAL LOGIC ---
 if (openModalBtn && testimonialModal) {
-    openModalBtn.onclick = () => {
-        testimonialModal.style.display = 'flex';
-    };
+  openModalBtn.onclick = () => {
+    testimonialModal.style.display = "flex";
+  };
 }
 
 if (closeModalBtn && testimonialModal) {
-    closeModalBtn.onclick = () => {
-        testimonialModal.style.display = 'none';
-    };
+  closeModalBtn.onclick = () => {
+    testimonialModal.style.display = "none";
+  };
 }
 
 // Close modal if user clicks outside the content box
 window.onclick = (event) => {
-    if (event.target == testimonialModal) {
-        testimonialModal.style.display = 'none';
-    }
+  if (event.target == testimonialModal) {
+    testimonialModal.style.display = "none";
+  }
 };
 
 // --- 4. STAR RATING LOGIC ---
-ratingStars.forEach(star => {
-    star.addEventListener('click', () => {
-        const rating = star.getAttribute('data-rating');
-        ratingInput.value = rating;
-        
-        // Update visual stars (Solid vs Regular)
-        ratingStars.forEach(s => {
-            const sRating = s.getAttribute('data-rating');
-            if (sRating <= rating) {
-                s.classList.remove('far');
-                s.classList.add('fas');
-            } else {
-                s.classList.remove('fas');
-                s.classList.add('far');
-            }
-        });
+ratingStars.forEach((star) => {
+  star.addEventListener("click", () => {
+    const rating = star.getAttribute("data-rating");
+    ratingInput.value = rating;
+
+    // Update visual stars (Solid vs Regular)
+    ratingStars.forEach((s) => {
+      const sRating = s.getAttribute("data-rating");
+      if (sRating <= rating) {
+        s.classList.remove("far");
+        s.classList.add("fas");
+      } else {
+        s.classList.remove("fas");
+        s.classList.add("far");
+      }
     });
+  });
 });
 
 // --- 5. SUBMISSION LOGIC ---
 if (testimonialForm) {
-    testimonialForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const submitBtn = testimonialForm.querySelector('button[type="submit"]');
-        const originalBtnText = submitBtn.innerHTML;
-        
-        // UI Feedback
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-        submitBtn.disabled = true;
+  testimonialForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-        const testimonialData = {
-            name: document.getElementById('testimonialName').value.trim(),
-            position: document.getElementById('testimonialPosition').value.trim() || 'Client',
-            country: document.getElementById('testimonialCountry').value.trim(),
-            rating: parseInt(ratingInput.value) || 5,
-            testimonial: document.getElementById('testimonialText').value.trim(),
-            email: document.getElementById('testimonialEmail').value.trim(),
-            status: 'pending'
-        };
+    const submitBtn = testimonialForm.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
 
-        // Validate Rating
-        if (!ratingInput.value) {
-            alert("Please select a star rating!");
-            submitBtn.innerHTML = originalBtnText;
-            submitBtn.disabled = false;
-            return;
-        }
+    // UI Feedback
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+    submitBtn.disabled = true;
 
-        try {
-            const response = await fetch(`${API_BASE_URL}/testimonials`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(testimonialData)
-            });
-            
-            const result = await response.json();
-            
-            if (response.ok && result.success) {
-                alert('✅ Success: Your testimonial has been submitted for review!');
-                testimonialModal.style.display = 'none';
-                testimonialForm.reset();
-                
-                // Reset stars visual
-                ratingStars.forEach(s => {
-                    s.classList.remove('fas');
-                    s.classList.add('far');
-                });
-                ratingInput.value = '';
-            } else {
-                alert('❌ Error: ' + (result.message || 'Something went wrong.'));
-            }
-        } catch (error) {
-            console.error('Submission failed:', error);
-            alert('❌ Connection error: Could not reach the backend server at ' + API_BASE_URL);
-        } finally {
-            submitBtn.innerHTML = originalBtnText;
-            submitBtn.disabled = false;
-        }
-    });
+    const testimonialData = {
+      name: document.getElementById("testimonialName").value.trim(),
+      position:
+        document.getElementById("testimonialPosition").value.trim() || "Client",
+      country: document.getElementById("testimonialCountry").value.trim(),
+      rating: parseInt(ratingInput.value) || 5,
+      testimonial: document.getElementById("testimonialText").value.trim(),
+      email: document.getElementById("testimonialEmail").value.trim(),
+      status: "pending",
+    };
+
+    // Validate Rating
+    if (!ratingInput.value) {
+      alert("Please select a star rating!");
+      submitBtn.innerHTML = originalBtnText;
+      submitBtn.disabled = false;
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/testimonials`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(testimonialData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        alert("✅ Success: Your testimonial has been submitted for review!");
+        testimonialModal.style.display = "none";
+        testimonialForm.reset();
+
+        // Reset stars visual
+        ratingStars.forEach((s) => {
+          s.classList.remove("fas");
+          s.classList.add("far");
+        });
+        ratingInput.value = "";
+      } else {
+        alert("❌ Error: " + (result.message || "Something went wrong."));
+      }
+    } catch (error) {
+      console.error("Submission failed:", error);
+      alert(
+        "❌ Connection error: Could not reach the backend server at " +
+          API_BASE_URL,
+      );
+    } finally {
+      submitBtn.innerHTML = originalBtnText;
+      submitBtn.disabled = false;
+    }
+  });
 }

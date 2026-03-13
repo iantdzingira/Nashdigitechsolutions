@@ -1595,28 +1595,71 @@ footer {
     margin-bottom: 25px;
 }
 
+/* Container for fluid spacing */
+.social-icons {
+  display: flex;
+  flex-wrap: wrap; /* Liquid behavior: wraps on small screens */
+  gap: 15px;
+  align-items: center;
+  padding: 10px 0;
+}
+
+/* The Individual Icon Circle */
+/* Base styles for social icons - works on both light and dark backgrounds */
 .social-icons {
     display: flex;
-    gap: 15px;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .social-icon {
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: var(--white);
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);  /* soft white overlay */
+    backdrop-filter: blur(2px);             /* glass effect */
+    color: #2d3748;                          /* dark gray for contrast */
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
     text-decoration: none;
-    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.social-icon:hover {
-    background: var(--primary-blue);
-    transform: translateY(-3px);
+/* For blue backgrounds, the white overlay ensures visibility */
+/* If the blue is very dark, you may increase the background opacity slightly */
+.blue-bg .social-icon {
+    background: rgba(255, 255, 255, 0.25);
+    color: #1a202c; /* slightly darker for extra contrast on light overlay */
 }
+
+/* X (Twitter) SVG */
+.social-icon svg {
+    width: 1.2rem;
+    height: 1.2rem;
+    fill: currentColor;
+}
+
+/* Hover effect: gently lift and show platform color */
+.social-icon:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Platform colors on hover */
+.social-icon:hover .fa-facebook-f { color: #3b5998; }      /* Facebook */
+.social-icon:hover .fa-instagram { color: #e1306c; }       /* Instagram */
+.social-icon:hover .fa-youtube { color: #ff0000; }         /* YouTube */
+.social-icon:hover .fa-envelope { color: #dd4b39; }        /* Email */
+.social-icon:hover .fa-whatsapp { color: #25D366; }        /* WhatsApp – add this */
+.social-icon:hover svg { fill: #1da1f2; }                  /* X (Twitter) */
 
 .footer-links h3,
 .footer-services h3,
