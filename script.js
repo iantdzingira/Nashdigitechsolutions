@@ -1,4 +1,5 @@
 import { GoogleGenAI } from "https://esm.sh/@google/genai";
+import { CONFIG } from "./secureKey.js";
 
 const API_BASE_URL = "https://nashdigitechsolutions-backend.onrender.com/api";
 
@@ -189,8 +190,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function initLiveChat() {
+    const apiKey = CONFIG.GEMINI_API_KEY;
+
     const ai = new GoogleGenAI({
-      apiKey: "AIzaSyD7f3XFCNvez4dimXoE-gU47hYaTPtIsOU",
+      apiKey: apiKey,
     });
 
     // The Full Nash Digitech Brain
